@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ReservationStatus {
+  BEKLIYOR
+  ONAYLANDI
+  IPTAL
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  rooms       Room[]
+  createdAt   DateTime @default(now())
+}
+
+model Room {
+  id           String        @id @default(cuid())
+  name         String
+  description  String?
+  price        Decimal       @db.Decimal(10, 2)
+  capacity     Int
+  photos       String[]      @default([])
+  category     Category      @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Reservation {
+  id         String            @id @default(cuid())
+  room       Room              @relation(fields: [roomId], references: [id])
+  roomId     String
+  fullName   String
+  email      String
+  phone      String
+  checkIn    DateTime
+  checkOut   DateTime
+  guestCount Int
+  status     ReservationStatus @default(BEKLIYOR)
+  createdAt  DateTime          @default(now())
+
+  @@index([roomId, checkIn, checkOut])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
