@@ -61,11 +61,11 @@ export default async function HomePage() {
   ];
 
   const gallery = [
-    { src: "/gallery_lobby.jpg", label: "Muhteşem Lobi", wide: true },
-    { src: "/gallery_room.jpg", label: "Lüks Süit", wide: false },
-    { src: "/gallery_pool.jpg", label: "Sonsuzluk Havuzu", wide: false },
-    { src: "/gallery_restaurant.jpg", label: "Gurme Restoran", wide: false },
-    { src: "/gallery_spa.jpg", label: "Spa & Wellness", wide: false },
+    { src: "/gallery_lobby.jpg", label: "Sinop Kalesi", wide: true },
+    { src: "/gallery_room.jpg", label: "Karadeniz Manzarası", wide: false },
+    { src: "/gallery_pool.jpg", label: "Gerze Limanı", wide: false },
+    { src: "/gallery_restaurant.jpg", label: "Balık Restoranı", wide: false },
+    { src: "/gallery_spa.jpg", label: "Karadeniz Ormanları", wide: false },
   ];
 
   return (
