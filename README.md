@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏨 Grand Azur Resort & Spa — Otel Rezervasyon Sistemi
 
-## Getting Started
+> **Canlı Site:** [https://hotel-reservation-system-et6g.vercel.app](https://hotel-reservation-system-et6g.vercel.app)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📌 Proje Hakkında
+
+**Grand Azur Resort & Spa**, modern bir otel için geliştirilmiş tam kapsamlı bir rezervasyon ve yönetim sistemidir. Müşteri tarafı (misafir arayüzü) ve yönetici paneli olmak üzere iki ana bölümden oluşur.
+
+---
+
+## 🚀 Teknolojiler
+
+| Teknoloji | Kullanım Amacı |
+|-----------|---------------|
+| **Next.js 16** | Full-stack web framework (App Router) |
+| **TypeScript** | Tip güvenliği |
+| **Tailwind CSS v4** | Stil & tasarım |
+| **Prisma ORM** | Veritabanı yönetimi |
+| **PostgreSQL** | Veritabanı (Vercel Postgres) |
+| **Vercel Blob** | Fotoğraf yükleme & depolama |
+| **bcryptjs** | Şifre güvenliği |
+| **jose** | JWT ile oturum yönetimi |
+| **Vercel** | Hosting & deployment |
+
+---
+
+## ✨ Özellikler
+
+### 🌐 Misafir (Müşteri) Tarafı
+- **Ana Sayfa** — Hero bölümü, arama formu, öne çıkan odalar, galeri, yorumlar, istatistikler
+- **Odalarımız** — Tüm odaların listelendiği sayfa (kategori, fiyat, fotoğraf)
+- **Oda Detay** — Tek oda sayfası, fotoğraf galerisi, özellikler, rezervasyon butonu
+- **Kategoriler** — Oda kategorilerine göre filtreleme
+- **Müsaitlik** — Tarih bazlı müsait oda sorgulama
+- **Tatil Paketleri** — Özel kampanya ve paketler
+- **Rezervasyon** — Online rezervasyon formu
+- **İletişim** — İletişim formu
+
+### 🔐 Admin Paneli (`/admin`)
+- Giriş sistemi (JWT token, bcrypt şifre)
+- **Oda yönetimi** — Oda ekleme, düzenleme, silme, fotoğraf yükleme
+- **Rezervasyon yönetimi** — Rezervasyonları listeleme, onaylama, iptal
+- **Kategori yönetimi** — Oda kategorisi oluşturma
+- **Testimonial yönetimi** — Misafir yorumları ekleme/düzenleme
+- **Mesaj yönetimi** — İletişim formundan gelen mesajları görüntüleme
+
+---
+
+## 🎨 Tasarım
+
+- **Renk Paleti:** Derin Lacivert (`#0D1B2A`) + Altın (`#C9A96E`) + Krem (`#FAF8F4`)
+- **Fontlar:** Playfair Display (başlıklar) + Inter (metin)
+- **Efektler:** Scroll'da şeffaflaşan navbar, hover animasyonları, fade-in-up geçişler, galeri overlay
+- **Görseller:** AI ile üretilmiş lobi, havuz, restoran, spa, oda fotoğrafları
+
+---
+
+## 📂 Proje Yapısı
+
+```
+my-next-app/
+├── app/
+│   ├── page.tsx              # Ana sayfa
+│   ├── layout.tsx            # Root layout (Navbar + Footer)
+│   ├── globals.css           # Global stiller & tasarım sistemi
+│   ├── odalarimiz/           # Oda listeleme & detay sayfaları
+│   ├── rezervasyon/          # Rezervasyon formu
+│   ├── kategoriler/          # Kategori sayfası
+│   ├── musaitlik/            # Müsaitlik sorgulama
+│   ├── tatil/                # Tatil paketleri
+│   ├── iletisim/             # İletişim formu
+│   ├── admin/                # Admin paneli (korumalı)
+│   └── api/                  # REST API rotaları
+├── components/
+│   ├── Navbar.tsx            # Navigasyon (scroll efekti, mobil menü)
+│   └── Footer.tsx            # Footer (4 kolon, sosyal medya)
+├── lib/
+│   └── prisma.ts             # Prisma client
+├── prisma/
+│   └── schema.prisma         # Veritabanı şeması
+└── public/                   # Statik görseller (galeri fotoğrafları)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Kurulum (Yerel Geliştirme)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# 1. Repoyu klonla
+git clone https://github.com/mahirr-Art/hotel-reservation-system.git
+cd hotel-reservation-system
 
-## Learn More
+# 2. Bağımlılıkları yükle
+npm install
 
-To learn more about Next.js, take a look at the following resources:
+# 3. Ortam değişkenlerini ayarla
+cp .env.example .env.local
+# .env.local dosyasını doldurun (DATABASE_URL, BLOB_READ_WRITE_TOKEN vb.)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 4. Veritabanını migrate et
+npx prisma migrate dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 5. Geliştirme sunucusunu başlat
+npm run dev
+```
 
-## Deploy on Vercel
+Uygulama **http://localhost:3000** adresinde çalışır.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🌍 Deployment
+
+Proje **Vercel** üzerinde host edilmektedir.
+
+- `main` branch'e yapılan her `git push` otomatik olarak canlıya alınır.
+- Ortam değişkenleri Vercel Dashboard'dan yönetilir.
+
+```bash
+# Manuel deploy
+npx vercel --prod
+```
+
+---
+
+## 🔑 Ortam Değişkenleri
+
+```env
+DATABASE_URL=           # PostgreSQL bağlantı URL'si
+BLOB_READ_WRITE_TOKEN=  # Vercel Blob token
+JWT_SECRET=             # JWT imzalama anahtarı
+ADMIN_PASSWORD_HASH=    # bcrypt ile hashlenmiş admin şifresi
+```
+
+---
+
+## 📸 Ekran Görüntüleri
+
+| Bölüm | Açıklama |
+|-------|----------|
+| Hero | Full-screen otel görseli, arama formu |
+| Odalar | Kategori, fiyat, fotoğraf kartları |
+| Galeri | Lobi, havuz, restoran, spa, oda |
+| Admin | JWT korumalı yönetim paneli |
+
+---
+
+## 👤 Geliştirici
+
+**Mahir** — [GitHub](https://github.com/mahirr-Art)
+
+---
+
+*Grand Azur Resort & Spa — Şehrin kalbinde lüks bir kaçış noktası* ✨
