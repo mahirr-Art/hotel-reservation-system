@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
-export default async function RoomDetailPage({ params }: { params: { id: string } }) {
+export default async function RoomDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const room = await prisma.room.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { category: true },
   });
 
