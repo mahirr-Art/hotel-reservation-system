@@ -5,14 +5,15 @@ import { useEffect, useState } from "react";
 type Category = { id: string; name: string };
 type Room = {
   id: string; name: string; description: string | null; price: string;
-  capacity: number; categoryId: string; category: Category;
+  capacity: number; categoryId: string; category: Category; photos: string[];
 };
 
 export default function AdminOdalarPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", categoryId: "" });
+  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "" });
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   async function loadData() {
     const [roomsRes, catsRes] = await Promise.all([
@@ -25,19 +26,39 @@ export default function AdminOdalarPage() {
 
   useEffect(() => { loadData(); }, []);
 
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+    const data = await res.json();
+    setUploading(false);
+    if (data.url) setForm((f) => ({ ...f, photoUrl: data.url }));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const url = editingId ? `/api/admin/odalar/${editingId}` : "/api/admin/odalar";
     const method = editingId ? "PUT" : "POST";
-    await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-    setForm({ name: "", description: "", price: "", capacity: "", categoryId: "" });
+    const payload = { ...form, photos: form.photoUrl ? [form.photoUrl] : [] };
+    await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+    setForm({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "" });
     setEditingId(null);
     loadData();
   }
 
   function startEdit(room: Room) {
     setEditingId(room.id);
-    setForm({ name: room.name, description: room.description || "", price: room.price.toString(), capacity: room.capacity.toString(), categoryId: room.categoryId });
+    setForm({
+      name: room.name,
+      description: room.description || "",
+      price: room.price.toString(),
+      capacity: room.capacity.toString(),
+      categoryId: room.categoryId,
+      photoUrl: room.photos?.[0] || "",
+    });
   }
 
   async function handleDelete(id: string) {
@@ -59,6 +80,16 @@ export default function AdminOdalarPage() {
         <input required type="number" placeholder="Fiyat (₺)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="rounded-lg border px-3 py-2" />
         <input required type="number" placeholder="Kapasite" value={form.capacity} onChange={(e) => setForm({ ...form, capacity: e.target.value })} className="rounded-lg border px-3 py-2" />
         <textarea placeholder="Açıklama" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="rounded-lg border px-3 py-2 sm:col-span-2" />
+
+        <div className="sm:col-span-2">
+          <label className="text-sm text-neutral-600 block mb-1">Oda Fotoğrafı</label>
+          <input type="file" accept="image/*" onChange={handleFileUpload} className="text-sm" />
+          {uploading && <p className="text-sm text-neutral-500 mt-1">Yükleniyor...</p>}
+          {form.photoUrl && (
+            <img src={form.photoUrl} alt="Önizleme" className="mt-2 h-24 rounded-lg object-cover" />
+          )}
+        </div>
+
         <button type="submit" className="sm:col-span-2 rounded-full bg-black text-white px-6 py-2 font-medium">
           {editingId ? "Odayı Güncelle" : "Oda Ekle"}
         </button>
@@ -67,9 +98,14 @@ export default function AdminOdalarPage() {
       <div className="grid gap-3">
         {rooms.map((room) => (
           <div key={room.id} className="flex items-center justify-between border rounded-xl p-4">
-            <div>
-              <p className="font-medium">{room.name}</p>
-              <p className="text-sm text-neutral-500">{room.category.name} · {room.capacity} kişi · {room.price.toString()} ₺</p>
+            <div className="flex items-center gap-4">
+              {room.photos?.[0] && (
+                <img src={room.photos[0]} alt={room.name} className="w-16 h-16 rounded-lg object-cover" />
+              )}
+              <div>
+                <p className="font-medium">{room.name}</p>
+                <p className="text-sm text-neutral-500">{room.category.name} · {room.capacity} kişi · {room.price.toString()} ₺</p>
+              </div>
             </div>
             <div className="flex gap-2 text-sm">
               <button onClick={() => startEdit(room)} className="underline">Düzenle</button>

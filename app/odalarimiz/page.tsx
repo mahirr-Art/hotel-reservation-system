@@ -17,12 +17,19 @@ export default async function OdalarimizPage() {
           <Link
             key={room.id}
             href={`/odalarimiz/${room.id}`}
-            className="rounded-2xl border p-6 hover:shadow-lg transition-shadow"
+            className="rounded-2xl border overflow-hidden hover:shadow-lg transition-shadow"
           >
-            <p className="text-xs uppercase text-neutral-400 mb-1">{room.category.name}</p>
-            <h2 className="text-lg font-semibold mb-1">{room.name}</h2>
-            <p className="text-sm text-neutral-600 mb-3">Kapasite: {room.capacity} kişi</p>
-            <p className="font-medium">{room.price.toString()} ₺ / gece</p>
+            <div className="aspect-video bg-neutral-100">
+              {room.photos?.[0] && (
+                <img src={room.photos[0]} alt={room.name} className="w-full h-full object-cover" />
+              )}
+            </div>
+            <div className="p-6">
+              <p className="text-xs uppercase text-neutral-400 mb-1">{room.category.name}</p>
+              <h2 className="text-lg font-semibold mb-1">{room.name}</h2>
+              <p className="text-sm text-neutral-600 mb-3">Kapasite: {room.capacity} kişi</p>
+              <p className="font-medium">{room.price.toString()} ₺ / gece</p>
+            </div>
           </Link>
         ))}
         {rooms.length === 0 && <p className="text-neutral-500">Henüz oda eklenmedi.</p>}
