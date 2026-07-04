@@ -168,6 +168,14 @@ exports.Prisma.AdminScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TestimonialScalarFieldEnum = {
+  id: 'id',
+  authorTag: 'authorTag',
+  content: 'content',
+  rating: 'rating',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -193,7 +201,8 @@ exports.Prisma.ModelName = {
   Room: 'Room',
   Reservation: 'Reservation',
   Message: 'Message',
-  Admin: 'Admin'
+  Admin: 'Admin',
+  Testimonial: 'Testimonial'
 };
 
 /**
