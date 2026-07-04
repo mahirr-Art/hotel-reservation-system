@@ -124,8 +124,8 @@ export default async function HomePage() {
               opacity: 0,
             }}
           >
-            Lüksü Hisset,{" "}
-            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Anıları Yarat</em>
+            Karadeniz'i Hisset,{" "}
+            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Gerze'yi Keşfet</em>
           </h1>
           <p
             className="animate-fade-in-up delay-200"
@@ -139,8 +139,8 @@ export default async function HomePage() {
               opacity: 0,
             }}
           >
-            Şehrin kalbinde, deniz manzaralı odalarda ve dünya standartlarında hizmetle
-            unutulmaz bir konaklama deneyimi sizi bekliyor.
+            Sinop Gerze kıyısında, Karadeniz'in masmavi suları eşliğinde huzur dolu bir konaklama
+            deneyimi sizi bekliyor.
           </p>
 
           {/* Search form */}
@@ -203,7 +203,7 @@ export default async function HomePage() {
           <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
             <p className="section-label" style={{ marginBottom: "0.75rem" }}>Ayrıcalıklarımız</p>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)", marginBottom: "1rem" }}>
-              Neden Grand Azur?
+              Neden Kuzey Feneri?
             </h2>
             <div className="gold-divider" style={{ margin: "0 auto" }} />
           </div>
@@ -376,10 +376,10 @@ export default async function HomePage() {
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--navy)", opacity: 0.7, marginBottom: "1rem" }}>
           ✦ Özel Fırsatlar ✦
         </p>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 700, color: "var(--navy)", marginBottom: "1rem", lineHeight: 1.2 }}>
-          Hayalinizdeki Tatili<br />
-          <em>Bugün Planlayın</em>
-        </h2>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 700, color: "var(--navy)", marginBottom: "1rem", lineHeight: 1.2 }}>
+          Gerze&apos;de Unutulmaz<br />
+          <em>Bir Tatil Sizi Bekliyor</em>
+        </p>
         <p style={{ color: "var(--navy)", opacity: 0.7, fontSize: "1rem", marginBottom: "2.5rem", maxWidth: "480px", margin: "0 auto 2.5rem" }}>
           Erken rezervasyon yapın, %20&apos;ye varan indirimlerden yararlanın.
         </p>

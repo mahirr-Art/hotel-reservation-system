@@ -1,4 +1,4 @@
-# 🏨 Grand Azur Resort & Spa — Otel Rezervasyon Sistemi
+# 🏨 Kuzey Feneri Butik Otel — Sinop Gerze Rezervasyon Sistemi
 
 > **Canlı Site:** [https://hotel-reservation-system-et6g.vercel.app](https://hotel-reservation-system-et6g.vercel.app)
 
@@ -6,7 +6,7 @@
 
 ## 📌 Proje Hakkında
 
-**Grand Azur Resort & Spa**, modern bir otel için geliştirilmiş tam kapsamlı bir rezervasyon ve yönetim sistemidir. Müşteri tarafı (misafir arayüzü) ve yönetici paneli olmak üzere iki ana bölümden oluşur.
+**Kuzey Feneri Butik Otel**, Sinop Gerze kıyısında Karadeniz manzaralı bir butik otel için geliştirilmiş tam kapsamlı bir rezervasyon ve yönetim sistemidir. Müşteri tarafı (misafir arayüzü) ve yönetici paneli olmak üzere iki ana bölümden oluşur.
 
 ---
 
@@ -52,6 +52,7 @@
 
 - **Renk Paleti:** Derin Lacivert (`#0D1B2A`) + Altın (`#C9A96E`) + Krem (`#FAF8F4`)
 - **Fontlar:** Playfair Display (başlıklar) + Inter (metin)
+- **Tema:** Karadeniz / Sinop Gerze'ye özgü — fener, deniz, doğa
 - **Efektler:** Scroll'da şeffaflaşan navbar, hover animasyonları, fade-in-up geçişler, galeri overlay
 - **Görseller:** AI ile üretilmiş lobi, havuz, restoran, spa, oda fotoğrafları
 
@@ -152,4 +153,4 @@ ADMIN_PASSWORD_HASH=    # bcrypt ile hashlenmiş admin şifresi
 
 ---
 
-*Grand Azur Resort & Spa — Şehrin kalbinde lüks bir kaçış noktası* ✨
+*Kuzey Feneri Butik Otel — Sinop Gerze kıyısında Karadeniz'in büyüsü* 🌊

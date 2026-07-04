@@ -18,13 +18,13 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Grand Azur Resort & Spa | Lüks Otel Deneyimi",
+  title: "Kuzey Feneri Butik Otel | Sinop Gerze",
   description:
-    "Grand Azur Resort & Spa ile şehrin kalbinde unutulmaz bir konaklama deneyimi yaşayın. Online rezervasyon, özel paketler ve daha fazlası.",
-  keywords: "otel, resort, spa, lüks, rezervasyon, Grand Azur",
+    "Sinop Gerze kıyısında Karadeniz manzaralı butik otel. Online rezervasyon, özel paketler ve huzurlu konaklama deneyimi.",
+  keywords: "otel, butik otel, sinop, gerze, karadeniz, rezervasyon, kuzey feneri",
   openGraph: {
-    title: "Grand Azur Resort & Spa",
-    description: "Şehrin kalbinde huzurlu bir lüks kaçış noktası.",
+    title: "Kuzey Feneri Butik Otel",
+    description: "Sinop Gerze kıyısında Karadeniz'in eşsiz manzarasıyla huzurlu bir konaklama.",
     type: "website",
   },
 };

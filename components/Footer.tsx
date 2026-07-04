@@ -47,15 +47,15 @@ export default function Footer() {
         <div>
           <Link href="/" style={{ textDecoration: "none" }}>
             <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--gold)", lineHeight: 1.1, marginBottom: "0.25rem" }}>
-              Grand Azur
+              Kuzey Feneri
             </div>
             <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", fontWeight: 500, letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--gold-light)", opacity: 0.7, marginBottom: "1.25rem" }}>
-              Resort &amp; Spa
+              Butik Otel · Sinop Gerze
             </div>
           </Link>
           <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
           <p style={{ fontSize: "0.87rem", lineHeight: 1.8, maxWidth: "240px" }}>
-            Şehrin kalbinde, denizin hemen yanı başında lüks ve huzuru bir arada yaşayın.
+            Sinop Gerze kıyısında, Karadeniz'in eşsiz manzarasında huzur ve konforu bir arada yaşayın.
           </p>
           <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.5rem" }}>
             {socials.map((s) => (
@@ -123,7 +123,7 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div style={{ borderTop: "1px solid rgba(201,169,110,0.12)", padding: "1.5rem", textAlign: "center", fontSize: "0.78rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>
-        © {year} Grand Azur Resort &amp; Spa. Tüm hakları saklıdır.
+        © {year} Kuzey Feneri Butik Otel. Tüm hakları saklıdır.
         <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>
         Gizlilik Politikası
         <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>

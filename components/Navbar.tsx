@@ -84,7 +84,7 @@ export default function Navbar() {
                 lineHeight: 1.1,
               }}
             >
-              Grand Azur
+              Kuzey Feneri
             </span>
             <span
               style={{
@@ -97,7 +97,7 @@ export default function Navbar() {
                 opacity: 0.8,
               }}
             >
-              Resort &amp; Spa
+              Butik Otel · Sinop Gerze
             </span>
           </Link>
 
