@@ -12,6 +12,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       price: body.price,
       capacity: body.capacity ? Number(body.capacity) : undefined,
       categoryId: body.categoryId,
+      photos: body.photos,
     },
   });
   return NextResponse.json({ room });
