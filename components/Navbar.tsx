@@ -12,7 +12,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
       <nav className="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
-        <Link href="/" className="text-xl font-semibold">
+      <Link href="/" className="text-xl font-semibold text-teal-700">
           Otel Adı
         </Link>
         <ul className="hidden md:flex items-center gap-8 text-sm text-neutral-600">
@@ -24,10 +24,7 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-        <Link
-          href="/rezervasyon"
-          className="rounded-full bg-black text-white px-5 py-2 text-sm font-medium"
-        >
+       <Link href="/rezervasyon" className="rounded-full bg-teal-600 text-white px-5 py-2 text-sm font-medium hover:bg-teal-700">
           Rezervasyon Yap
         </Link>
       </nav>

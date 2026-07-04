@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-neutral-900 text-neutral-300 mt-24">
+   <footer className="bg-teal-900 text-teal-100 mt-24">
       <div className="max-w-5xl mx-auto px-6 py-12 grid gap-8 md:grid-cols-3 text-sm">
         <div>
           <h3 className="text-white font-semibold mb-2">Otel Adı</h3>

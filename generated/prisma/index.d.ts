@@ -2490,6 +2490,7 @@ export namespace Prisma {
     description: string | null
     price: Decimal | null
     capacity: number | null
+    city: string | null
     categoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2501,6 +2502,7 @@ export namespace Prisma {
     description: string | null
     price: Decimal | null
     capacity: number | null
+    city: string | null
     categoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2512,6 +2514,7 @@ export namespace Prisma {
     description: number
     price: number
     capacity: number
+    city: number
     photos: number
     categoryId: number
     createdAt: number
@@ -2536,6 +2539,7 @@ export namespace Prisma {
     description?: true
     price?: true
     capacity?: true
+    city?: true
     categoryId?: true
     createdAt?: true
     updatedAt?: true
@@ -2547,6 +2551,7 @@ export namespace Prisma {
     description?: true
     price?: true
     capacity?: true
+    city?: true
     categoryId?: true
     createdAt?: true
     updatedAt?: true
@@ -2558,6 +2563,7 @@ export namespace Prisma {
     description?: true
     price?: true
     capacity?: true
+    city?: true
     photos?: true
     categoryId?: true
     createdAt?: true
@@ -2657,6 +2663,7 @@ export namespace Prisma {
     description: string | null
     price: Decimal
     capacity: number
+    city: string
     photos: string[]
     categoryId: string
     createdAt: Date
@@ -2688,6 +2695,7 @@ export namespace Prisma {
     description?: boolean
     price?: boolean
     capacity?: boolean
+    city?: boolean
     photos?: boolean
     categoryId?: boolean
     createdAt?: boolean
@@ -2703,6 +2711,7 @@ export namespace Prisma {
     description?: boolean
     price?: boolean
     capacity?: boolean
+    city?: boolean
     photos?: boolean
     categoryId?: boolean
     createdAt?: boolean
@@ -2716,6 +2725,7 @@ export namespace Prisma {
     description?: boolean
     price?: boolean
     capacity?: boolean
+    city?: boolean
     photos?: boolean
     categoryId?: boolean
     createdAt?: boolean
@@ -2729,13 +2739,14 @@ export namespace Prisma {
     description?: boolean
     price?: boolean
     capacity?: boolean
+    city?: boolean
     photos?: boolean
     categoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "capacity" | "photos" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
+  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "capacity" | "city" | "photos" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
   export type RoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     reservations?: boolean | Room$reservationsArgs<ExtArgs>
@@ -2760,6 +2771,7 @@ export namespace Prisma {
       description: string | null
       price: Prisma.Decimal
       capacity: number
+      city: string
       photos: string[]
       categoryId: string
       createdAt: Date
@@ -3194,6 +3206,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Room", 'String'>
     readonly price: FieldRef<"Room", 'Decimal'>
     readonly capacity: FieldRef<"Room", 'Int'>
+    readonly city: FieldRef<"Room", 'String'>
     readonly photos: FieldRef<"Room", 'String[]'>
     readonly categoryId: FieldRef<"Room", 'String'>
     readonly createdAt: FieldRef<"Room", 'DateTime'>
@@ -7867,6 +7880,7 @@ export namespace Prisma {
     description: 'description',
     price: 'price',
     capacity: 'capacity',
+    city: 'city',
     photos: 'photos',
     categoryId: 'categoryId',
     createdAt: 'createdAt',
@@ -8100,6 +8114,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Room"> | string | null
     price?: DecimalFilter<"Room"> | Decimal | DecimalJsLike | number | string
     capacity?: IntFilter<"Room"> | number
+    city?: StringFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
     categoryId?: StringFilter<"Room"> | string
     createdAt?: DateTimeFilter<"Room"> | Date | string
@@ -8114,6 +8129,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     price?: SortOrder
     capacity?: SortOrder
+    city?: SortOrder
     photos?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
@@ -8131,6 +8147,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Room"> | string | null
     price?: DecimalFilter<"Room"> | Decimal | DecimalJsLike | number | string
     capacity?: IntFilter<"Room"> | number
+    city?: StringFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
     categoryId?: StringFilter<"Room"> | string
     createdAt?: DateTimeFilter<"Room"> | Date | string
@@ -8145,6 +8162,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     price?: SortOrder
     capacity?: SortOrder
+    city?: SortOrder
     photos?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
@@ -8165,6 +8183,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Room"> | string | null
     price?: DecimalWithAggregatesFilter<"Room"> | Decimal | DecimalJsLike | number | string
     capacity?: IntWithAggregatesFilter<"Room"> | number
+    city?: StringWithAggregatesFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
     categoryId?: StringWithAggregatesFilter<"Room"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
@@ -8470,6 +8489,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8483,6 +8503,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     categoryId: string
     createdAt?: Date | string
@@ -8496,6 +8517,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8509,6 +8531,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8522,6 +8545,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     categoryId: string
     createdAt?: Date | string
@@ -8534,6 +8558,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8545,6 +8570,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8987,6 +9013,7 @@ export namespace Prisma {
     description?: SortOrder
     price?: SortOrder
     capacity?: SortOrder
+    city?: SortOrder
     photos?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
@@ -9004,6 +9031,7 @@ export namespace Prisma {
     description?: SortOrder
     price?: SortOrder
     capacity?: SortOrder
+    city?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9015,6 +9043,7 @@ export namespace Prisma {
     description?: SortOrder
     price?: SortOrder
     capacity?: SortOrder
+    city?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9545,6 +9574,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9557,6 +9587,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9598,6 +9629,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Room"> | string | null
     price?: DecimalFilter<"Room"> | Decimal | DecimalJsLike | number | string
     capacity?: IntFilter<"Room"> | number
+    city?: StringFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
     categoryId?: StringFilter<"Room"> | string
     createdAt?: DateTimeFilter<"Room"> | Date | string
@@ -9720,6 +9752,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9732,6 +9765,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     categoryId: string
     createdAt?: Date | string
@@ -9760,6 +9794,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9772,6 +9807,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9784,6 +9820,7 @@ export namespace Prisma {
     description?: string | null
     price: Decimal | DecimalJsLike | number | string
     capacity: number
+    city?: string
     photos?: RoomCreatephotosInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9795,6 +9832,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9807,6 +9845,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9819,6 +9858,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     capacity?: IntFieldUpdateOperationsInput | number
+    city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

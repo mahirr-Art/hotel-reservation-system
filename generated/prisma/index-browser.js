@@ -133,6 +133,7 @@ exports.Prisma.RoomScalarFieldEnum = {
   description: 'description',
   price: 'price',
   capacity: 'capacity',
+  city: 'city',
   photos: 'photos',
   categoryId: 'categoryId',
   createdAt: 'createdAt',

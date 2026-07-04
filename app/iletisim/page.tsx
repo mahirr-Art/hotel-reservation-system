@@ -39,7 +39,7 @@ export default function IletisimPage() {
           <input required placeholder="Konu" value={subject} onChange={(e) => setSubject(e.target.value)} className="rounded-lg border px-3 py-2" />
           <textarea required placeholder="Mesajınız" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="rounded-lg border px-3 py-2" />
           {error && <p className="text-red-600 text-sm">{error}</p>}
-          <button type="submit" className="rounded-full bg-black text-white px-6 py-3 font-medium">
+         <button type="submit" className="rounded-full bg-teal-600 text-white px-6 py-3 font-medium hover:bg-teal-700">
             Mesaj Gönder
           </button>
         </form>
