@@ -29,21 +29,23 @@
 ## ✨ Özellikler
 
 ### 🌐 Misafir (Müşteri) Tarafı
-- **Ana Sayfa** — Hero bölümü, arama formu, öne çıkan odalar, galeri, yorumlar, istatistikler
+- **Ana Sayfa** — Hero bölümü, akıllı arama formu, öne çıkan odalar, galeri, yorumlar, istatistikler
 - **Odalarımız** — Tüm odaların listelendiği sayfa (kategori, fiyat, fotoğraf)
 - **Oda Detay** — Tek oda sayfası, fotoğraf galerisi, özellikler, rezervasyon butonu
 - **Kategoriler** — Oda kategorilerine göre filtreleme
-- **Müsaitlik** — Tarih bazlı müsait oda sorgulama
+- **Müsaitlik Takvimi** — Odaların boş/dolu durumlarını gösteren **görsel takvim** arayüzü
+- **Kullanıcı Paneli (`/kullanici`)** — Misafirlerin e-posta adresleriyle geçmiş ve aktif rezervasyonlarını sorgulayabildiği profil sayfası
 - **Tatil Paketleri** — Özel kampanya ve paketler
 - **Rezervasyon** — Online rezervasyon formu
 - **İletişim** — İletişim formu
 
 ### 🔐 Admin Paneli (`/admin`)
-- Giriş sistemi (JWT token, bcrypt şifre)
+- Giriş sistemi (JWT token, bcrypt şifre, başarılı giriş yönlendirmesi)
 - **Oda yönetimi** — Oda ekleme, düzenleme, silme, fotoğraf yükleme
+- **Takvim Yönetimi** — Tüm odaların müsaitlik ve doluluk durumlarını tek ekranda gösteren **görsel takvim** panosu
 - **Rezervasyon yönetimi** — Rezervasyonları listeleme, onaylama, iptal
 - **Kategori yönetimi** — Oda kategorisi oluşturma
-- **Testimonial yönetimi** — Misafir yorumları ekleme/düzenleme
+- **Testimonial yönetimi** — Müşteri yorumlarını yönetme ve **otel yönetimi olarak yorumlara yanıt yazma**
 - **Mesaj yönetimi** — İletişim formundan gelen mesajları görüntüleme
 
 ---
@@ -68,15 +70,21 @@ my-next-app/
 │   ├── globals.css           # Global stiller & tasarım sistemi
 │   ├── odalarimiz/           # Oda listeleme & detay sayfaları
 │   ├── rezervasyon/          # Rezervasyon formu
+│   ├── kullanici/            # Kullanıcı (Misafir) profil ve rezervasyon sorgulama
 │   ├── kategoriler/          # Kategori sayfası
-│   ├── musaitlik/            # Müsaitlik sorgulama
+│   ├── musaitlik/            # Müsaitlik sorgulama (Görsel Takvim)
 │   ├── tatil/                # Tatil paketleri
 │   ├── iletisim/             # İletişim formu
 │   ├── admin/                # Admin paneli (korumalı)
+│   │   ├── takvim/           # Admin Doluluk Takvimi
 │   └── api/                  # REST API rotaları
 ├── components/
 │   ├── Navbar.tsx            # Navigasyon (scroll efekti, mobil menü)
-│   └── Footer.tsx            # Footer (4 kolon, sosyal medya)
+│   ├── Footer.tsx            # Footer (4 kolon, sosyal medya)
+│   ├── RoomCalendar.tsx      # Görsel takvim bileşeni
+│   ├── TestimonialCard.tsx   # Kısaltılabilir admin yanıtlı yorum kartı
+│   ├── TestimonialForm.tsx   # Ziyaretçi yorum yapma formu
+│   └── HomeSearchForm.tsx    # Ana sayfa akıllı rezervasyon arama formu
 ├── lib/
 │   └── prisma.ts             # Prisma client
 ├── prisma/
@@ -140,9 +148,10 @@ ADMIN_PASSWORD_HASH=    # bcrypt ile hashlenmiş admin şifresi
 
 | Bölüm | Açıklama |
 |-------|----------|
-| Hero | Full-screen otel görseli, arama formu |
+| Hero | Full-screen otel görseli, akıllı arama formu |
 | Odalar | Kategori, fiyat, fotoğraf kartları |
 | Galeri | Lobi, havuz, restoran, spa, oda |
+| Takvim | Aylık görsel doluluk ve müsaitlik haritası |
 | Admin | JWT korumalı yönetim paneli |
 
 ---
