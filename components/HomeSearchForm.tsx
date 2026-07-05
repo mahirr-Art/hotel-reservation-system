@@ -32,7 +32,7 @@ export default function HomeSearchForm() {
         <label style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-light)" }}>Şehir</label>
         <select name="city" style={{ border: "1px solid #e2e8f0", borderRadius: "2px", padding: "0.6rem 0.75rem", fontSize: "0.88rem", color: "var(--text-dark)", background: "white", outline: "none" }}>
           <option value="">Tüm Şehirler</option>
-          {["Sinop Merkez", "Gerze", "Samsun", "Ordu", "Artvin", "İstanbul"].map((c) => (
+          {["Sinop Merkez", "Gerze", "Samsun", "Ordu", "Artvin"].map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
