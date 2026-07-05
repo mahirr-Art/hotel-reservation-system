@@ -91,7 +91,7 @@ function RezervasyonForm() {
         </label>
         <label className="text-sm">
           Çıkış Tarihi
-          <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2" />
+          <input type="date" value={checkOut} min={checkIn || undefined} onChange={(e) => setCheckOut(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2" />
         </label>
         <label className="text-sm">
           Kişi Sayısı

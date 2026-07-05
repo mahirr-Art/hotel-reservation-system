@@ -9,6 +9,7 @@ const links = [
   { href: "/musaitlik", label: "Müsaitlik" },
   { href: "/tatil", label: "Tatil Paketleri" },
   { href: "/iletisim", label: "İletişim" },
+  { href: "/kullanici", label: "Profilim" },
 ];
 
 export default function Navbar() {
