@@ -36,15 +36,14 @@ export async function POST(request: NextRequest) {
   if (guestCount > room.capacity) {
     return NextResponse.json({ error: `Bu oda en fazla ${room.capacity} kişi kapasiteli` }, { status: 400 });
   }
-
-  const overlapping = await prisma.reservation.findFirst({
+  const overlapCount = await prisma.reservation.count({
     where: {
       roomId,
       status: { not: "IPTAL" },
       AND: [{ checkIn: { lt: checkOutDate } }, { checkOut: { gt: checkInDate } }],
     },
   });
-  if (overlapping) {
+  if (overlapCount >= room.quantity) {
     return NextResponse.json({ error: "Bu oda seçilen tarihlerde müsait değil" }, { status: 409 });
   }
 
