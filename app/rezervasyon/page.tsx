@@ -93,6 +93,7 @@ function RezervasyonForm() {
             type="date" 
             value={checkIn} 
             min={minDate}
+            max={checkOut || undefined}
             onChange={(e) => {
               const val = e.target.value;
               setCheckIn(val);

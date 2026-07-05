@@ -43,6 +43,7 @@ export default function HomeSearchForm() {
           name="checkIn" 
           value={checkIn}
           min={minCheckIn}
+          max={checkOut || undefined}
           onChange={(e) => {
             const val = e.target.value;
             setCheckIn(val);
