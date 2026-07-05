@@ -75,5 +75,6 @@ model Testimonial {
   content    String
   rating     Int      @default(5)
   adminReply String?
+  approved   Boolean  @default(false)
   createdAt  DateTime @default(now())
 }

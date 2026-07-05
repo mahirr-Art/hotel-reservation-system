@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import TestimonialForm from "@/components/TestimonialForm";
 import HomeSearchForm from "@/components/HomeSearchForm";
 import TestimonialCard from "@/components/TestimonialCard";
+import AmenityCard from "@/components/AmenityCard";
 
 export default async function HomePage() {
   const [featuredRooms, testimonials] = await Promise.all([
@@ -12,47 +13,89 @@ export default async function HomePage() {
       include: { category: true },
     }),
     prisma.testimonial.findMany({
-      take: 4,
+      take: 6,
+      where: { approved: true },
       orderBy: { createdAt: "desc" },
     }),
   ]);
 
-  const services = [
+  const amenities = [
     {
       icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M4 19V10a8 8 0 0 1 16 0v9" />
+          <path d="M4 10a8 8 0 0 1 16 0" />
+          <circle cx="12" cy="14" r="3" />
         </svg>
       ),
-      title: "Dünya Mutfağı",
-      desc: "Ödüllü şeflerimizin hazırladığı yerel ve uluslararası lezzetler.",
+      title: "Açık Yüzme Havuzu",
+      desc: "Karadeniz manzaralı ısıtmalı açık havuzumuzda serinleyin.",
+      detail:
+        "Karadeniz'in eşsiz manzarasına karşı konumlanan olimpik ölçülerdeki açık yüzme havuzumuz, sabah 07:00'den gece 22:00'ye kadar hizmet vermektedir. Yetişkin havuzu, çocuk havuzu ve jakuzi bölümlerimizle tüm aile için unutulmaz bir deneyim sunuyoruz.",
+      features: ["Olimpik boyutlar", "Isıtma sistemi", "Çocuk havuzu", "Jakuzi bölümü", "Havuz barı", "Şezlong & şemsiye", "Soyunma kabinleri", "Havlu hizmeti"],
     },
     {
       icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
         </svg>
       ),
       title: "Spa & Wellness",
-      desc: "Vücudunuzu ve zihninizi dinlendiren premium spa deneyimleri.",
+      desc: "Uzman ellerde masaj, hamam ve terapi deneyimi.",
+      detail:
+        "5 özel tedavi odası, Türk hamamı, buhar odası, sauna ve masaj salonumuzla bütüncül bir dinlenme deneyimi sunuyoruz. Uzman masöz ve terapistlerimiz ile vücudunuzu ve zihninizi yeniden canlandırın.",
+      features: ["Türk hamamı", "Sauna & buhar odası", "Aromaterapi masajı", "Derin doku masajı", "Çift masaj odası", "Cilt bakımı", "Refleksoloji", "Meditatif terapi"],
     },
     {
       icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3" />
         </svg>
       ),
-      title: "7/24 Hizmet",
-      desc: "Günün her saatinde ihtiyaçlarınız için yanınızdayız.",
+      title: "Lüks Restoran",
+      desc: "Ödüllü şeflerimizin hazırladığı yerel ve uluslararası lezzetler.",
+      detail:
+        "Karadeniz'in taze deniz ürünlerini ve bölgeye özgü lezzetleri öne çıkaran menümüzle gastronomi tutkunlarına özel bir deneyim sunuyoruz. Gün batımı manzarası eşliğinde fine dining keyfi yaşayın.",
+      features: ["Kahvaltı büfesi", "À la carte öğle", "Fine dining akşam yemeği", "Canlı müzik", "Vejetaryen seçenekler", "Çocuk menüsü", "Şarap koleksiyonu", "Özel etkinlik mekanı"],
     },
     {
       icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12,6 12,12 16,14" />
+        </svg>
+      ),
+      title: "7/24 Konsiyerj",
+      desc: "Günün her saatinde kişisel asistanınız yanınızda.",
+      detail:
+        "Profesyonel konsiyerj ekibimiz gece gündüz hizmetinizdedir. Tur organizasyonu, restoran rezervasyonu, transfer hizmetleri ve özel istekleriniz için tek bir telefon araması yeterli.",
+      features: ["Tur organizasyonu", "Transfer hizmeti", "Restoran rezervasyonu", "Hava alanı karşılama", "Özel etkinlik planlama", "Dil tercümanlığı", "Çamaşır servisi", "Oda servisi 24/7"],
+    },
+    {
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2" />
+          <path d="M8 21h8M12 17v4" />
+        </svg>
+      ),
+      title: "Fitness & Spor",
+      desc: "Modern ekipmanlarla donanmış spor salonu ve aktivite alanları.",
+      detail:
+        "1.200 m² alan üzerinde kurulu fitness merkezimiz, en son teknoloji kardiyovasküler aletler, serbest ağırlık bölümü, yoga & pilates stüdyosu ve kişisel antrenör hizmetiyle donatılmıştır.",
+      features: ["Kardiyovasküler aletler", "Serbest ağırlıklar", "Yoga stüdyosu", "Pilates sınıfı", "Kişisel antrenör", "Tenis kortu", "Plaj voleybolu", "Bisiklet kiralama"],
+    },
+    {
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          <polyline points="9,22 9,12 15,12 15,22" />
         </svg>
       ),
       title: "Panoramik Manzara",
-      desc: "Deniz ve şehir manzaralı özel odalarda sonsuz güzellik.",
+      desc: "Deniz ve dağ manzaralı özel odalarda sonsuz güzellik.",
+      detail:
+        "Otelimizin tüm odaları Karadeniz'e veya Sinop dağlarına bakan muhteşem manzaralarla tasarlanmıştır. Balkonlu superior ve deluxe odalarımızda sabahın ilk ışıklarıyla beraber büyülü manzaranın tadını çıkarın.",
+      features: ["Karadeniz manzarası", "Dağ manzarası", "Özel balkon", "Panoramik teras", "Gün batımı görünümü", "Yıldız gözlemi alanı", "Fotoğraf noktaları", "Sonsuzluk havuzu"],
     },
   ];
 
@@ -69,6 +112,39 @@ export default async function HomePage() {
     { src: "/gallery_pool.jpg", label: "Gerze Limanı", wide: false },
     { src: "/gallery_restaurant.jpg", label: "Balık Restoranı", wide: false },
     { src: "/gallery_spa.jpg", label: "Karadeniz Ormanları", wide: false },
+  ];
+
+  const earlyBookingPerks = [
+    {
+      icon: "🏷️",
+      title: "%20 İndirim",
+      desc: "60 gün önceden rezervasyon yapanlara özel fiyat avantajı.",
+    },
+    {
+      icon: "🎁",
+      title: "Ücretsiz Karşılama",
+      desc: "Oda servisiyle ikram edilen karşılama sepeti ve şampanya.",
+    },
+    {
+      icon: "🛏️",
+      title: "Erken Check-in",
+      desc: "Müsaitliğe göre saat 10:00'dan itibaren erken giriş imkânı.",
+    },
+    {
+      icon: "🏊",
+      title: "Ücretsiz Spa",
+      desc: "1 saatlik hamam + masaj deneyimi hediye olarak sunulur.",
+    },
+    {
+      icon: "🚗",
+      title: "Ücretsiz Transfer",
+      desc: "Havalimanı – otel arası ücretsiz özel araç transferi.",
+    },
+    {
+      icon: "❌",
+      title: "Ücretsiz İptal",
+      desc: "14 güne kadar ücretsiz iptal ve tam para iadesi garantisi.",
+    },
   ];
 
   return (
@@ -127,8 +203,8 @@ export default async function HomePage() {
               opacity: 0,
             }}
           >
-            Karadeniz'i Hisset,{" "}
-            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Gerze'yi Keşfet</em>
+            Karadeniz&apos;i Hisset,{" "}
+            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Gerze&apos;yi Keşfet</em>
           </h1>
           <p
             className="animate-fade-in-up delay-200"
@@ -142,7 +218,7 @@ export default async function HomePage() {
               opacity: 0,
             }}
           >
-            Sinop Gerze kıyısında, Karadeniz'in masmavi suları eşliğinde huzur dolu bir konaklama
+            Sinop Gerze kıyısında, Karadeniz&apos;in masmavi suları eşliğinde huzur dolu bir konaklama
             deneyimi sizi bekliyor.
           </p>
 
@@ -160,27 +236,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── SERVICES ─── */}
+      {/* ─── AMENITIES (Tıklanabilir Ayrıcalıklar) ─── */}
       <section style={{ background: "var(--navy)", padding: "5rem 1.5rem" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
             <p className="section-label" style={{ marginBottom: "0.75rem" }}>Ayrıcalıklarımız</p>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)", marginBottom: "1rem" }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)", marginBottom: "0.75rem" }}>
               Neden Kuzey Feneri?
             </h2>
+            <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.45)", maxWidth: "480px", margin: "0 auto 1.5rem" }}>
+              Her bir ayrıcalığa tıklayarak detayları keşfedin
+            </p>
             <div className="gold-divider" style={{ margin: "0 auto" }} />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "2rem" }}>
-            {services.map((s) => (
-              <div
-                key={s.title}
-                className="card-hover"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,169,110,0.15)", borderRadius: "4px", padding: "2.5rem 2rem", textAlign: "center", cursor: "default" }}
-              >
-                <div style={{ color: "var(--gold)", marginBottom: "1.25rem", display: "flex", justifyContent: "center" }}>{s.icon}</div>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--white)", marginBottom: "0.75rem" }}>{s.title}</h3>
-                <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>{s.desc}</p>
-              </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem" }}>
+            {amenities.map((a) => (
+              <AmenityCard key={a.title} {...a} />
             ))}
           </div>
         </div>
@@ -216,7 +287,7 @@ export default async function HomePage() {
                       <img src={room.photos[0]} alt={room.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-light)" }}>
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21,15 16,10 5,21" /></svg>
                       </div>
                     )}
                     <div style={{ position: "absolute", top: "1rem", left: "1rem", background: "var(--gold)", color: "var(--navy)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", padding: "0.3rem 0.75rem", borderRadius: "2px" }}>
@@ -242,6 +313,64 @@ export default async function HomePage() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* ─── ERKEN REZERVASYON ─── */}
+      <section style={{ background: "var(--navy-mid)", padding: "5rem 1.5rem", position: "relative", overflow: "hidden" }}>
+        {/* Decorative bg circle */}
+        <div style={{ position: "absolute", top: "-80px", right: "-80px", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-60px", left: "-60px", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+          {/* Header */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "2rem", marginBottom: "3.5rem" }}>
+            <div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(201,169,110,0.12)", border: "1px solid rgba(201,169,110,0.25)", borderRadius: "20px", padding: "0.35rem 1rem", marginBottom: "1rem" }}>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)" }}>🔥 Sınırlı Süre</span>
+              </div>
+              <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)", marginBottom: "0.75rem" }}>
+                Erken Rezervasyon<br />
+                <em style={{ color: "var(--gold)" }}>Ayrıcalıkları</em>
+              </h2>
+              <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", maxWidth: "400px", lineHeight: 1.7 }}>
+                60 gün önceden rezervasyon yapın, özel fırsatlardan yararlanın. Kontenjanlar sınırlıdır.
+              </p>
+              <div className="gold-divider" style={{ marginTop: "1.25rem" }} />
+            </div>
+
+            {/* Countdown box */}
+            <div style={{ background: "rgba(201,169,110,0.08)", border: "1px solid rgba(201,169,110,0.2)", borderRadius: "12px", padding: "1.5rem 2rem", textAlign: "center", minWidth: 200 }}>
+              <p style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>Bu Fırsat Sona Eriyor</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 700, color: "var(--gold)", lineHeight: 1 }}>31 Ağustos</p>
+              <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.4)", marginTop: "0.25rem" }}>2026</p>
+            </div>
+          </div>
+
+          {/* Perks grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "3rem" }}>
+            {earlyBookingPerks.map((perk, i) => (
+              <div
+                key={i}
+                className="card-hover"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(201,169,110,0.12)", borderRadius: "8px", padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}
+              >
+                <span style={{ fontSize: "1.75rem" }}>{perk.icon}</span>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1rem", fontWeight: 600, color: "var(--white)" }}>{perk.title}</h3>
+                <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{perk.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Row */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(201,169,110,0.12)" }}>
+            <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", textAlign: "center" }}>
+              Erken rezervasyon fırsatı için hemen rezervasyon yapın →
+            </p>
+            <Link href="/rezervasyon" className="btn-primary">
+              Şimdi Rezervasyon Yap
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -307,7 +436,7 @@ export default async function HomePage() {
               ))}
             </div>
           )}
-          
+
           <TestimonialForm />
         </div>
       </section>

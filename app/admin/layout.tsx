@@ -8,9 +8,11 @@ const links = [
   { href: "/admin/odalar", label: "Odalar" },
   { href: "/admin/rezervasyonlar", label: "Rezervasyonlar" },
   { href: "/admin/mesajlar", label: "Mesajlar" },
-{ href: "/admin/testimonials", label: "Yorumlar" },
+  { href: "/admin/testimonials", label: "Yorumlar" },
+  { href: "/admin/odeme-yontemleri", label: "Ödeme Yöntemleri" },
 
 ];
+
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (

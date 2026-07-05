@@ -6859,6 +6859,7 @@ export namespace Prisma {
     content: string | null
     rating: number | null
     adminReply: string | null
+    approved: boolean | null
     createdAt: Date | null
   }
 
@@ -6868,6 +6869,7 @@ export namespace Prisma {
     content: string | null
     rating: number | null
     adminReply: string | null
+    approved: boolean | null
     createdAt: Date | null
   }
 
@@ -6877,6 +6879,7 @@ export namespace Prisma {
     content: number
     rating: number
     adminReply: number
+    approved: number
     createdAt: number
     _all: number
   }
@@ -6896,6 +6899,7 @@ export namespace Prisma {
     content?: true
     rating?: true
     adminReply?: true
+    approved?: true
     createdAt?: true
   }
 
@@ -6905,6 +6909,7 @@ export namespace Prisma {
     content?: true
     rating?: true
     adminReply?: true
+    approved?: true
     createdAt?: true
   }
 
@@ -6914,6 +6919,7 @@ export namespace Prisma {
     content?: true
     rating?: true
     adminReply?: true
+    approved?: true
     createdAt?: true
     _all?: true
   }
@@ -7010,6 +7016,7 @@ export namespace Prisma {
     content: string
     rating: number
     adminReply: string | null
+    approved: boolean
     createdAt: Date
     _count: TestimonialCountAggregateOutputType | null
     _avg: TestimonialAvgAggregateOutputType | null
@@ -7038,6 +7045,7 @@ export namespace Prisma {
     content?: boolean
     rating?: boolean
     adminReply?: boolean
+    approved?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["testimonial"]>
 
@@ -7047,6 +7055,7 @@ export namespace Prisma {
     content?: boolean
     rating?: boolean
     adminReply?: boolean
+    approved?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["testimonial"]>
 
@@ -7056,6 +7065,7 @@ export namespace Prisma {
     content?: boolean
     rating?: boolean
     adminReply?: boolean
+    approved?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["testimonial"]>
 
@@ -7065,10 +7075,11 @@ export namespace Prisma {
     content?: boolean
     rating?: boolean
     adminReply?: boolean
+    approved?: boolean
     createdAt?: boolean
   }
 
-  export type TestimonialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "authorTag" | "content" | "rating" | "adminReply" | "createdAt", ExtArgs["result"]["testimonial"]>
+  export type TestimonialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "authorTag" | "content" | "rating" | "adminReply" | "approved" | "createdAt", ExtArgs["result"]["testimonial"]>
 
   export type $TestimonialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Testimonial"
@@ -7079,6 +7090,7 @@ export namespace Prisma {
       content: string
       rating: number
       adminReply: string | null
+      approved: boolean
       createdAt: Date
     }, ExtArgs["result"]["testimonial"]>
     composites: {}
@@ -7508,6 +7520,7 @@ export namespace Prisma {
     readonly content: FieldRef<"Testimonial", 'String'>
     readonly rating: FieldRef<"Testimonial", 'Int'>
     readonly adminReply: FieldRef<"Testimonial", 'String'>
+    readonly approved: FieldRef<"Testimonial", 'Boolean'>
     readonly createdAt: FieldRef<"Testimonial", 'DateTime'>
   }
     
@@ -7965,6 +7978,7 @@ export namespace Prisma {
     content: 'content',
     rating: 'rating',
     adminReply: 'adminReply',
+    approved: 'approved',
     createdAt: 'createdAt'
   };
 
@@ -8067,6 +8081,13 @@ export namespace Prisma {
    * Reference to a field of type 'ReservationStatus[]'
    */
   export type ListEnumReservationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReservationStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -8422,6 +8443,7 @@ export namespace Prisma {
     content?: StringFilter<"Testimonial"> | string
     rating?: IntFilter<"Testimonial"> | number
     adminReply?: StringNullableFilter<"Testimonial"> | string | null
+    approved?: BoolFilter<"Testimonial"> | boolean
     createdAt?: DateTimeFilter<"Testimonial"> | Date | string
   }
 
@@ -8431,6 +8453,7 @@ export namespace Prisma {
     content?: SortOrder
     rating?: SortOrder
     adminReply?: SortOrderInput | SortOrder
+    approved?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8443,6 +8466,7 @@ export namespace Prisma {
     content?: StringFilter<"Testimonial"> | string
     rating?: IntFilter<"Testimonial"> | number
     adminReply?: StringNullableFilter<"Testimonial"> | string | null
+    approved?: BoolFilter<"Testimonial"> | boolean
     createdAt?: DateTimeFilter<"Testimonial"> | Date | string
   }, "id">
 
@@ -8452,6 +8476,7 @@ export namespace Prisma {
     content?: SortOrder
     rating?: SortOrder
     adminReply?: SortOrderInput | SortOrder
+    approved?: SortOrder
     createdAt?: SortOrder
     _count?: TestimonialCountOrderByAggregateInput
     _avg?: TestimonialAvgOrderByAggregateInput
@@ -8469,6 +8494,7 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter<"Testimonial"> | string
     rating?: IntWithAggregatesFilter<"Testimonial"> | number
     adminReply?: StringNullableWithAggregatesFilter<"Testimonial"> | string | null
+    approved?: BoolWithAggregatesFilter<"Testimonial"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Testimonial"> | Date | string
   }
 
@@ -8834,6 +8860,7 @@ export namespace Prisma {
     content: string
     rating?: number
     adminReply?: string | null
+    approved?: boolean
     createdAt?: Date | string
   }
 
@@ -8843,6 +8870,7 @@ export namespace Prisma {
     content: string
     rating?: number
     adminReply?: string | null
+    approved?: boolean
     createdAt?: Date | string
   }
 
@@ -8852,6 +8880,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     adminReply?: NullableStringFieldUpdateOperationsInput | string | null
+    approved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8861,6 +8890,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     adminReply?: NullableStringFieldUpdateOperationsInput | string | null
+    approved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8870,6 +8900,7 @@ export namespace Prisma {
     content: string
     rating?: number
     adminReply?: string | null
+    approved?: boolean
     createdAt?: Date | string
   }
 
@@ -8879,6 +8910,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     adminReply?: NullableStringFieldUpdateOperationsInput | string | null
+    approved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8888,6 +8920,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     adminReply?: NullableStringFieldUpdateOperationsInput | string | null
+    approved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -9264,12 +9297,18 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type TestimonialCountOrderByAggregateInput = {
     id?: SortOrder
     authorTag?: SortOrder
     content?: SortOrder
     rating?: SortOrder
     adminReply?: SortOrder
+    approved?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9283,6 +9322,7 @@ export namespace Prisma {
     content?: SortOrder
     rating?: SortOrder
     adminReply?: SortOrder
+    approved?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9292,11 +9332,20 @@ export namespace Prisma {
     content?: SortOrder
     rating?: SortOrder
     adminReply?: SortOrder
+    approved?: SortOrder
     createdAt?: SortOrder
   }
 
   export type TestimonialSumOrderByAggregateInput = {
     rating?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type RoomCreateNestedManyWithoutCategoryInput = {
@@ -9450,6 +9499,10 @@ export namespace Prisma {
     upsert?: RoomUpsertWithoutReservationsInput
     connect?: RoomWhereUniqueInput
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutReservationsInput, RoomUpdateWithoutReservationsInput>, RoomUncheckedUpdateWithoutReservationsInput>
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9630,6 +9683,19 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumReservationStatusFilter<$PrismaModel>
     _max?: NestedEnumReservationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type RoomCreateWithoutCategoryInput = {
