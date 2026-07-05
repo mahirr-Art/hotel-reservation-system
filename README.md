@@ -222,7 +222,8 @@ ADMIN_PASSWORD_HASH=    # bcrypt ile hashlenmiş admin şifresi
 |-------|--------------|
 | v1.0 | İlk yayın — oda yönetimi, rezervasyon, admin paneli |
 | v1.1 | Görsel takvim, misafir profil sayfası, tatil paketleri |
-| v1.2 | **Yorum onay mekanizması, erken rezervasyon bölümü, ödeme yöntemleri admin sayfası, tıklanabilir ayrıcalık kartları (modal), proxy.ts (Next.js 16 uyumu)** |
+| v1.2 | Yorum onay mekanizması, erken rezervasyon bölümü, ödeme yöntemleri admin sayfası, tıklanabilir ayrıcalık kartları (modal), proxy.ts (Next.js 16 uyumu) |
+| v1.3 | **Müsaitlik takvimi oda kapasitesi / adeti (quantity) çakışma bug'ı düzeltildi, takvimde kısmi doluluk (sarı renk) desteği sağlandı, kapasite ve fiyat bilgisi eklendi.** |
 
 ---
 
