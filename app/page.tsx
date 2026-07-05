@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import TestimonialForm from "@/components/TestimonialForm";
 
 export default async function HomePage() {
   const [featuredRooms, testimonials] = await Promise.all([
@@ -360,14 +361,16 @@ export default async function HomePage() {
                       {t.authorTag?.[0]?.toUpperCase() ?? "M"}
                     </div>
                     <div>
-                      <p style={{ fontWeight: 600, color: "var(--white)", fontSize: "0.9rem" }}>{t.authorTag}</p>
-                      <p style={{ fontSize: "0.72rem", color: "var(--gold)", letterSpacing: "0.08em" }}>Misafir</p>
+                       <p style={{ fontWeight: 600, color: "var(--white)", fontSize: "0.9rem" }}>{t.authorTag}</p>
+                       <p style={{ fontSize: "0.72rem", color: "var(--gold)", letterSpacing: "0.08em" }}>Misafir</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
+          
+          <TestimonialForm />
         </div>
       </section>
 
