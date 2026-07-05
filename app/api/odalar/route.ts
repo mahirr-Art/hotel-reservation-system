@@ -6,8 +6,10 @@ export async function GET(request: NextRequest) {
   const checkIn = searchParams.get("checkIn");
   const checkOut = searchParams.get("checkOut");
   const guestCount = Number(searchParams.get("kisiSayisi") || 1);
+  const city = searchParams.get("city");
 
   const baseWhere: any = { capacity: { gte: guestCount } };
+  if (city) baseWhere.city = city;
 
   if (!checkIn || !checkOut) {
     const rooms = await prisma.room.findMany({ where: baseWhere, include: { category: true } });

@@ -28,7 +28,13 @@ export default function HomeSearchForm() {
         boxShadow: "0 24px 64px rgba(0,0,0,0.3)",
       }}
     >
-
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <label style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-light)" }}>Şehir</label>
+        <select name="city" style={{ border: "1px solid #e2e8f0", borderRadius: "2px", padding: "0.6rem 0.75rem", fontSize: "0.88rem", color: "var(--text-dark)", background: "white", outline: "none" }}>
+          <option value="Sinop Merkez">Sinop Merkez</option>
+          <option value="Gerze">Gerze</option>
+        </select>
+      </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
         <label style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-light)" }}>Giriş Tarihi</label>
         <input 
