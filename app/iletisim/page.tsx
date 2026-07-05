@@ -28,7 +28,7 @@ export default function IletisimPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-semibold mb-2">İletişim</h1>
-      <p className="text-neutral-600 mb-10">Adres: Örnek Mah. Sahil Cad. No:1 · Tel: 0 (000) 000 00 00</p>
+      <p className="text-neutral-600 mb-10">Adres: Fatih Mah. Sahil Cad. No:12, Gerze / Sinop · Tel: +90 (368) 271 00 00</p>
 
       {sent ? (
         <p className="font-medium">Mesajınız için teşekkürler, en kısa sürede dönüş yapacağız.</p>
