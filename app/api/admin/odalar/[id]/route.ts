@@ -11,6 +11,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       description: body.description,
       price: body.price,
       capacity: body.capacity ? Number(body.capacity) : undefined,
+      quantity: body.quantity ? Number(body.quantity) : undefined,
       categoryId: body.categoryId,
       city: body.city,
       photos: body.photos,

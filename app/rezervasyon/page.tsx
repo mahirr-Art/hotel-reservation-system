@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-type Room = { id: string; name: string; price: string; capacity: number; category: { name: string } };
+type Room = { id: string; name: string; price: string; capacity: number; availableCount?: number; category: { name: string } };
 
 function RezervasyonForm() {
   const searchParams = useSearchParams();
@@ -110,6 +110,11 @@ function RezervasyonForm() {
                 <div>
                   <p className="font-medium">{room.name}</p>
                   <p className="text-sm text-neutral-500">{room.category.name} · {room.capacity} kişi</p>
+                  {room.availableCount !== undefined && (
+                    <p className="text-xs font-semibold text-teal-600 mt-1">
+                      Sadece {room.availableCount} oda kaldı
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-medium">{room.price.toString()} ₺</span>

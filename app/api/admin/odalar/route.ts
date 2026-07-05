@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
       description: body.description,
       price: body.price,
       capacity: Number(body.capacity),
+      quantity: Number(body.quantity || 1),
       categoryId: body.categoryId,
       city: body.city,
       photos: body.photos || [],

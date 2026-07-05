@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 type Category = { id: string; name: string };
 type Room = {
   id: string; name: string; description: string | null; price: string;
-  capacity: number; categoryId: string; category: Category; photos: string[]; city: string;
+  capacity: number; quantity: number; categoryId: string; category: Category; photos: string[]; city: string;
 };
 
 export default function AdminOdalarPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
+  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -44,7 +44,7 @@ export default function AdminOdalarPage() {
     const method = editingId ? "PUT" : "POST";
     const payload = { ...form, photos: form.photoUrl ? [form.photoUrl] : [] };
     await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    setForm({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
+    setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
     setEditingId(null);
     loadData();
   }
@@ -56,6 +56,7 @@ export default function AdminOdalarPage() {
       description: room.description || "",
       price: room.price.toString(),
       capacity: room.capacity.toString(),
+      quantity: room.quantity.toString(),
       categoryId: room.categoryId,
       photoUrl: room.photos?.[0] || "",
       city: room.city,
@@ -87,6 +88,7 @@ export default function AdminOdalarPage() {
         </select>
         <input required type="number" placeholder="Fiyat (₺)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="rounded-lg border px-3 py-2" />
         <input required type="number" placeholder="Kapasite" value={form.capacity} onChange={(e) => setForm({ ...form, capacity: e.target.value })} className="rounded-lg border px-3 py-2" />
+        <input required type="number" placeholder="Oda Sayısı (Adet)" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="rounded-lg border px-3 py-2" />
         <textarea placeholder="Açıklama" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="rounded-lg border px-3 py-2 sm:col-span-2" />
 
         <div className="sm:col-span-2">
@@ -112,7 +114,7 @@ export default function AdminOdalarPage() {
               )}
               <div>
                 <p className="font-medium">{room.name}</p>
-                <p className="text-sm text-neutral-500">{room.city} · {room.category.name} · {room.capacity} kişi · {room.price.toString()} ₺</p>
+                <p className="text-sm text-neutral-500">{room.city} · {room.category.name} · {room.capacity} kişi · {room.quantity} Adet Oda · {room.price.toString()} ₺</p>
               </div>
             </div>
             <div className="flex gap-2 text-sm">

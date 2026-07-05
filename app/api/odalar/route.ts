@@ -13,24 +13,35 @@ export async function GET(request: NextRequest) {
 
   if (!checkIn || !checkOut) {
     const rooms = await prisma.room.findMany({ where: baseWhere, include: { category: true } });
-    return NextResponse.json({ rooms });
+    const mappedRooms = rooms.map(room => ({ ...room, availableCount: room.quantity }));
+    return NextResponse.json({ rooms: mappedRooms });
   }
 
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
 
   const rooms = await prisma.room.findMany({
-    where: {
-      ...baseWhere,
+    where: baseWhere,
+    include: {
+      category: true,
       reservations: {
-        none: {
+        where: {
           status: { not: "IPTAL" },
           AND: [{ checkIn: { lt: checkOutDate } }, { checkOut: { gt: checkInDate } }],
         },
       },
     },
-    include: { category: true },
   });
 
-  return NextResponse.json({ rooms });
+  const availableRooms = rooms
+    .map(room => {
+      const overlapCount = room.reservations.length;
+      const availableCount = room.quantity - overlapCount;
+      // Exclude reservations array from the response
+      const { reservations, ...roomData } = room;
+      return { ...roomData, availableCount };
+    })
+    .filter(room => room.availableCount > 0);
+
+  return NextResponse.json({ rooms: availableRooms });
 }
