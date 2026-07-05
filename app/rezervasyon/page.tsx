@@ -7,7 +7,7 @@ type Room = { id: string; name: string; price: string; capacity: number; categor
 
 function RezervasyonForm() {
   const searchParams = useSearchParams();
-  const [city, setCity] = useState(searchParams.get("city") || "");
+
   const [checkIn, setCheckIn] = useState(searchParams.get("checkIn") || "");
   const [checkOut, setCheckOut] = useState(searchParams.get("checkOut") || "");
   const [guestCount, setGuestCount] = useState(Number(searchParams.get("guests")) || 2);
@@ -27,7 +27,7 @@ function RezervasyonForm() {
       return;
     }
     setLoading(true);
-    const res = await fetch(`/api/odalar?checkIn=${checkIn}&checkOut=${checkOut}&kisiSayisi=${guestCount}&city=${city}`);
+    const res = await fetch(`/api/odalar?checkIn=${checkIn}&checkOut=${checkOut}&kisiSayisi=${guestCount}`);
     const data = await res.json();
     setRooms(data.rooms || []);
     setLoading(false);
@@ -72,21 +72,10 @@ function RezervasyonForm() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-semibold mb-2">Rezervasyon</h1>
-      <p className="text-neutral-600 mb-10">Şehir ve tarihlerinizi seçin, müsait odalar arasından seçim yapın.</p>
+      <p className="text-neutral-600 mb-10">Tarihlerinizi seçin, müsait odalar arasından seçim yapın.</p>
 
-      <div className="grid gap-4 sm:grid-cols-5 mb-8">
-        <label className="text-sm">
-          Şehir
-          <select value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2">
-            <option value="">Tüm Şehirler</option>
-            <option value="Sinop Merkez">Sinop Merkez</option>
-            <option value="Gerze">Gerze</option>
-            <option value="Samsun">Samsun</option>
-            <option value="Ordu">Ordu</option>
-            <option value="Artvin">Artvin</option>
-            <option value="İstanbul">İstanbul</option>
-          </select>
-        </label>
+      <div className="grid gap-4 sm:grid-cols-4 mb-8">
+
         <label className="text-sm">
           Giriş Tarihi
           <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2" />
@@ -108,7 +97,7 @@ function RezervasyonForm() {
 
       {step === "form" && (
         <>
-          <h2 className="text-xl font-semibold mb-4">Müsait Odalar — {city}</h2>
+          <h2 className="text-xl font-semibold mb-4">Müsait Odalar</h2>
           <div className="grid gap-4 mb-10">
             {rooms.map((room) => (
               <label key={room.id} className={`flex items-center justify-between rounded-xl border p-4 cursor-pointer ${selectedRoomId === room.id ? "border-teal-600 bg-teal-50" : ""}`}>
@@ -122,7 +111,7 @@ function RezervasyonForm() {
                 </div>
               </label>
             ))}
-            {rooms.length === 0 && <p className="text-neutral-500">Seçilen şehir/tarihlerde müsait oda bulunamadı.</p>}
+            {rooms.length === 0 && <p className="text-neutral-500">Seçilen tarihlerde müsait oda bulunamadı.</p>}
           </div>
 
           {selectedRoomId && (
