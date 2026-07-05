@@ -11,7 +11,7 @@ type Room = {
 export default function AdminOdalarPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "", city: "İstanbul" });
+  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -44,7 +44,7 @@ export default function AdminOdalarPage() {
     const method = editingId ? "PUT" : "POST";
     const payload = { ...form, photos: form.photoUrl ? [form.photoUrl] : [] };
     await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    setForm({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "", city: "İstanbul" });
+    setForm({ name: "", description: "", price: "", capacity: "", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
     setEditingId(null);
     loadData();
   }
@@ -79,11 +79,11 @@ export default function AdminOdalarPage() {
           {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
         <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="rounded-lg border px-3 py-2">
-          <option value="İstanbul">İstanbul</option>
-          <option value="Antalya">Antalya</option>
-          <option value="İzmir">İzmir</option>
-          <option value="Muğla">Muğla (Bodrum/Marmaris)</option>
-          <option value="Nevşehir">Nevşehir (Kapadokya)</option>
+          <option value="Sinop Merkez">Sinop Merkez</option>
+          <option value="Gerze">Gerze</option>
+          <option value="Samsun">Samsun</option>
+          <option value="Ordu">Ordu</option>
+          <option value="Artvin">Artvin</option>
         </select>
         <input required type="number" placeholder="Fiyat (₺)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="rounded-lg border px-3 py-2" />
         <input required type="number" placeholder="Kapasite" value={form.capacity} onChange={(e) => setForm({ ...form, capacity: e.target.value })} className="rounded-lg border px-3 py-2" />
