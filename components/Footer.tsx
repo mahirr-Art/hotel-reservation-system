@@ -128,6 +128,8 @@ export default function Footer() {
         Gizlilik Politikası
         <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>
         Kullanım Koşulları
+        <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>
+        <Link href="/admin" className="hover:text-white transition-colors">Yönetici Girişi</Link>
       </div>
     </footer>
   );
