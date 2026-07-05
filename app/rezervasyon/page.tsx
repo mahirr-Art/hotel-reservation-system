@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 type Room = { id: string; name: string; price: string; capacity: number; availableCount?: number; category: { name: string } };
@@ -19,6 +19,11 @@ function RezervasyonForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [minDate, setMinDate] = useState("");
+
+  useEffect(() => {
+    setMinDate(new Date().toISOString().split("T")[0]);
+  }, []);
 
   async function searchRooms() {
     setError("");
@@ -84,7 +89,17 @@ function RezervasyonForm() {
         </label>
         <label className="text-sm">
           Giriş Tarihi
-          <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2" />
+          <input 
+            type="date" 
+            value={checkIn} 
+            min={minDate}
+            onChange={(e) => {
+              const val = e.target.value;
+              setCheckIn(val);
+              if (checkOut && val >= checkOut) setCheckOut("");
+            }} 
+            className="mt-1 w-full rounded-lg border px-3 py-2" 
+          />
         </label>
         <label className="text-sm">
           Çıkış Tarihi

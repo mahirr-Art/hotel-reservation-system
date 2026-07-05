@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 export default function HomeSearchForm() {
   const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
   const [minCheckIn, setMinCheckIn] = useState("");
 
   useEffect(() => {
@@ -42,7 +43,11 @@ export default function HomeSearchForm() {
           name="checkIn" 
           value={checkIn}
           min={minCheckIn}
-          onChange={(e) => setCheckIn(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            setCheckIn(val);
+            if (checkOut && val >= checkOut) setCheckOut("");
+          }}
           style={{ border: "1px solid #e2e8f0", borderRadius: "2px", padding: "0.6rem 0.75rem", fontSize: "0.88rem", color: "var(--text-dark)", outline: "none" }} 
         />
       </div>
@@ -51,6 +56,8 @@ export default function HomeSearchForm() {
         <input 
           type="date" 
           name="checkOut" 
+          value={checkOut}
+          onChange={(e) => setCheckOut(e.target.value)}
           min={checkIn || minCheckIn}
           style={{ border: "1px solid #e2e8f0", borderRadius: "2px", padding: "0.6rem 0.75rem", fontSize: "0.88rem", color: "var(--text-dark)", outline: "none" }} 
         />
