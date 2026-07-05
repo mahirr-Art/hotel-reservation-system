@@ -3700,6 +3700,7 @@ export namespace Prisma {
     checkIn: Date | null
     checkOut: Date | null
     guestCount: number | null
+    paymentMethod: string | null
     status: $Enums.ReservationStatus | null
     createdAt: Date | null
   }
@@ -3713,6 +3714,7 @@ export namespace Prisma {
     checkIn: Date | null
     checkOut: Date | null
     guestCount: number | null
+    paymentMethod: string | null
     status: $Enums.ReservationStatus | null
     createdAt: Date | null
   }
@@ -3726,6 +3728,7 @@ export namespace Prisma {
     checkIn: number
     checkOut: number
     guestCount: number
+    paymentMethod: number
     status: number
     createdAt: number
     _all: number
@@ -3749,6 +3752,7 @@ export namespace Prisma {
     checkIn?: true
     checkOut?: true
     guestCount?: true
+    paymentMethod?: true
     status?: true
     createdAt?: true
   }
@@ -3762,6 +3766,7 @@ export namespace Prisma {
     checkIn?: true
     checkOut?: true
     guestCount?: true
+    paymentMethod?: true
     status?: true
     createdAt?: true
   }
@@ -3775,6 +3780,7 @@ export namespace Prisma {
     checkIn?: true
     checkOut?: true
     guestCount?: true
+    paymentMethod?: true
     status?: true
     createdAt?: true
     _all?: true
@@ -3875,6 +3881,7 @@ export namespace Prisma {
     checkIn: Date
     checkOut: Date
     guestCount: number
+    paymentMethod: string
     status: $Enums.ReservationStatus
     createdAt: Date
     _count: ReservationCountAggregateOutputType | null
@@ -3907,6 +3914,7 @@ export namespace Prisma {
     checkIn?: boolean
     checkOut?: boolean
     guestCount?: boolean
+    paymentMethod?: boolean
     status?: boolean
     createdAt?: boolean
     room?: boolean | RoomDefaultArgs<ExtArgs>
@@ -3921,6 +3929,7 @@ export namespace Prisma {
     checkIn?: boolean
     checkOut?: boolean
     guestCount?: boolean
+    paymentMethod?: boolean
     status?: boolean
     createdAt?: boolean
     room?: boolean | RoomDefaultArgs<ExtArgs>
@@ -3935,6 +3944,7 @@ export namespace Prisma {
     checkIn?: boolean
     checkOut?: boolean
     guestCount?: boolean
+    paymentMethod?: boolean
     status?: boolean
     createdAt?: boolean
     room?: boolean | RoomDefaultArgs<ExtArgs>
@@ -3949,11 +3959,12 @@ export namespace Prisma {
     checkIn?: boolean
     checkOut?: boolean
     guestCount?: boolean
+    paymentMethod?: boolean
     status?: boolean
     createdAt?: boolean
   }
 
-  export type ReservationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "fullName" | "email" | "phone" | "checkIn" | "checkOut" | "guestCount" | "status" | "createdAt", ExtArgs["result"]["reservation"]>
+  export type ReservationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "fullName" | "email" | "phone" | "checkIn" | "checkOut" | "guestCount" | "paymentMethod" | "status" | "createdAt", ExtArgs["result"]["reservation"]>
   export type ReservationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     room?: boolean | RoomDefaultArgs<ExtArgs>
   }
@@ -3978,6 +3989,7 @@ export namespace Prisma {
       checkIn: Date
       checkOut: Date
       guestCount: number
+      paymentMethod: string
       status: $Enums.ReservationStatus
       createdAt: Date
     }, ExtArgs["result"]["reservation"]>
@@ -4412,6 +4424,7 @@ export namespace Prisma {
     readonly checkIn: FieldRef<"Reservation", 'DateTime'>
     readonly checkOut: FieldRef<"Reservation", 'DateTime'>
     readonly guestCount: FieldRef<"Reservation", 'Int'>
+    readonly paymentMethod: FieldRef<"Reservation", 'String'>
     readonly status: FieldRef<"Reservation", 'ReservationStatus'>
     readonly createdAt: FieldRef<"Reservation", 'DateTime'>
   }
@@ -7943,6 +7956,7 @@ export namespace Prisma {
     checkIn: 'checkIn',
     checkOut: 'checkOut',
     guestCount: 'guestCount',
+    paymentMethod: 'paymentMethod',
     status: 'status',
     createdAt: 'createdAt'
   };
@@ -8260,6 +8274,7 @@ export namespace Prisma {
     checkIn?: DateTimeFilter<"Reservation"> | Date | string
     checkOut?: DateTimeFilter<"Reservation"> | Date | string
     guestCount?: IntFilter<"Reservation"> | number
+    paymentMethod?: StringFilter<"Reservation"> | string
     status?: EnumReservationStatusFilter<"Reservation"> | $Enums.ReservationStatus
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
@@ -8274,6 +8289,7 @@ export namespace Prisma {
     checkIn?: SortOrder
     checkOut?: SortOrder
     guestCount?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     room?: RoomOrderByWithRelationInput
@@ -8291,6 +8307,7 @@ export namespace Prisma {
     checkIn?: DateTimeFilter<"Reservation"> | Date | string
     checkOut?: DateTimeFilter<"Reservation"> | Date | string
     guestCount?: IntFilter<"Reservation"> | number
+    paymentMethod?: StringFilter<"Reservation"> | string
     status?: EnumReservationStatusFilter<"Reservation"> | $Enums.ReservationStatus
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
@@ -8305,6 +8322,7 @@ export namespace Prisma {
     checkIn?: SortOrder
     checkOut?: SortOrder
     guestCount?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     _count?: ReservationCountOrderByAggregateInput
@@ -8326,6 +8344,7 @@ export namespace Prisma {
     checkIn?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     checkOut?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     guestCount?: IntWithAggregatesFilter<"Reservation"> | number
+    paymentMethod?: StringWithAggregatesFilter<"Reservation"> | string
     status?: EnumReservationStatusWithAggregatesFilter<"Reservation"> | $Enums.ReservationStatus
     createdAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
   }
@@ -8660,6 +8679,7 @@ export namespace Prisma {
     checkIn: Date | string
     checkOut: Date | string
     guestCount: number
+    paymentMethod?: string
     status?: $Enums.ReservationStatus
     createdAt?: Date | string
     room: RoomCreateNestedOneWithoutReservationsInput
@@ -8674,6 +8694,7 @@ export namespace Prisma {
     checkIn: Date | string
     checkOut: Date | string
     guestCount: number
+    paymentMethod?: string
     status?: $Enums.ReservationStatus
     createdAt?: Date | string
   }
@@ -8686,6 +8707,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     room?: RoomUpdateOneRequiredWithoutReservationsNestedInput
@@ -8700,6 +8722,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8713,6 +8736,7 @@ export namespace Prisma {
     checkIn: Date | string
     checkOut: Date | string
     guestCount: number
+    paymentMethod?: string
     status?: $Enums.ReservationStatus
     createdAt?: Date | string
   }
@@ -8725,6 +8749,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8738,6 +8763,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9201,6 +9227,7 @@ export namespace Prisma {
     checkIn?: SortOrder
     checkOut?: SortOrder
     guestCount?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -9218,6 +9245,7 @@ export namespace Prisma {
     checkIn?: SortOrder
     checkOut?: SortOrder
     guestCount?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -9231,6 +9259,7 @@ export namespace Prisma {
     checkIn?: SortOrder
     checkOut?: SortOrder
     guestCount?: SortOrder
+    paymentMethod?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -9796,6 +9825,7 @@ export namespace Prisma {
     checkIn: Date | string
     checkOut: Date | string
     guestCount: number
+    paymentMethod?: string
     status?: $Enums.ReservationStatus
     createdAt?: Date | string
   }
@@ -9808,6 +9838,7 @@ export namespace Prisma {
     checkIn: Date | string
     checkOut: Date | string
     guestCount: number
+    paymentMethod?: string
     status?: $Enums.ReservationStatus
     createdAt?: Date | string
   }
@@ -9875,6 +9906,7 @@ export namespace Prisma {
     checkIn?: DateTimeFilter<"Reservation"> | Date | string
     checkOut?: DateTimeFilter<"Reservation"> | Date | string
     guestCount?: IntFilter<"Reservation"> | number
+    paymentMethod?: StringFilter<"Reservation"> | string
     status?: EnumReservationStatusFilter<"Reservation"> | $Enums.ReservationStatus
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
   }
@@ -10013,6 +10045,7 @@ export namespace Prisma {
     checkIn: Date | string
     checkOut: Date | string
     guestCount: number
+    paymentMethod?: string
     status?: $Enums.ReservationStatus
     createdAt?: Date | string
   }
@@ -10025,6 +10058,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10037,6 +10071,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10049,6 +10084,7 @@ export namespace Prisma {
     checkIn?: DateTimeFieldUpdateOperationsInput | Date | string
     checkOut?: DateTimeFieldUpdateOperationsInput | Date | string
     guestCount?: IntFieldUpdateOperationsInput | number
+    paymentMethod?: StringFieldUpdateOperationsInput | string
     status?: EnumReservationStatusFieldUpdateOperationsInput | $Enums.ReservationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -10,6 +10,7 @@ const reservationSchema = z.object({
   checkIn: z.string(),
   checkOut: z.string(),
   guestCount: z.number().int().min(1),
+  paymentMethod: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { roomId, checkIn, checkOut, guestCount, fullName, email, phone } = parsed.data;
+  const { roomId, checkIn, checkOut, guestCount, fullName, email, phone, paymentMethod } = parsed.data;
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
 
@@ -48,7 +49,16 @@ export async function POST(request: NextRequest) {
   }
 
   const reservation = await prisma.reservation.create({
-    data: { roomId, fullName, email, phone, checkIn: checkInDate, checkOut: checkOutDate, guestCount },
+    data: {
+      roomId,
+      fullName,
+      email,
+      phone,
+      checkIn: checkInDate,
+      checkOut: checkOutDate,
+      guestCount,
+      paymentMethod: paymentMethod ? paymentMethod.toUpperCase() : "HAVALE",
+    },
   });
 
   return NextResponse.json({ reservation }, { status: 201 });

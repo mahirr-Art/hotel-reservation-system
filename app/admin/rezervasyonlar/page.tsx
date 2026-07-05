@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 type Reservation = {
   id: string; fullName: string; email: string; phone: string;
   checkIn: string; checkOut: string; guestCount: number;
+  paymentMethod: string;
   status: "BEKLIYOR" | "ONAYLANDI" | "IPTAL"; room: { name: string };
 };
 
@@ -39,7 +40,12 @@ export default function AdminRezervasyonlarPage() {
           <div key={r.id} className="border rounded-xl p-4">
             <div className="flex items-center justify-between mb-2">
               <p className="font-medium">{r.room.name}</p>
-              <span className="text-xs px-2 py-1 rounded-full bg-neutral-100">{statusLabel[r.status]}</span>
+              <div className="flex gap-2">
+                <span className="text-xs px-2 py-1 rounded-full bg-neutral-100 font-semibold text-neutral-600">
+                  {r.paymentMethod === "KAPIDA" ? "💳 Kapıda Ödeme" : "🏦 Havale / EFT"}
+                </span>
+                <span className={`text-xs px-2 py-1 rounded-full ${r.status === "ONAYLANDI" ? "bg-green-100 text-green-800" : r.status === "IPTAL" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}>{statusLabel[r.status]}</span>
+              </div>
             </div>
             <p className="text-sm text-neutral-600">{r.fullName} · {r.email} · {r.phone}</p>
             <p className="text-sm text-neutral-500 mb-3">

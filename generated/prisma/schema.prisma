@@ -38,17 +38,18 @@ model Room {
 }
 
 model Reservation {
-  id         String            @id @default(cuid())
-  room       Room              @relation(fields: [roomId], references: [id])
-  roomId     String
-  fullName   String
-  email      String
-  phone      String
-  checkIn    DateTime
-  checkOut   DateTime
-  guestCount Int
-  status     ReservationStatus @default(BEKLIYOR)
-  createdAt  DateTime          @default(now())
+  id            String            @id @default(cuid())
+  room          Room              @relation(fields: [roomId], references: [id])
+  roomId        String
+  fullName      String
+  email         String
+  phone         String
+  checkIn       DateTime
+  checkOut      DateTime
+  guestCount    Int
+  paymentMethod String            @default("HAVALE")
+  status        ReservationStatus @default(BEKLIYOR)
+  createdAt     DateTime          @default(now())
 
   @@index([roomId, checkIn, checkOut])
 }
