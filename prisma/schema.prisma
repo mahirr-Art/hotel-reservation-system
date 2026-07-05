@@ -68,9 +68,10 @@ model Admin {
   createdAt    DateTime @default(now())
 }
 model Testimonial {
-  id        String   @id @default(cuid())
-  authorTag String
-  content   String
-  rating    Int      @default(5)
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  authorTag  String
+  content    String
+  rating     Int      @default(5)
+  adminReply String?
+  createdAt  DateTime @default(now())
 }

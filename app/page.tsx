@@ -356,6 +356,14 @@ export default async function HomePage() {
                   <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.75, marginBottom: "1.5rem", fontStyle: "italic" }}>
                     &ldquo;{t.content}&rdquo;
                   </p>
+
+                  {t.adminReply && (
+                    <div style={{ background: "rgba(0,0,0,0.2)", borderLeft: "3px solid var(--gold)", padding: "1rem", marginBottom: "1.5rem", borderRadius: "0 4px 4px 0" }}>
+                      <p style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--gold)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.25rem" }}>Otel Yönetimi'nin Yanıtı:</p>
+                      <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>{t.adminReply}</p>
+                    </div>
+                  )}
+
                   <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                     <div style={{ width: 40, height: 40, borderRadius: "50%", background: "linear-gradient(135deg, var(--gold-dark), var(--gold))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", fontWeight: 700, color: "var(--navy)" }}>
                       {t.authorTag?.[0]?.toUpperCase() ?? "M"}

@@ -6841,6 +6841,7 @@ export namespace Prisma {
     authorTag: string | null
     content: string | null
     rating: number | null
+    adminReply: string | null
     createdAt: Date | null
   }
 
@@ -6849,6 +6850,7 @@ export namespace Prisma {
     authorTag: string | null
     content: string | null
     rating: number | null
+    adminReply: string | null
     createdAt: Date | null
   }
 
@@ -6857,6 +6859,7 @@ export namespace Prisma {
     authorTag: number
     content: number
     rating: number
+    adminReply: number
     createdAt: number
     _all: number
   }
@@ -6875,6 +6878,7 @@ export namespace Prisma {
     authorTag?: true
     content?: true
     rating?: true
+    adminReply?: true
     createdAt?: true
   }
 
@@ -6883,6 +6887,7 @@ export namespace Prisma {
     authorTag?: true
     content?: true
     rating?: true
+    adminReply?: true
     createdAt?: true
   }
 
@@ -6891,6 +6896,7 @@ export namespace Prisma {
     authorTag?: true
     content?: true
     rating?: true
+    adminReply?: true
     createdAt?: true
     _all?: true
   }
@@ -6986,6 +6992,7 @@ export namespace Prisma {
     authorTag: string
     content: string
     rating: number
+    adminReply: string | null
     createdAt: Date
     _count: TestimonialCountAggregateOutputType | null
     _avg: TestimonialAvgAggregateOutputType | null
@@ -7013,6 +7020,7 @@ export namespace Prisma {
     authorTag?: boolean
     content?: boolean
     rating?: boolean
+    adminReply?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["testimonial"]>
 
@@ -7021,6 +7029,7 @@ export namespace Prisma {
     authorTag?: boolean
     content?: boolean
     rating?: boolean
+    adminReply?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["testimonial"]>
 
@@ -7029,6 +7038,7 @@ export namespace Prisma {
     authorTag?: boolean
     content?: boolean
     rating?: boolean
+    adminReply?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["testimonial"]>
 
@@ -7037,10 +7047,11 @@ export namespace Prisma {
     authorTag?: boolean
     content?: boolean
     rating?: boolean
+    adminReply?: boolean
     createdAt?: boolean
   }
 
-  export type TestimonialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "authorTag" | "content" | "rating" | "createdAt", ExtArgs["result"]["testimonial"]>
+  export type TestimonialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "authorTag" | "content" | "rating" | "adminReply" | "createdAt", ExtArgs["result"]["testimonial"]>
 
   export type $TestimonialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Testimonial"
@@ -7050,6 +7061,7 @@ export namespace Prisma {
       authorTag: string
       content: string
       rating: number
+      adminReply: string | null
       createdAt: Date
     }, ExtArgs["result"]["testimonial"]>
     composites: {}
@@ -7478,6 +7490,7 @@ export namespace Prisma {
     readonly authorTag: FieldRef<"Testimonial", 'String'>
     readonly content: FieldRef<"Testimonial", 'String'>
     readonly rating: FieldRef<"Testimonial", 'Int'>
+    readonly adminReply: FieldRef<"Testimonial", 'String'>
     readonly createdAt: FieldRef<"Testimonial", 'DateTime'>
   }
     
@@ -7933,6 +7946,7 @@ export namespace Prisma {
     authorTag: 'authorTag',
     content: 'content',
     rating: 'rating',
+    adminReply: 'adminReply',
     createdAt: 'createdAt'
   };
 
@@ -8384,6 +8398,7 @@ export namespace Prisma {
     authorTag?: StringFilter<"Testimonial"> | string
     content?: StringFilter<"Testimonial"> | string
     rating?: IntFilter<"Testimonial"> | number
+    adminReply?: StringNullableFilter<"Testimonial"> | string | null
     createdAt?: DateTimeFilter<"Testimonial"> | Date | string
   }
 
@@ -8392,6 +8407,7 @@ export namespace Prisma {
     authorTag?: SortOrder
     content?: SortOrder
     rating?: SortOrder
+    adminReply?: SortOrderInput | SortOrder
     createdAt?: SortOrder
   }
 
@@ -8403,6 +8419,7 @@ export namespace Prisma {
     authorTag?: StringFilter<"Testimonial"> | string
     content?: StringFilter<"Testimonial"> | string
     rating?: IntFilter<"Testimonial"> | number
+    adminReply?: StringNullableFilter<"Testimonial"> | string | null
     createdAt?: DateTimeFilter<"Testimonial"> | Date | string
   }, "id">
 
@@ -8411,6 +8428,7 @@ export namespace Prisma {
     authorTag?: SortOrder
     content?: SortOrder
     rating?: SortOrder
+    adminReply?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: TestimonialCountOrderByAggregateInput
     _avg?: TestimonialAvgOrderByAggregateInput
@@ -8427,6 +8445,7 @@ export namespace Prisma {
     authorTag?: StringWithAggregatesFilter<"Testimonial"> | string
     content?: StringWithAggregatesFilter<"Testimonial"> | string
     rating?: IntWithAggregatesFilter<"Testimonial"> | number
+    adminReply?: StringNullableWithAggregatesFilter<"Testimonial"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Testimonial"> | Date | string
   }
 
@@ -8784,6 +8803,7 @@ export namespace Prisma {
     authorTag: string
     content: string
     rating?: number
+    adminReply?: string | null
     createdAt?: Date | string
   }
 
@@ -8792,6 +8812,7 @@ export namespace Prisma {
     authorTag: string
     content: string
     rating?: number
+    adminReply?: string | null
     createdAt?: Date | string
   }
 
@@ -8800,6 +8821,7 @@ export namespace Prisma {
     authorTag?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
+    adminReply?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8808,6 +8830,7 @@ export namespace Prisma {
     authorTag?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
+    adminReply?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8816,6 +8839,7 @@ export namespace Prisma {
     authorTag: string
     content: string
     rating?: number
+    adminReply?: string | null
     createdAt?: Date | string
   }
 
@@ -8824,6 +8848,7 @@ export namespace Prisma {
     authorTag?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
+    adminReply?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8832,6 +8857,7 @@ export namespace Prisma {
     authorTag?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
+    adminReply?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -9208,6 +9234,7 @@ export namespace Prisma {
     authorTag?: SortOrder
     content?: SortOrder
     rating?: SortOrder
+    adminReply?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9220,6 +9247,7 @@ export namespace Prisma {
     authorTag?: SortOrder
     content?: SortOrder
     rating?: SortOrder
+    adminReply?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9228,6 +9256,7 @@ export namespace Prisma {
     authorTag?: SortOrder
     content?: SortOrder
     rating?: SortOrder
+    adminReply?: SortOrder
     createdAt?: SortOrder
   }
 

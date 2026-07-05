@@ -27,7 +27,7 @@ model Room {
   description  String?
   price        Decimal       @db.Decimal(10, 2)
   capacity     Int
-  city         String        @default("İstanbul")
+  city         String        @default("Sinop Merkez")
   photos       String[]      @default([])
   category     Category      @relation(fields: [categoryId], references: [id])
   categoryId   String
@@ -69,9 +69,10 @@ model Admin {
 }
 
 model Testimonial {
-  id        String   @id @default(cuid())
-  authorTag String
-  content   String
-  rating    Int      @default(5)
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  authorTag  String
+  content    String
+  rating     Int      @default(5)
+  adminReply String?
+  createdAt  DateTime @default(now())
 }

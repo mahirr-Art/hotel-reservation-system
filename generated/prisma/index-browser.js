@@ -174,6 +174,7 @@ exports.Prisma.TestimonialScalarFieldEnum = {
   authorTag: 'authorTag',
   content: 'content',
   rating: 'rating',
+  adminReply: 'adminReply',
   createdAt: 'createdAt'
 };
 
