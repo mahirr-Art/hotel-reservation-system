@@ -36,7 +36,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function KullaniciPage() {
-  const [tab, setTab] = useState<"giris" | "profil">("giris");
+  const [tab, setTab] = useState<"giris" | "kayit" | "profil">("giris");
   const [user, setUser] = useState<User | null>(null);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(false);
@@ -45,6 +45,12 @@ export default function KullaniciPage() {
   // Login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+
+  // Register form
+  const [registerName, setRegisterName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPhone, setRegisterPhone] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
 
   // Forgot password
   const [showForgot, setShowForgot] = useState(false);
@@ -87,6 +93,28 @@ export default function KullaniciPage() {
     setUser(data.user);
     setTab("profil");
     loadReservations(data.user.email);
+  }
+
+  async function handleRegister(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    const res = await fetch("/api/kullanici/kayit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName: registerName,
+        email: registerEmail,
+        phone: registerPhone,
+        password: registerPassword,
+      }),
+    });
+    const data = await res.json();
+    setLoading(false);
+    if (!res.ok) { setError(data.error || "Kayıt başarısız"); return; }
+    setUser(data.user);
+    setTab("profil");
+    setReservations([]);
   }
 
   async function handleForgot(e: React.FormEvent) {
@@ -138,73 +166,170 @@ export default function KullaniciPage() {
       <div style={{ background: "var(--navy)", padding: "4rem 1.5rem 3rem", textAlign: "center" }}>
         <p className="section-label" style={{ marginBottom: "0.75rem" }}>Hesabım</p>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.75rem, 4vw, 2.8rem)", fontWeight: 700, color: "white", marginBottom: "0.5rem" }}>
-          {user ? `Hoş geldiniz, ${user.fullName.split(" ")[0]}` : "Profilim"}
+          {user ? `Hoş geldiniz, ${user.fullName.split(" ")[0]}` : tab === "giris" ? "Giriş Yap" : "Kayıt Ol"}
         </h1>
         <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
-          {user ? "Rezervasyonlarınızı buradan takip edebilirsiniz." : "Giriş yapın veya rezervasyonlarınızı görüntüleyin."}
+          {user ? "Rezervasyonlarınızı buradan takip edebilirsiniz." : "Giriş yapın veya yeni bir hesap oluşturun."}
         </p>
       </div>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "3rem 1.5rem" }}>
 
-        {/* === LOGGED OUT: Login / Forgot === */}
+        {/* === LOGGED OUT: Login / Register / Forgot === */}
         {!user && (
           <div style={{ maxWidth: 480, margin: "0 auto" }}>
             {!showForgot ? (
               <div style={{ background: "white", borderRadius: "24px", padding: "2.5rem", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.07)" }}>
-                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
-                  Giriş Yap
-                </h2>
-                <div className="gold-divider" style={{ marginBottom: "1.75rem" }} />
-                <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                  <div>
-                    <label style={labelStyle}>E-posta</label>
-                    <input
-                      type="email" required
-                      placeholder="ornek@email.com"
-                      value={loginEmail}
-                      onChange={(e) => setLoginEmail(e.target.value)}
-                      style={inputStyle}
-                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
-                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
-                    />
-                  </div>
-                  <div>
-                    <label style={labelStyle}>Şifre</label>
-                    <input
-                      type="password" required
-                      placeholder="••••••••"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      style={inputStyle}
-                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
-                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
-                    />
-                  </div>
-                  {error && (
-                    <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "10px", padding: "0.75rem", fontSize: "0.85rem", color: "#DC2626" }}>
-                      {error}
-                    </div>
-                  )}
+                {/* Tabs */}
+                <div style={{ display: "flex", borderBottom: "1px solid #E5E7EB", marginBottom: "1.75rem" }}>
                   <button
-                    type="submit" disabled={loading}
-                    className="btn-primary"
-                    style={{ justifyContent: "center", borderRadius: "10px", opacity: loading ? 0.7 : 1 }}
+                    onClick={() => { setTab("giris"); setError(""); }}
+                    style={{
+                      flex: 1, padding: "0.75rem", background: "none", border: "none",
+                      borderBottom: tab === "giris" ? "2px solid var(--gold)" : "2px solid transparent",
+                      color: tab === "giris" ? "var(--navy)" : "#9CA3AF",
+                      fontWeight: tab === "giris" ? 700 : 500, fontSize: "0.95rem", cursor: "pointer",
+                      fontFamily: "'Inter', sans-serif"
+                    }}
                   >
-                    {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
+                    Giriş Yap
                   </button>
-                </form>
-                <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
                   <button
-                    onClick={() => setShowForgot(true)}
-                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.85rem", color: "var(--gold-dark)", textDecoration: "underline", fontFamily: "'Inter', sans-serif" }}
+                    onClick={() => { setTab("kayit"); setError(""); }}
+                    style={{
+                      flex: 1, padding: "0.75rem", background: "none", border: "none",
+                      borderBottom: tab === "kayit" ? "2px solid var(--gold)" : "2px solid transparent",
+                      color: tab === "kayit" ? "var(--navy)" : "#9CA3AF",
+                      fontWeight: tab === "kayit" ? 700 : 500, fontSize: "0.95rem", cursor: "pointer",
+                      fontFamily: "'Inter', sans-serif"
+                    }}
                   >
-                    Şifremi unuttum
+                    Kayıt Ol
                   </button>
-                  <p style={{ fontSize: "0.82rem", color: "var(--text-light)", textAlign: "center" }}>
-                    Hesabınız yoksa rezervasyon yaptığınızda otomatik oluşturulur.
-                  </p>
                 </div>
+
+                {/* Login Form */}
+                {tab === "giris" && (
+                  <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                    <div>
+                      <label style={labelStyle}>E-posta</label>
+                      <input
+                        type="email" required
+                        placeholder="ornek@email.com"
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Şifre</label>
+                      <input
+                        type="password" required
+                        placeholder="••••••••"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    {error && (
+                      <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "10px", padding: "0.75rem", fontSize: "0.85rem", color: "#DC2626" }}>
+                        {error}
+                      </div>
+                    )}
+                    <button
+                      type="submit" disabled={loading}
+                      className="btn-primary"
+                      style={{ justifyContent: "center", borderRadius: "10px", opacity: loading ? 0.7 : 1 }}
+                    >
+                      {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
+                    </button>
+                  </form>
+                )}
+
+                {/* Register Form */}
+                {tab === "kayit" && (
+                  <form onSubmit={handleRegister} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                    <div>
+                      <label style={labelStyle}>Ad Soyad *</label>
+                      <input
+                        type="text" required
+                        placeholder="Adınız Soyadınız"
+                        value={registerName}
+                        onChange={(e) => setRegisterName(e.target.value)}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>E-posta *</label>
+                      <input
+                        type="email" required
+                        placeholder="ornek@email.com"
+                        value={registerEmail}
+                        onChange={(e) => setRegisterEmail(e.target.value)}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Telefon</label>
+                      <input
+                        type="text"
+                        placeholder="05xx xxx xx xx"
+                        value={registerPhone}
+                        onChange={(e) => setRegisterPhone(e.target.value)}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Şifre *</label>
+                      <input
+                        type="password" required
+                        placeholder="En az 6 karakter"
+                        value={registerPassword}
+                        onChange={(e) => setRegisterPassword(e.target.value)}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    {error && (
+                      <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "10px", padding: "0.75rem", fontSize: "0.85rem", color: "#DC2626" }}>
+                        {error}
+                      </div>
+                    )}
+                    <button
+                      type="submit" disabled={loading}
+                      className="btn-primary"
+                      style={{ justifyContent: "center", borderRadius: "10px", opacity: loading ? 0.7 : 1 }}
+                    >
+                      {loading ? "Kaydolunuyor..." : "Kayıt Ol"}
+                    </button>
+                  </form>
+                )}
+
+                {/* Forgot Password Toggle */}
+                {tab === "giris" && (
+                  <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
+                    <button
+                      onClick={() => setShowForgot(true)}
+                      style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.85rem", color: "var(--gold-dark)", textDecoration: "underline", fontFamily: "'Inter', sans-serif" }}
+                    >
+                      Şifremi unuttum
+                    </button>
+                    <p style={{ fontSize: "0.82rem", color: "var(--text-light)", textAlign: "center" }}>
+                      Hesabınız yoksa rezervasyon yaptığınızda otomatik oluşturulur.
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <div style={{ background: "white", borderRadius: "24px", padding: "2.5rem", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.07)" }}>
@@ -324,11 +449,11 @@ export default function KullaniciPage() {
                     >
                       <div>
                         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem", flexWrap: "wrap" }}>
-                          <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--navy)" }}>{res.room.name}</h3>
+                          <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--navy)" }}>{res.room?.name || "Oda"}</h3>
                           <StatusBadge status={res.status} />
                         </div>
                         <p style={{ fontSize: "0.8rem", color: "var(--text-light)", marginBottom: "0.75rem" }}>
-                          {res.room.city} · {res.room.category.name}
+                          {res.room?.city} · {res.room?.category?.name}
                         </p>
                         <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
                           {[
