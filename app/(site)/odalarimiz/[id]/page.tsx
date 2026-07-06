@@ -70,25 +70,35 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
             {/* Photo Gallery */}
             <div style={{ marginBottom: "2.5rem" }}>
               {room.photos && room.photos.length > 0 ? (
-                <div style={{ display: "grid", gridTemplateColumns: room.photos.length > 1 ? "1fr 1fr" : "1fr", gap: "0.75rem" }}>
-                  {room.photos.map((photo, i) => (
-                    <div
-                      key={i}
-                      className="img-zoom"
-                      style={{
-                        borderRadius: "16px",
-                        overflow: "hidden",
-                        aspectRatio: i === 0 && room.photos.length > 1 ? "16/10" : "4/3",
-                        gridColumn: i === 0 && room.photos.length > 1 ? "1 / -1" : undefined,
-                      }}
-                    >
-                      <img
-                        src={photo}
-                        alt={`${room.name} - Fotoğraf ${i + 1}`}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      />
-                    </div>
-                  ))}
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: room.photos.length > 2 ? "1.8fr 1fr" : room.photos.length > 1 ? "1fr 1fr" : "1fr",
+                  gap: "0.75rem",
+                }}
+                className="room-detail-gallery"
+                >
+                  {room.photos.length > 2 ? (
+                    <>
+                      {/* Big Main Left Image */}
+                      <div className="img-zoom" style={{ borderRadius: "16px", overflow: "hidden", height: "420px" }}>
+                        <img src={room.photos[0]} alt={room.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                      {/* Right Small Images Stack */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", height: "420px" }}>
+                        {room.photos.slice(1, 3).map((photo, idx) => (
+                          <div key={idx} className="img-zoom" style={{ flex: 1, borderRadius: "12px", overflow: "hidden", position: "relative" }}>
+                            <img src={photo} alt={`${room.name} - ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    room.photos.map((photo, i) => (
+                      <div key={i} className="img-zoom" style={{ borderRadius: "16px", overflow: "hidden", aspectRatio: "16/10" }}>
+                        <img src={photo} alt={`${room.name} - ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                    ))
+                  )}
                 </div>
               ) : (
                 <div style={{

@@ -106,13 +106,7 @@ export default async function HomePage() {
     { num: "4.9", label: "Ortalama Puan" },
   ];
 
-  const gallery = [
-    { src: "/gallery_lobby.jpg", label: "Sinop Kalesi", wide: true },
-    { src: "/gallery_room.jpg", label: "Karadeniz Manzarası", wide: false },
-    { src: "/gallery_pool.jpg", label: "Gerze Limanı", wide: false },
-    { src: "/gallery_restaurant.jpg", label: "Balık Restoranı", wide: false },
-    { src: "/gallery_spa.jpg", label: "Karadeniz Ormanları", wide: false },
-  ];
+
 
   const earlyBookingPerks = [
     {
@@ -390,32 +384,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── GALLERY ─── */}
-      <section style={{ padding: "5rem 1.5rem", background: "var(--cream)" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p className="section-label" style={{ marginBottom: "0.75rem" }}>Fotoğraf Turu</p>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--navy)" }}>
-              Otelimizi Keşfedin
-            </h2>
-            <div className="gold-divider" style={{ margin: "1rem auto 0" }} />
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridTemplateRows: "240px 240px", gap: "0.75rem" }}>
-            {gallery.map((g, i) => (
-              <div
-                key={i}
-                className="img-zoom gallery-item"
-                style={{ gridColumn: g.wide ? "span 2" : undefined, borderRadius: "4px", overflow: "hidden", position: "relative", cursor: "pointer" }}
-              >
-                <img src={g.src} alt={g.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                <div className="gallery-overlay">
-                  <span style={{ fontFamily: "'Playfair Display', serif", color: "var(--white)", fontSize: "1rem", fontWeight: 600 }}>{g.label}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* ─── TESTIMONIALS ─── */}
       <section style={{ background: "var(--navy)", padding: "5rem 1.5rem" }}>
