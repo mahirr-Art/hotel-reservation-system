@@ -23,6 +23,7 @@
 | **Vercel Blob** | Fotoğraf yükleme & depolama |
 | **bcryptjs** | Şifre güvenliği |
 | **jose** | JWT ile oturum yönetimi |
+| **Resend** | Şifre sıfırlama e-postaları (Yerel testler için Konsol Log Fallback entegrasyonu) |
 | **Vercel** | Hosting & deployment |
 
 ---
@@ -33,7 +34,7 @@
 
 - **Ana Sayfa**
   - Hero bölümü (tam ekran otel görseli + animasyonlu yazılar)
-  - Akıllı rezervasyon arama formu (şehir, giriş/çıkış tarihi, kişi sayısı)
+  - Akıllı rezervasyon arama formu (şehir, giriş/çıkış tarihi, kişi sayısı) - **Özel date picker tasarımı**
   - 🏊 **Tıklanabilir Ayrıcalık Kartları** — Havuz, Spa, Restoran, Konsiyerj, Fitness, Panoramik Manzara — her biri tıklandığında blur modal ile detay gösterir
   - Öne çıkan odalar (son 3 oda)
   - 🎫 **Erken Rezervasyon Bölümü** — %20 indirim, ücretsiz spa, transfer ve daha fazla avantaj kartı
@@ -42,109 +43,27 @@
   - 💬 **Misafir Yorumları** — Yalnızca admin tarafından onaylanmış yorumlar gösterilir
   - Yorum bırakma formu (yıldız puanı + metin)
   - Call-to-action bölümü
+  - **Yeni Mobil Uyumlu Navigasyon ve Responsive Düzen**
 
-- **Odalarımız** — Tüm odaların listelendiği sayfa (kategori, fiyat, fotoğraf)
-- **Oda Detay** — Tek oda sayfası, fotoğraf galerisi, özellikler, rezervasyon butonu
-- **Kategoriler** — Oda kategorilerine göre filtreleme
-- **Müsaitlik Takvimi** — Odaların boş/dolu durumlarını gösteren görsel takvim
-- **Kullanıcı Paneli (`/kullanici`)** — Misafirlerin e-posta ile geçmiş rezervasyonlarını sorgulayabildiği sayfa
-- **Tatil Paketleri** — Özel kampanya ve paketler
-- **Rezervasyon** — Online rezervasyon formu
-- **İletişim** — İletişim formu
+- **Odalarımız** — Yenilenmiş görsel kart tasarımları, konum & kapasite etiketleri, hover zoom animasyonları ve tamamen mobil uyumlu grid yapı
+- **Oda Detay** — Tek oda sayfası, çoklu fotoğraf galerisi, özellikler, **entegre müsaitlik takvimi** ve sağda konumlandırılmış sticky fiyatlandırma & rezervasyon kartı
+- **Kategoriler** — Her kategoriye özel simge, açıklama ve oda sayısıyla yenilenmiş kategori keşfetme sayfası
+- **Kullanıcı Paneli (`/kullanici`)** — E-posta ve şifreyle güvenli giriş, geçmiş rezervasyonları detaylı (tarih, süre, durum) listeleme, **Şifremi Unuttum (Resend mail sıfırlama)** arayüzü
+- **Tatil Paketleri** — Görsel zenginliği artırılmış 4 özel paket kartı (Yaz Erken Rezervasyon, Balayı, Uzun Hafta Sonu, Aile Paketi) ve özel teklif banner'ı
+- **Rezervasyon** — Online rezervasyon formu. **Yeni bir e-posta adresiyle rezervasyon yapıldığında sistem otomatik olarak bir kullanıcı hesabı oluşturur.**
 
 ---
 
 ### 🔐 Admin Paneli (`/admin`)
 
-- JWT + bcrypt ile güvenli giriş sistemi
-- **Genel Bakış** — Oda sayısı, bekleyen rezervasyon, okunmamış mesaj istatistikleri
-- **Oda Yönetimi** — Oda ekleme, düzenleme, silme, fotoğraf yükleme
-- **Takvim** — Tüm odaların doluluk durumunu gösteren görsel takvim panosu
-- **Rezervasyon Yönetimi** — Listeleme, onaylama, iptal etme
-- **💬 Yorum Yönetimi** — Beklemede / Onaylı olarak iki bölümde görüntüleme, **onaylama**, **yanıtlama** ve silme
-- **Mesaj Yönetimi** — İletişim formundan gelen mesajları görüntüleme
-- **💳 Ödeme Yöntemleri** — Kredi/Banka Kartı, Havale/EFT, Kapıda Ödeme, Online Transfer; IBAN bilgileri
-
----
-
-## 💬 Yorum Onay Mekanizması
-
-Misafirler yorum bıraktığında sistem şu akışı izler:
-
-```
-Misafir → Yorum yazar
-    ↓
-Veritabanına kaydedilir (approved: false)
-    ↓
-Admin /admin/testimonials sayfasında "Beklemede" olarak görür
-    ↓
-Admin "✓ Onayla" butonuna tıklar
-    ↓
-Yorum ana sayfada görünmeye başlar
-```
-
----
-
-## 💳 Desteklenen Ödeme Yöntemleri
-
-| Yöntem | Detay |
-|--------|-------|
-| Kredi / Banka Kartı | Visa, Mastercard, American Express, Troy |
-| Havale / EFT | Garanti, İş, Ziraat, Akbank |
-| Kapıda Ödeme | Nakit, POS, Döviz (USD/EUR) |
-| Online Transfer | iyzico, PayTR, Stripe (yakında) |
-
----
-
-## 🎨 Tasarım Sistemi
-
-- **Renk Paleti:** Lacivert `#0D1B2A` + Altın `#C9A96E` + Krem `#FAF8F4`
-- **Fontlar:** Playfair Display (başlıklar) + Inter (metin)
-- **Tema:** Karadeniz / Sinop Gerze atmosferi
-- **Efektler:** Blur modal, scroll efektli navbar, hover animasyonları, fade-in-up geçişler, galeri overlay, card-hover lift
-
----
-
-## 📂 Proje Yapısı
-
-```
-my-next-app/
-├── app/
-│   ├── page.tsx                      # Ana sayfa (ayrıcalıklar, erken rezervasyon, yorumlar)
-│   ├── layout.tsx                    # Root layout (Navbar + Footer)
-│   ├── globals.css                   # Global stiller & tasarım sistemi
-│   ├── odalarimiz/                   # Oda listeleme & detay sayfaları
-│   ├── rezervasyon/                  # Rezervasyon formu
-│   ├── kullanici/                    # Misafir profil & rezervasyon sorgulama
-│   ├── kategoriler/                  # Kategori sayfası
-│   ├── musaitlik/                    # Müsaitlik sorgulama (Görsel Takvim)
-│   ├── tatil/                        # Tatil paketleri
-│   ├── iletisim/                     # İletişim formu
-│   ├── admin/
-│   │   ├── page.tsx                  # Genel bakış
-│   │   ├── layout.tsx                # Admin yan menü
-│   │   ├── takvim/                   # Doluluk takvimi
-│   │   ├── odalar/                   # Oda yönetimi
-│   │   ├── rezervasyonlar/           # Rezervasyon yönetimi
-│   │   ├── mesajlar/                 # Mesaj yönetimi
-│   │   ├── testimonials/             # Yorum onay & yönetim
-│   │   └── odeme-yontemleri/         # Ödeme yöntemleri sayfası
-│   └── api/                          # REST API rotaları
-├── components/
-│   ├── Navbar.tsx                    # Navigasyon (scroll efekti, mobil menü)
-│   ├── Footer.tsx                    # Footer
-│   ├── AmenityCard.tsx               # Tıklanabilir ayrıcalık kartı (modal)
-│   ├── RoomCalendar.tsx              # Görsel takvim bileşeni
-│   ├── TestimonialCard.tsx           # Admin yanıtlı yorum kartı
-│   ├── TestimonialForm.tsx           # Ziyaretçi yorum formu
-│   └── HomeSearchForm.tsx            # Ana sayfa arama formu
-├── lib/
-│   └── prisma.ts                     # Prisma client
-├── prisma/
-│   └── schema.prisma                 # Veritabanı şeması
-├── proxy.ts                          # Kimlik doğrulama proxy (Next.js 16)
-└── public/                           # Statik görseller
-```
+Sitenin ana arayüzünden bağımsız, profesyonel bir CMS platformu olarak sıfırdan tasarlandı.
+- JWT + bcrypt ile güvenli giriş sistemi. `proxy.ts` (Next.js 16) ile route koruması.
+- **Genel Bakış (Dashboard)** — Toplam oda, beklemede/onaylanan rezervasyonlar, yeni mesajlar, beklemedeki yorumlar ve kullanıcı sayıları ile son rezervasyonlar tablosu
+- **Oda Yönetimi** — İki kolonlu tasarım. Solda oda ekleme/düzenleme/fotoğraf yükleme formu, sağda oda listesi.
+- **Takvim** — Tüm odaların aylık bazda doluluk yüzdeleri (Occupancy Rate) ve görsel doluluk takvim panosu
+- **Rezervasyon Yönetimi** — Bekleyen rezervasyonları inceleme, tek tıkla onaylama veya iptal etme
+- **💬 Yorum Yönetimi** — Onay bekleyen ve onaylanan misafir yorumları, **onaylama/kaldırma**, **yönetici yanıtı yazma** ve silme işlemleri
+- **Mesaj Yönetimi** — İletişim formundan gelen mesajların detaylı görüntülenmesi ve silinmesi
 
 ---
 
@@ -160,7 +79,7 @@ npm install
 
 # 3. Ortam değişkenlerini ayarla
 cp .env.example .env.local
-# .env.local dosyasını doldurun (DATABASE_URL, BLOB_READ_WRITE_TOKEN vb.)
+# .env.local dosyasını doldurun (DATABASE_URL, JWT_SECRET, RESEND_API_KEY vb.)
 
 # 4. Veritabanını senkronize et
 npx prisma db push
@@ -176,20 +95,6 @@ Uygulama **http://localhost:3000** adresinde çalışır.
 
 ---
 
-## 🌍 Deployment
-
-Proje **Vercel** üzerinde host edilmektedir.
-
-- `main` branch'e yapılan her `git push` otomatik olarak canlıya alınır.
-- Ortam değişkenleri Vercel Dashboard'dan yönetilir.
-
-```bash
-# Manuel deploy
-npx vercel --prod
-```
-
----
-
 ## 🔑 Ortam Değişkenleri
 
 ```env
@@ -197,22 +102,9 @@ DATABASE_URL=           # PostgreSQL bağlantı URL'si (Neon)
 BLOB_READ_WRITE_TOKEN=  # Vercel Blob token
 JWT_SECRET=             # JWT imzalama anahtarı
 ADMIN_PASSWORD_HASH=    # bcrypt ile hashlenmiş admin şifresi
+RESEND_API_KEY=         # Resend.com API anahtarı (Yerel geliştirme için dummy bırakılırsa sıfırlama linki terminale yazdırılır)
+NEXT_PUBLIC_BASE_URL=   # Şifre sıfırlama maillerinde kullanılacak base URL (Örn: http://localhost:3000 veya https://siteniz.com)
 ```
-
----
-
-## 📸 Ekran Görüntüleri
-
-| Bölüm | Açıklama |
-|-------|----------|
-| Hero | Full-screen otel görseli, akıllı arama formu |
-| Ayrıcalıklar | 6 tıklanabilir kart, blur modal ile detay |
-| Erken Rezervasyon | Avantaj kartları, fırsat bitiş tarihi |
-| Odalar | Kategori, fiyat, fotoğraf kartları |
-| Yorumlar | Onaylı yorumlar + yorum bırakma formu |
-| Takvim | Aylık görsel doluluk haritası |
-| Admin Yorumlar | Onay/red, yanıt yazma, bekleyen rozetler |
-| Admin Ödeme | Ödeme yöntemi kartları & IBAN bilgileri |
 
 ---
 
@@ -223,7 +115,8 @@ ADMIN_PASSWORD_HASH=    # bcrypt ile hashlenmiş admin şifresi
 | v1.0 | İlk yayın — oda yönetimi, rezervasyon, admin paneli |
 | v1.1 | Görsel takvim, misafir profil sayfası, tatil paketleri |
 | v1.2 | Yorum onay mekanizması, erken rezervasyon bölümü, ödeme yöntemleri admin sayfası, tıklanabilir ayrıcalık kartları (modal), proxy.ts (Next.js 16 uyumu) |
-| v1.3 | **Müsaitlik takvimi oda kapasitesi / adeti (quantity) çakışma bug'ı düzeltildi, takvimde kısmi doluluk (sarı renk) desteği sağlandı, kapasite ve fiyat bilgisi eklendi.** |
+| v1.3 | Müsaitlik takvimi oda kapasitesi / adeti (quantity) çakışma bug'ı düzeltildi, takvimde kısmi doluluk (sarı renk) desteği sağlandı, kapasite ve fiyat bilgisi eklendi. |
+| v1.4 | **Admin Paneli tamamen bağımsız bir CMS platformuna dönüştürüldü. Kullanıcı arayüzüne e-posta ve şifre tabanlı giriş / şifre sıfırlama (Resend & yerel fallback) eklendi. Rezervasyon esnasında otomatik kullanıcı kaydı entegre edildi. DatePicker tasarımı yenilendi. Odalarımız, kategoriler, iletişim ve tatil paketleri sayfaları premium detaylar ve tam mobil duyarlılıkla yeniden tasarlandı.** |
 
 ---
 
