@@ -2,23 +2,35 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 const categoryMeta: Record<string, { icon: string; gradient: string; textColor: string; desc: string }> = {
+  "Standart": {
+    icon: "🌊",
+    gradient: "linear-gradient(135deg, #0D1B2A 0%, #1A2E45 100%)",
+    textColor: "#C9A96E",
+    desc: "Karadeniz manzaralı konforlu ve ekonomik odalar",
+  },
   "Standard": {
     icon: "🌊",
     gradient: "linear-gradient(135deg, #0D1B2A 0%, #1A2E45 100%)",
     textColor: "#C9A96E",
-    desc: "Karadeniz manzaralı konforlu odalar",
+    desc: "Karadeniz manzaralı konforlu ve ekonomik odalar",
   },
   "Deluxe": {
     icon: "🌟",
     gradient: "linear-gradient(135deg, #A07840 0%, #C9A96E 100%)",
     textColor: "#0D1B2A",
-    desc: "Geniş balkon ve premium olanaklarla donatılmış",
+    desc: "Geniş balkon ve premium olanaklarla donatılmış lüks odalar",
+  },
+  "Süit": {
+    icon: "👑",
+    gradient: "linear-gradient(135deg, #1A2E45 0%, #243B55 100%)",
+    textColor: "#E8D5B0",
+    desc: "Tam Karadeniz manzaralı, jakuzili lüks süit deneyimi",
   },
   "Suite": {
     icon: "👑",
     gradient: "linear-gradient(135deg, #1A2E45 0%, #243B55 100%)",
     textColor: "#E8D5B0",
-    desc: "Tam Karadeniz manzaralı lüks süit deneyimi",
+    desc: "Tam Karadeniz manzaralı, jakuzili lüks süit deneyimi",
   },
   "Aile": {
     icon: "🏡",
@@ -30,7 +42,7 @@ const categoryMeta: Record<string, { icon: string; gradient: string; textColor: 
     icon: "💑",
     gradient: "linear-gradient(135deg, #be185d 0%, #9d174d 100%)",
     textColor: "#FDF2F8",
-    desc: "Romantik atmosfer ve özel sürprizlerle",
+    desc: "Romantik atmosfer ve özel sürprizlerle dolu odalar",
   },
 };
 
@@ -171,7 +183,7 @@ export default async function KategorilerPage() {
                       fontSize: "1.25rem", fontWeight: 700,
                       color: "var(--navy)", marginBottom: "0.5rem",
                     }}>
-                      {cat.name} Oda
+                      {cat.name} Odaları
                     </h2>
                     <p style={{ fontSize: "0.85rem", color: "var(--text-light)", lineHeight: 1.6, flex: 1, marginBottom: "1.25rem" }}>
                       {cat.description || meta.desc}

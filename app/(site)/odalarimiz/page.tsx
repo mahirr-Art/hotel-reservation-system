@@ -1,8 +1,14 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
-export default async function OdalarimizPage() {
+export default async function OdalarimizPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ kategori?: string }>;
+}) {
+  const { kategori } = await searchParams;
   const rooms = await prisma.room.findMany({
+    where: kategori ? { categoryId: kategori } : {},
     include: { category: true },
     orderBy: { createdAt: "desc" },
   });
