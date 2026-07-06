@@ -1,18 +1,25 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
+// LogoutButton - artık AdminSidebar içinde inline olarak kullanılıyor.
+// Bu bileşen geriye dönük uyumluluk için korunuyor.
 export default function LogoutButton() {
-  const router = useRouter();
-
-  async function handleLogout() {
-    await fetch("/api/admin/login", { method: "DELETE" });
-    router.push("/admin/login");
-    router.refresh();
-  }
-
   return (
-    <button onClick={handleLogout} className="rounded-lg px-3 py-2 text-left text-sm text-neutral-500 hover:bg-neutral-100">
+    <button
+      onClick={async () => {
+        await fetch("/api/admin/login", { method: "DELETE" });
+        window.location.href = "/admin/login";
+      }}
+      style={{
+        background: "none",
+        border: "none",
+        cursor: "pointer",
+        fontSize: "0.82rem",
+        color: "rgba(239,68,68,0.7)",
+        fontFamily: "'Inter', sans-serif",
+        padding: "0.5rem",
+        textAlign: "left",
+      }}
+    >
       Çıkış Yap
     </button>
   );

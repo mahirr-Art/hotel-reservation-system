@@ -9,8 +9,9 @@ const links = [
   { href: "/musaitlik", label: "Müsaitlik" },
   { href: "/tatil", label: "Tatil Paketleri" },
   { href: "/iletisim", label: "İletişim" },
-  { href: "/kullanici", label: "Profilim" },
+  { href: "/kullanici", label: "Giriş Yap" },
 ];
+
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

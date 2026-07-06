@@ -181,6 +181,18 @@ exports.Prisma.TestimonialScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  fullName: 'fullName',
+  phone: 'phone',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -207,7 +219,8 @@ exports.Prisma.ModelName = {
   Reservation: 'Reservation',
   Message: 'Message',
   Admin: 'Admin',
-  Testimonial: 'Testimonial'
+  Testimonial: 'Testimonial',
+  User: 'User'
 };
 
 /**

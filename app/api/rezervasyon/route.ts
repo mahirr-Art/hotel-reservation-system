@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 const reservationSchema = z.object({
   roomId: z.string(),
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
   if (guestCount > room.capacity) {
     return NextResponse.json({ error: `Bu oda en fazla ${room.capacity} kişi kapasiteli` }, { status: 400 });
   }
+
   const overlapCount = await prisma.reservation.count({
     where: {
       roomId,
@@ -59,6 +61,18 @@ export async function POST(request: NextRequest) {
       paymentMethod: paymentMethod ? paymentMethod.toUpperCase() : "HAVALE",
     },
   });
+
+  // Auto-create user account if not exists
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (!existingUser) {
+    // Generate a random temp password — user can reset via "Şifremi unuttum"
+    const tempPassword = Math.random().toString(36).slice(-8);
+    const passwordHash = await bcrypt.hash(tempPassword, 12);
+    await prisma.user.create({
+      data: { email, fullName, phone, passwordHash },
+    });
+    // Note: In production, send a welcome email with the temp password or reset link
+  }
 
   return NextResponse.json({ reservation }, { status: 201 });
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 type Reservation = {
   id: string;
@@ -12,137 +13,354 @@ type Reservation = {
   guestCount: number;
   status: string;
   createdAt: string;
-  room: {
-    name: string;
-    city: string;
-    category: {
-      name: string;
-    };
-  };
+  room: { name: string; city: string; category: { name: string } };
 };
 
-export default function KullaniciPaneliPage() {
-  const [email, setEmail] = useState("");
-  const [reservations, setReservations] = useState<Reservation[] | null>(null);
+type User = { id: string; fullName: string; email: string };
+
+function StatusBadge({ status }: { status: string }) {
+  const map: Record<string, { label: string; color: string; bg: string }> = {
+    ONAYLANDI: { label: "Onaylandı", color: "#16a34a", bg: "#f0fdf4" },
+    IPTAL: { label: "İptal Edildi", color: "#dc2626", bg: "#fef2f2" },
+    BEKLIYOR: { label: "Bekliyor", color: "#d97706", bg: "#fffbeb" },
+  };
+  const s = map[status] ?? map.BEKLIYOR;
+  return (
+    <span style={{
+      fontSize: "0.72rem", fontWeight: 700, padding: "0.25rem 0.75rem",
+      borderRadius: "20px", background: s.bg, color: s.color,
+    }}>
+      {s.label}
+    </span>
+  );
+}
+
+export default function KullaniciPage() {
+  const [tab, setTab] = useState<"giris" | "profil">("giris");
+  const [user, setUser] = useState<User | null>(null);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) {
-      setError("Lütfen e-posta adresinizi girin.");
-      return;
-    }
-    
-    setLoading(true);
-    setError("");
-    
-    try {
-      const res = await fetch(`/api/kullanici/rezervasyonlar?email=${encodeURIComponent(email)}`);
-      const data = await res.json();
-      
-      if (!res.ok) {
-        setError(data.error || "Bir hata oluştu.");
-        setReservations(null);
-      } else {
-        setReservations(data.reservations);
-      }
-    } catch (err) {
-      setError("Bağlantı hatası oluştu.");
-      setReservations(null);
-    } finally {
-      setLoading(false);
-    }
+  // Login form
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  // Forgot password
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+
+  // Check session on load
+  useEffect(() => {
+    fetch("/api/kullanici/ben")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.user) {
+          setUser(data.user);
+          setTab("profil");
+          loadReservations(data.user.email);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  async function loadReservations(email: string) {
+    const res = await fetch(`/api/kullanici/rezervasyonlar?email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (data.reservations) setReservations(data.reservations);
   }
 
-  function getStatusBadge(status: string) {
-    switch (status) {
-      case 'ONAYLANDI':
-        return <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">Onaylandı</span>;
-      case 'IPTAL':
-        return <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">İptal Edildi</span>;
-      default:
-        return <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full font-medium">Bekliyor</span>;
-    }
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    const res = await fetch("/api/kullanici/giris", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: loginEmail, password: loginPassword }),
+    });
+    const data = await res.json();
+    setLoading(false);
+    if (!res.ok) { setError(data.error || "Giriş başarısız"); return; }
+    setUser(data.user);
+    setTab("profil");
+    loadReservations(data.user.email);
   }
+
+  async function handleForgot(e: React.FormEvent) {
+    e.preventDefault();
+    setForgotLoading(true);
+    await fetch("/api/kullanici/sifre-sifirla", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: forgotEmail }),
+    });
+    setForgotLoading(false);
+    setForgotSent(true);
+  }
+
+  async function handleLogout() {
+    await fetch("/api/kullanici/giris", { method: "DELETE" });
+    setUser(null);
+    setTab("giris");
+    setReservations([]);
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    border: "1px solid #E5E7EB",
+    borderRadius: "10px",
+    padding: "0.8rem 1rem",
+    fontSize: "0.9rem",
+    color: "var(--text-dark)",
+    outline: "none",
+    background: "#FAFAFA",
+    fontFamily: "'Inter', sans-serif",
+    transition: "border-color 0.2s",
+    boxSizing: "border-box",
+  };
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: "0.72rem",
+    fontWeight: 600,
+    letterSpacing: "0.1em",
+    textTransform: "uppercase",
+    color: "var(--text-light)",
+    marginBottom: "0.4rem",
+  };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16 min-h-[70vh]">
-      <h1 className="text-3xl font-semibold mb-2">Kullanıcı Paneli</h1>
-      <p className="text-neutral-600 mb-10">E-posta adresinizi girerek rezervasyon geçmişinizi görüntüleyebilirsiniz.</p>
+    <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      {/* Hero */}
+      <div style={{ background: "var(--navy)", padding: "4rem 1.5rem 3rem", textAlign: "center" }}>
+        <p className="section-label" style={{ marginBottom: "0.75rem" }}>Hesabım</p>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.75rem, 4vw, 2.8rem)", fontWeight: 700, color: "white", marginBottom: "0.5rem" }}>
+          {user ? `Hoş geldiniz, ${user.fullName.split(" ")[0]}` : "Profilim"}
+        </h1>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
+          {user ? "Rezervasyonlarınızı buradan takip edebilirsiniz." : "Giriş yapın veya rezervasyonlarınızı görüntüleyin."}
+        </p>
+      </div>
 
-      <form onSubmit={handleSearch} className="flex gap-4 mb-12 max-w-md">
-        <input 
-          type="email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          placeholder="E-posta adresiniz" 
-          required 
-          className="flex-1 rounded-lg border px-4 py-2 outline-none focus:border-teal-600"
-        />
-        <button 
-          type="submit" 
-          disabled={loading} 
-          className="rounded-lg bg-teal-600 text-white px-6 py-2 font-medium hover:bg-teal-700 disabled:opacity-70 transition-colors"
-        >
-          {loading ? "Aranıyor..." : "Sorgula"}
-        </button>
-      </form>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "3rem 1.5rem" }}>
 
-      {error && <p className="text-red-600 mb-6">{error}</p>}
-
-      {reservations && (
-        <div>
-          <h2 className="text-xl font-medium mb-6">Rezervasyonlarınız ({reservations.length})</h2>
-          
-          {reservations.length === 0 ? (
-            <p className="text-neutral-500 bg-neutral-50 p-6 rounded-xl border border-neutral-100 text-center">
-              Bu e-posta adresine ait bir rezervasyon bulunamadı.
-            </p>
-          ) : (
-            <div className="grid gap-6">
-              {reservations.map(res => (
-                <div key={res.id} className="border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow bg-white flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* === LOGGED OUT: Login / Forgot === */}
+        {!user && (
+          <div style={{ maxWidth: 480, margin: "0 auto" }}>
+            {!showForgot ? (
+              <div style={{ background: "white", borderRadius: "24px", padding: "2.5rem", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.07)" }}>
+                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+                  Giriş Yap
+                </h2>
+                <div className="gold-divider" style={{ marginBottom: "1.75rem" }} />
+                <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-lg">{res.room.name}</h3>
-                      {getStatusBadge(res.status)}
-                    </div>
-                    <p className="text-neutral-600 text-sm mb-4">
-                      {res.room.city} • {res.room.category.name}
-                    </p>
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                      <div>
-                        <span className="text-neutral-500 block text-xs">Giriş Tarihi</span>
-                        <span className="font-medium">{new Date(res.checkIn).toLocaleDateString('tr-TR')}</span>
-                      </div>
-                      <div>
-                        <span className="text-neutral-500 block text-xs">Çıkış Tarihi</span>
-                        <span className="font-medium">{new Date(res.checkOut).toLocaleDateString('tr-TR')}</span>
-                      </div>
-                      <div>
-                        <span className="text-neutral-500 block text-xs">Kişi Sayısı</span>
-                        <span className="font-medium">{res.guestCount} Kişi</span>
-                      </div>
-                      <div>
-                        <span className="text-neutral-500 block text-xs">Oluşturulma</span>
-                        <span className="font-medium text-neutral-600">{new Date(res.createdAt).toLocaleDateString('tr-TR')}</span>
-                      </div>
-                    </div>
+                    <label style={labelStyle}>E-posta</label>
+                    <input
+                      type="email" required
+                      placeholder="ornek@email.com"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
                   </div>
-                  
-                  <div className="bg-neutral-50 p-4 rounded-lg self-start md:self-stretch flex flex-col justify-center min-w-[200px]">
-                    <span className="text-neutral-500 block text-xs mb-1">Rezervasyon Bilgileri</span>
-                    <p className="font-medium text-sm">{res.fullName}</p>
-                    <p className="text-neutral-600 text-sm">{res.phone}</p>
-                    <p className="text-xs text-neutral-400 mt-2 font-mono">ID: {res.id}</p>
+                  <div>
+                    <label style={labelStyle}>Şifre</label>
+                    <input
+                      type="password" required
+                      placeholder="••••••••"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
                   </div>
+                  {error && (
+                    <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "10px", padding: "0.75rem", fontSize: "0.85rem", color: "#DC2626" }}>
+                      {error}
+                    </div>
+                  )}
+                  <button
+                    type="submit" disabled={loading}
+                    className="btn-primary"
+                    style={{ justifyContent: "center", borderRadius: "10px", opacity: loading ? 0.7 : 1 }}
+                  >
+                    {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
+                  </button>
+                </form>
+                <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
+                  <button
+                    onClick={() => setShowForgot(true)}
+                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.85rem", color: "var(--gold-dark)", textDecoration: "underline", fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Şifremi unuttum
+                  </button>
+                  <p style={{ fontSize: "0.82rem", color: "var(--text-light)", textAlign: "center" }}>
+                    Hesabınız yoksa rezervasyon yaptığınızda otomatik oluşturulur.
+                  </p>
                 </div>
-              ))}
+              </div>
+            ) : (
+              <div style={{ background: "white", borderRadius: "24px", padding: "2.5rem", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.07)" }}>
+                <button
+                  onClick={() => { setShowForgot(false); setForgotSent(false); setForgotEmail(""); }}
+                  style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "none", border: "none", cursor: "pointer", fontSize: "0.82rem", color: "var(--text-light)", marginBottom: "1.5rem", fontFamily: "'Inter', sans-serif" }}
+                >
+                  ← Geri dön
+                </button>
+                {forgotSent ? (
+                  <div style={{ textAlign: "center", padding: "1rem 0" }}>
+                    <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📧</div>
+                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.3rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.75rem" }}>
+                      E-posta Gönderildi!
+                    </h3>
+                    <p style={{ color: "var(--text-light)", fontSize: "0.88rem", lineHeight: 1.6 }}>
+                      <strong>{forgotEmail}</strong> adresine şifre sıfırlama bağlantısı gönderdik. Birkaç dakika içinde gelmezse spam klasörünüzü kontrol edin.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+                      Şifremi Unuttum
+                    </h2>
+                    <div className="gold-divider" style={{ marginBottom: "1.5rem" }} />
+                    <p style={{ fontSize: "0.85rem", color: "var(--text-light)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+                      Kayıtlı e-posta adresinizi girin. Şifre sıfırlama bağlantısı göndereceğiz.
+                    </p>
+                    <form onSubmit={handleForgot} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                      <div>
+                        <label style={labelStyle}>E-posta</label>
+                        <input
+                          type="email" required
+                          placeholder="ornek@email.com"
+                          value={forgotEmail}
+                          onChange={(e) => setForgotEmail(e.target.value)}
+                          style={inputStyle}
+                          onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                          onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                        />
+                      </div>
+                      <button type="submit" disabled={forgotLoading} className="btn-primary" style={{ justifyContent: "center", borderRadius: "10px" }}>
+                        {forgotLoading ? "Gönderiliyor..." : "Sıfırlama Bağlantısı Gönder"}
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* === LOGGED IN: Profile + Reservations === */}
+        {user && (
+          <div>
+            {/* User card */}
+            <div style={{
+              background: "white", borderRadius: "20px", padding: "1.75rem",
+              border: "1px solid rgba(0,0,0,0.06)", marginBottom: "2rem",
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              flexWrap: "wrap", gap: "1rem",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+                <div style={{
+                  width: 56, height: 56, borderRadius: "50%",
+                  background: "linear-gradient(135deg, var(--navy), var(--navy-mid))",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "1.25rem", color: "var(--gold)", fontWeight: 700,
+                  fontFamily: "'Playfair Display', serif",
+                }}>
+                  {user.fullName.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p style={{ fontSize: "1rem", fontWeight: 700, color: "var(--navy)" }}>{user.fullName}</p>
+                  <p style={{ fontSize: "0.82rem", color: "var(--text-light)" }}>{user.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: "none", border: "1px solid #E5E7EB", borderRadius: "10px",
+                  padding: "0.5rem 1.25rem", cursor: "pointer", fontSize: "0.82rem",
+                  color: "var(--text-light)", fontFamily: "'Inter', sans-serif",
+                  display: "flex", alignItems: "center", gap: "0.5rem",
+                  transition: "all 0.2s",
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Çıkış Yap
+              </button>
             </div>
-          )}
-        </div>
-      )}
+
+            {/* Reservations */}
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.3rem", fontWeight: 700, color: "var(--navy)", marginBottom: "1.25rem" }}>
+              Rezervasyonlarım ({reservations.length})
+            </h2>
+            {reservations.length === 0 ? (
+              <div style={{ background: "white", borderRadius: "16px", padding: "3rem", textAlign: "center", border: "1px solid rgba(0,0,0,0.06)" }}>
+                <p style={{ fontSize: "2rem", marginBottom: "1rem" }}>🛏️</p>
+                <p style={{ color: "var(--text-light)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>Henüz rezervasyonunuz bulunmuyor.</p>
+                <Link href="/rezervasyon" className="btn-primary">Rezervasyon Yap</Link>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {reservations.map((res) => {
+                  const nights = Math.max(1, Math.round((new Date(res.checkOut).getTime() - new Date(res.checkIn).getTime()) / 86400000));
+                  return (
+                    <div key={res.id} style={{
+                      background: "white", borderRadius: "16px", padding: "1.5rem",
+                      border: "1px solid rgba(0,0,0,0.06)",
+                      display: "grid", gridTemplateColumns: "1fr auto",
+                      gap: "1rem", alignItems: "start",
+                    }}
+                    className="reservation-card"
+                    >
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem", flexWrap: "wrap" }}>
+                          <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--navy)" }}>{res.room.name}</h3>
+                          <StatusBadge status={res.status} />
+                        </div>
+                        <p style={{ fontSize: "0.8rem", color: "var(--text-light)", marginBottom: "0.75rem" }}>
+                          {res.room.city} · {res.room.category.name}
+                        </p>
+                        <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
+                          {[
+                            { label: "Giriş", value: new Date(res.checkIn).toLocaleDateString("tr-TR") },
+                            { label: "Çıkış", value: new Date(res.checkOut).toLocaleDateString("tr-TR") },
+                            { label: "Süre", value: `${nights} gece` },
+                            { label: "Kişi", value: `${res.guestCount} kişi` },
+                          ].map((item) => (
+                            <div key={item.label}>
+                              <p style={{ fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-light)" }}>{item.label}</p>
+                              <p style={{ fontSize: "0.88rem", fontWeight: 600, color: "var(--navy)" }}>{item.value}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <p style={{ fontSize: "0.65rem", fontFamily: "monospace", color: "var(--text-light)", whiteSpace: "nowrap" }}>
+                        #{res.id.slice(-8).toUpperCase()}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <style>{`
+        @media (max-width: 600px) {
+          .reservation-card { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

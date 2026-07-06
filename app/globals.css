@@ -131,10 +131,12 @@ h1, h2, h3, h4 {
 .img-zoom {
   overflow: hidden;
 }
-.img-zoom img {
+.img-zoom img,
+.img-zoom .img-zoom-target {
   transition: transform 0.6s ease;
 }
-.img-zoom:hover img {
+.img-zoom:hover img,
+.img-zoom:hover .img-zoom-target {
   transform: scale(1.08);
 }
 
@@ -279,4 +281,119 @@ h1, h2, h3, h4 {
 }
 .gallery-item:hover .gallery-overlay {
   opacity: 1;
+}
+
+/* ─── CUSTOM DATE INPUT STYLING ─── */
+.date-input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.date-input {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 6px;
+  padding: 0.65rem 0.875rem 0.65rem 2.25rem;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  background: white;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  height: 44px;
+}
+
+.date-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.date-input-icon {
+  position: absolute;
+  left: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--gold-dark);
+}
+
+/* Search form on dark hero */
+.search-date-input {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 0.6rem 0.75rem 0.6rem 2.2rem;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  background: white;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+}
+.search-date-input:focus { border-color: var(--gold); }
+.search-date-input::-webkit-calendar-picker-indicator { display: none; }
+.search-date-input::-webkit-inner-spin-button { display: none; }
+.search-date-input[type="number"] { -moz-appearance: textfield; }
+
+/* ─── RESPONSIVE UTILITIES ─── */
+@media (max-width: 768px) {
+  /* Navbar */
+  .nav-desktop { display: none !important; }
+  .nav-mobile-btn { display: flex !important; }
+
+  /* Sections padding */
+  section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Gallery grid on mobile */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: auto !important;
+  }
+  .gallery-grid > div:first-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Stats grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Featured rooms */
+  .featured-rooms-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Amenities */
+  .amenities-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Admin sidebar */
+  .admin-sidebar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .amenities-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
 }

@@ -2,48 +2,357 @@
 
 import { useState } from "react";
 
+const contactInfo = [
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+    ),
+    label: "Adres",
+    value: "Fatih Mah. Sahil Cad. No:12",
+    sub: "Gerze / Sinop 57800",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+      </svg>
+    ),
+    label: "Telefon",
+    value: "+90 (368) 271 00 00",
+    sub: "7/24 hizmetinizdeyiz",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+      </svg>
+    ),
+    label: "E-posta",
+    value: "info@kuzeyfeneri.com",
+    sub: "24 saat içinde yanıt",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+      </svg>
+    ),
+    label: "Çalışma Saatleri",
+    value: "Her Gün 07:00 – 23:00",
+    sub: "Resepsiyon 24 saat açık",
+  },
+];
+
+const subjects = [
+  "Rezervasyon Hakkında",
+  "Fiyat & Kampanya",
+  "Özel Etkinlik",
+  "Şikayet & Öneri",
+  "Kurumsal",
+  "Diğer",
+];
+
 export default function IletisimPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setLoading(true);
     const res = await fetch("/api/iletisim", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, subject, message }),
+      body: JSON.stringify(form),
     });
+    setLoading(false);
     if (!res.ok) {
-      setError("Mesajınız gönderilemedi, lütfen tekrar deneyin.");
+      setError("Mesajınız gönderilemedi. Lütfen tekrar deneyin.");
       return;
     }
     setSent(true);
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-semibold mb-2">İletişim</h1>
-      <p className="text-neutral-600 mb-10">Adres: Fatih Mah. Sahil Cad. No:12, Gerze / Sinop · Tel: +90 (368) 271 00 00</p>
+    <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      {/* Hero */}
+      <div style={{
+        background: "var(--navy)",
+        padding: "5rem 1.5rem 4rem",
+        textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        <div style={{ position: "absolute", inset: 0, background: "url('/hotel_hero_bg.jpg') center/cover", opacity: 0.08 }} />
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 600, margin: "0 auto" }}>
+          <p className="section-label" style={{ marginBottom: "0.75rem" }}>Bize Ulaşın</p>
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "clamp(2rem, 5vw, 3.2rem)",
+            fontWeight: 700, color: "white",
+            marginBottom: "1rem", lineHeight: 1.2,
+          }}>
+            İletişim<em style={{ color: "var(--gold)" }}> & Destek</em>
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.95rem", lineHeight: 1.7 }}>
+            Sorularınız, özel istekleriniz veya etkinlik planlamanız için 7/24 buradayız.
+          </p>
+        </div>
+      </div>
 
-      {sent ? (
-        <p className="font-medium">Mesajınız için teşekkürler, en kısa sürede dönüş yapacağız.</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="grid gap-4 max-w-md">
-          <input required placeholder="Ad Soyad" value={name} onChange={(e) => setName(e.target.value)} className="rounded-lg border px-3 py-2" />
-          <input required type="email" placeholder="E-posta" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border px-3 py-2" />
-          <input required placeholder="Konu" value={subject} onChange={(e) => setSubject(e.target.value)} className="rounded-lg border px-3 py-2" />
-          <textarea required placeholder="Mesajınız" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="rounded-lg border px-3 py-2" />
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-         <button type="submit" className="rounded-full bg-teal-600 text-white px-6 py-3 font-medium hover:bg-teal-700">
-            Mesaj Gönder
-          </button>
-        </form>
-      )}
+      {/* Main content */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "4rem 1.5rem" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1.5fr",
+          gap: "3rem",
+          alignItems: "start",
+        }}
+        className="contact-grid"
+        >
+          {/* Left: Info */}
+          <div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+              İletişim Bilgileri
+            </h2>
+            <div className="gold-divider" style={{ marginBottom: "2rem" }} />
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2.5rem" }}>
+              {contactInfo.map((info) => (
+                <div key={info.label} style={{
+                  display: "flex", alignItems: "flex-start", gap: "1rem",
+                  background: "white", borderRadius: "14px", padding: "1.25rem",
+                  border: "1px solid rgba(0,0,0,0.06)",
+                }}>
+                  <div style={{
+                    width: 44, height: 44, borderRadius: "12px",
+                    background: "var(--navy)",
+                    color: "var(--gold)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0,
+                  }}>
+                    {info.icon}
+                  </div>
+                  <div>
+                    <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-light)", marginBottom: "0.2rem" }}>
+                      {info.label}
+                    </p>
+                    <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--navy)" }}>{info.value}</p>
+                    <p style={{ fontSize: "0.78rem", color: "var(--text-light)" }}>{info.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Social Media */}
+            <div>
+              <p style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-light)", marginBottom: "1rem" }}>
+                Sosyal Medya
+              </p>
+              <div style={{ display: "flex", gap: "0.75rem" }}>
+                {[
+                  { label: "Instagram", path: "M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01M7.5 21h9A4.5 4.5 0 0021 16.5v-9A4.5 4.5 0 0016.5 3h-9A4.5 4.5 0 003 7.5v9A4.5 4.5 0 007.5 21z" },
+                  { label: "Facebook", path: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" },
+                  { label: "Twitter/X", path: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" },
+                ].map((s) => (
+                  <a
+                    key={s.label}
+                    href="#"
+                    aria-label={s.label}
+                    style={{
+                      width: 42, height: 42, borderRadius: "50%",
+                      background: "var(--navy)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: "var(--gold)", textDecoration: "none",
+                      transition: "transform 0.2s, background 0.2s",
+                    }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d={s.path} />
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Map embed */}
+            <div style={{ marginTop: "2rem", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(0,0,0,0.08)" }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3002.3!2d35.096!3d41.797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDQ3JzQ5LjIiTiAzNcKwMDUnMzguMyJF!5e0!3m2!1str!2str!4v1234567890"
+                width="100%"
+                height="200"
+                style={{ border: 0, display: "block" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Kuzey Feneri Konum"
+              />
+            </div>
+          </div>
+
+          {/* Right: Form */}
+          <div style={{
+            background: "white",
+            borderRadius: "24px",
+            padding: "2.5rem",
+            border: "1px solid rgba(0,0,0,0.06)",
+            boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
+          }}>
+            {sent ? (
+              <div style={{ textAlign: "center", padding: "2rem 0" }}>
+                <div style={{
+                  width: 72, height: 72, borderRadius: "50%",
+                  background: "#F0FDF4", border: "2px solid #BBF7D0",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  margin: "0 auto 1.5rem", fontSize: "2rem",
+                }}>
+                  ✅
+                </div>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.75rem" }}>
+                  Mesajınız Gönderildi!
+                </h3>
+                <p style={{ color: "var(--text-light)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                  En kısa sürede size dönüş yapacağız. Genellikle 24 saat içinde yanıt veriyoruz.
+                </p>
+                <button
+                  onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); }}
+                  className="btn-outline"
+                  style={{ marginTop: "1.5rem" }}
+                >
+                  Yeni Mesaj Gönder
+                </button>
+              </div>
+            ) : (
+              <>
+                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+                  Mesaj Gönderin
+                </h2>
+                <div className="gold-divider" style={{ marginBottom: "2rem" }} />
+
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="form-grid">
+                    <div>
+                      <label style={labelStyle}>Ad Soyad *</label>
+                      <input
+                        required
+                        placeholder="Adınız Soyadınız"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Telefon</label>
+                      <input
+                        placeholder="+90 5xx xxx xx xx"
+                        value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                        onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={labelStyle}>E-posta *</label>
+                    <input
+                      required
+                      type="email"
+                      placeholder="ornek@email.com"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={labelStyle}>Konu *</label>
+                    <select
+                      required
+                      value={form.subject}
+                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    >
+                      <option value="">Konu seçin...</option>
+                      {subjects.map((s) => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={labelStyle}>Mesajınız *</label>
+                    <textarea
+                      required
+                      rows={5}
+                      placeholder="Mesajınızı buraya yazın..."
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      style={{ ...inputStyle, resize: "vertical" }}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
+                  </div>
+
+                  {error && (
+                    <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "10px", padding: "0.75rem 1rem", fontSize: "0.85rem", color: "#DC2626" }}>
+                      {error}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="btn-primary"
+                    style={{ justifyContent: "center", borderRadius: "10px", opacity: loading ? 0.7 : 1 }}
+                  >
+                    {loading ? "Gönderiliyor..." : "Mesaj Gönder →"}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .contact-grid { grid-template-columns: 1fr !important; }
+          .form-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }
+
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  fontSize: "0.72rem",
+  fontWeight: 600,
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  color: "var(--text-light)",
+  marginBottom: "0.4rem",
+};
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  border: "1px solid #E5E7EB",
+  borderRadius: "10px",
+  padding: "0.75rem 1rem",
+  fontSize: "0.9rem",
+  color: "var(--text-dark)",
+  background: "#FAFAFA",
+  outline: "none",
+  transition: "border-color 0.2s",
+  fontFamily: "'Inter', sans-serif",
+};

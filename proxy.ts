@@ -1,29 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { verifyAdminToken, ADMIN_COOKIE } from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isLoginPage = pathname === "/admin/login" || pathname === "/api/admin/login";
-  const isAdminRoute = pathname.startsWith("/admin") || pathname.startsWith("/api/admin");
+  // Admin rotalarını koru (login hariç)
+  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
+    const token = request.cookies.get(ADMIN_COOKIE)?.value;
 
-  if (!isAdminRoute || isLoginPage) return NextResponse.next();
-
-  const token = request.cookies.get(ADMIN_COOKIE)?.value;
-  const session = token ? await verifyAdminToken(token) : null;
-
-  if (!session) {
-    if (pathname.startsWith("/api/")) {
-      return NextResponse.json({ error: "Yetkisiz Erişim (Unauthorized)" }, { status: 401 });
+    if (!token) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
     }
-    const loginUrl = new URL("/admin/login", request.url);
-    return NextResponse.redirect(loginUrl);
+
+    const payload = await verifyAdminToken(token);
+    if (!payload) {
+      const response = NextResponse.redirect(new URL("/admin/login", request.url));
+      response.cookies.delete(ADMIN_COOKIE);
+      return response;
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"]
+  matcher: ["/admin/:path*"],
 };
-
