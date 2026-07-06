@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
   try {
     await resend.emails.send({
-      from: "Kuzey Feneri <noreply@kuzeyfeneri.com>",
+      from: "onboarding@resend.dev",
       to: email,
       subject: "Şifre Sıfırlama – Kuzey Feneri",
       html: `
