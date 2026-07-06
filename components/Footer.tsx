@@ -7,7 +7,6 @@ export default function Footer() {
     { href: "/odalarimiz", label: "Odalarımız" },
     { href: "/kategoriler", label: "Kategoriler" },
     { href: "/tatil", label: "Tatil Paketleri" },
-    { href: "/musaitlik", label: "Müsaitlik" },
     { href: "/iletisim", label: "İletişim" },
   ];
 
