@@ -189,7 +189,7 @@ export default async function HomePage() {
         />
 
         {/* Content */}
-        <div style={{ position: "relative", zIndex: 2, maxWidth: "800px" }}>
+        <div className="hero-content-box" style={{ position: "relative", zIndex: 2, maxWidth: "800px" }}>
           <p
             className="animate-fade-in-up"
             style={{
@@ -539,9 +539,15 @@ export default async function HomePage() {
           padding: 130px 1.5rem 0 !important;
           box-sizing: border-box;
         }
+        .hero-content-box {
+          margin-top: 50px !important;
+        }
         @media (min-width: 768px) {
           .homepage-hero {
             padding: 150px 1.5rem 0 !important;
+          }
+          .hero-content-box {
+            margin-top: 0 !important;
           }
         }
       `}</style>

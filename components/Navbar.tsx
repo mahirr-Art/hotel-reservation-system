@@ -156,7 +156,7 @@ export default function Navbar() {
               </button>
             </div>
             
-            <Link href="/rezervasyon" className="btn-primary nav-book-btn">
+            <Link href="/rezervasyon" className="btn-primary nav-book-btn" style={{ display: "none" }}>
               {t.bookNow}
             </Link>
 
