@@ -48,7 +48,7 @@
 - **Odalarımız** — Yenilenmiş görsel kart tasarımları, konum & kapasite etiketleri, hover zoom animasyonları ve tamamen mobil uyumlu grid yapı
 - **Oda Detay** — Tek oda sayfası, çoklu fotoğraf galerisi, özellikler, **entegre müsaitlik takvimi** ve sağda konumlandırılmış sticky fiyatlandırma & rezervasyon kartı
 - **Kategoriler** — Her kategoriye özel simge, açıklama ve oda sayısıyla yenilenmiş kategori keşfetme sayfası
-- **Kullanıcı Paneli (`/kullanici`)** — E-posta ve şifreyle güvenli giriş, geçmiş rezervasyonları detaylı (tarih, süre, durum) listeleme, **Şifremi Unuttum (Resend mail sıfırlama)** arayüzü
+- **Kullanıcı Paneli (`/kullanici`)** — E-posta ve şifreyle güvenli giriş, geçmiş rezervasyonları detaylı (tarih, süre, durum) listeleme, **Şifremi Unuttum (Resend mail sıfırlama)** arayüzü, **profil bilgileri (ad, telefon) güncelleme ve şifre değiştirme panelleri**.
 - **Tatil Paketleri** — Görsel zenginliği artırılmış 4 özel paket kartı (Yaz Erken Rezervasyon, Balayı, Uzun Hafta Sonu, Aile Paketi) ve özel teklif banner'ı
 - **Rezervasyon** — Online rezervasyon formu. **Yeni bir e-posta adresiyle rezervasyon yapıldığında sistem otomatik olarak bir kullanıcı hesabı oluşturur.**
 
@@ -58,8 +58,8 @@
 
 Sitenin ana arayüzünden bağımsız, profesyonel bir CMS platformu olarak sıfırdan tasarlandı.
 - JWT + bcrypt ile güvenli giriş sistemi. `proxy.ts` (Next.js 16) ile route koruması.
-- **Genel Bakış (Dashboard)** — Toplam oda, beklemede/onaylanan rezervasyonlar, yeni mesajlar, beklemedeki yorumlar ve kullanıcı sayıları ile son rezervasyonlar tablosu
-- **Oda Yönetimi** — İki kolonlu tasarım. Solda oda ekleme/düzenleme/fotoğraf yükleme formu, sağda oda listesi.
+- **Genel Bakış (Dashboard)** — Toplam oda, bekleme/onay/yorum durumlarını gösteren sayaçlar, son rezervasyonlar listesi ve **aylara göre Gelir (Çizgi Grafik), Rezervasyon (Sütun Grafik) ile Oda Doluluk Oranlarını (Donut Grafik) gösteren bağımlılıksız SVG grafik kartları**
+- **Oda Yönetimi** — İki kolonlu tasarım. Solda oda ekleme/düzenleme formu, **sürükle-bırak (Drag & Drop) çoklu dosya yükleme (Vercel Blob) alanı**, sağda oda listesi.
 - **Takvim** — Tüm odaların aylık bazda doluluk yüzdeleri (Occupancy Rate) ve görsel doluluk takvim panosu
 - **Rezervasyon Yönetimi** — Bekleyen rezervasyonları inceleme, tek tıkla onaylama veya iptal etme
 - **💬 Yorum Yönetimi** — Onay bekleyen ve onaylanan misafir yorumları, **onaylama/kaldırma**, **yönetici yanıtı yazma** ve silme işlemleri

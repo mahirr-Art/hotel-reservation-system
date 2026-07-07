@@ -58,6 +58,20 @@ export default function KullaniciPage() {
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
 
+  // Profile update state
+  const [profileName, setProfileName] = useState("");
+  const [profilePhone, setProfilePhone] = useState("");
+  const [profileSuccess, setProfileSuccess] = useState("");
+  const [profileError, setProfileError] = useState("");
+  const [profileLoading, setProfileLoading] = useState(false);
+
+  // Password update state
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
+
   // Check session on load
   useEffect(() => {
     fetch("/api/kullanici/ben")
@@ -65,6 +79,8 @@ export default function KullaniciPage() {
       .then((data) => {
         if (data.user) {
           setUser(data.user);
+          setProfileName(data.user.fullName || "");
+          setProfilePhone(data.user.phone || "");
           setTab("profil");
           loadReservations(data.user.email);
         }
@@ -91,6 +107,8 @@ export default function KullaniciPage() {
     setLoading(false);
     if (!res.ok) { setError(data.error || "Giriş başarısız"); return; }
     setUser(data.user);
+    setProfileName(data.user.fullName || "");
+    setProfilePhone(data.user.phone || "");
     setTab("profil");
     loadReservations(data.user.email);
   }
@@ -113,8 +131,63 @@ export default function KullaniciPage() {
     setLoading(false);
     if (!res.ok) { setError(data.error || "Kayıt başarısız"); return; }
     setUser(data.user);
+    setProfileName(data.user.fullName || "");
+    setProfilePhone(data.user.phone || "");
     setTab("profil");
     setReservations([]);
+  }
+
+  async function handleProfileUpdate(e: React.FormEvent) {
+    e.preventDefault();
+    setProfileError("");
+    setProfileSuccess("");
+    setProfileLoading(true);
+
+    try {
+      const res = await fetch("/api/kullanici/ben", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName: profileName, phone: profilePhone }),
+      });
+      const data = await res.json();
+      setProfileLoading(false);
+      if (!res.ok) {
+        setProfileError(data.error || "Güncelleme başarısız");
+        return;
+      }
+      setUser(data.user);
+      setProfileSuccess("Profil bilgileriniz başarıyla güncellendi.");
+    } catch {
+      setProfileLoading(false);
+      setProfileError("Bağlantı hatası oluştu.");
+    }
+  }
+
+  async function handlePasswordUpdate(e: React.FormEvent) {
+    e.preventDefault();
+    setPasswordError("");
+    setPasswordSuccess("");
+    setPasswordLoading(true);
+
+    try {
+      const res = await fetch("/api/kullanici/ben", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ oldPassword, newPassword }),
+      });
+      const data = await res.json();
+      setPasswordLoading(false);
+      if (!res.ok) {
+        setPasswordError(data.error || "Şifre değiştirme başarısız");
+        return;
+      }
+      setOldPassword("");
+      setNewPassword("");
+      setPasswordSuccess("Şifreniz başarıyla değiştirildi.");
+    } catch {
+      setPasswordLoading(false);
+      setPasswordError("Bağlantı hatası oluştu.");
+    }
   }
 
   async function handleForgot(e: React.FormEvent) {
@@ -424,6 +497,96 @@ export default function KullaniciPage() {
               </button>
             </div>
 
+            {/* Profile Info and Password update forms */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "3rem" }} className="profile-update-grid">
+              {/* Profile Details form */}
+              <div style={{ background: "white", borderRadius: "20px", padding: "2rem", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 10px 30px rgba(13,27,42,0.02)" }}>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+                  Profil Bilgileri
+                </h3>
+                <div className="gold-divider" style={{ marginBottom: "1.5rem" }} />
+                
+                <form onSubmit={handleProfileUpdate} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <div>
+                    <label style={labelStyle}>Ad Soyad</label>
+                    <input
+                      required
+                      value={profileName}
+                      onChange={(e) => setProfileName(e.target.value)}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Telefon Numarası</label>
+                    <input
+                      required
+                      placeholder="05xx xxx xx xx"
+                      value={profilePhone}
+                      onChange={(e) => setProfilePhone(e.target.value)}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
+                  </div>
+                  {profileSuccess && (
+                    <p style={{ fontSize: "0.8rem", color: "#16a34a", fontWeight: 600 }}>✅ {profileSuccess}</p>
+                  )}
+                  {profileError && (
+                    <p style={{ fontSize: "0.8rem", color: "#dc2626", fontWeight: 600 }}>⚠️ {profileError}</p>
+                  )}
+                  <button type="submit" disabled={profileLoading} className="btn-primary" style={{ justifyContent: "center", borderRadius: "10px", marginTop: "0.5rem" }}>
+                    {profileLoading ? "Güncelleniyor..." : "Profili Güncelle"}
+                  </button>
+                </form>
+              </div>
+
+              {/* Password update form */}
+              <div style={{ background: "white", borderRadius: "20px", padding: "2rem", border: "1px solid rgba(0,0,0,0.06)", boxShadow: "0 10px 30px rgba(13,27,42,0.02)" }}>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+                  Şifre Değiştir
+                </h3>
+                <div className="gold-divider" style={{ marginBottom: "1.5rem" }} />
+                
+                <form onSubmit={handlePasswordUpdate} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <div>
+                    <label style={labelStyle}>Mevcut Şifre</label>
+                    <input
+                      type="password"
+                      required
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Yeni Şifre</label>
+                    <input
+                      type="password"
+                      required
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
+                      onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
+                    />
+                  </div>
+                  {passwordSuccess && (
+                    <p style={{ fontSize: "0.8rem", color: "#16a34a", fontWeight: 600 }}>✅ {passwordSuccess}</p>
+                  )}
+                  {passwordError && (
+                    <p style={{ fontSize: "0.8rem", color: "#dc2626", fontWeight: 600 }}>⚠️ {passwordError}</p>
+                  )}
+                  <button type="submit" disabled={passwordLoading} className="btn-primary" style={{ justifyContent: "center", borderRadius: "10px", marginTop: "0.5rem" }}>
+                    {passwordLoading ? "Değiştiriliyor..." : "Şifreyi Güncelle"}
+                  </button>
+                </form>
+              </div>
+            </div>
+
             {/* Reservations */}
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.3rem", fontWeight: 700, color: "var(--navy)", marginBottom: "1.25rem" }}>
               Rezervasyonlarım ({reservations.length})
@@ -482,6 +645,9 @@ export default function KullaniciPage() {
       </div>
 
       <style>{`
+        @media (max-width: 768px) {
+          .profile-update-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+        }
         @media (max-width: 600px) {
           .reservation-card { grid-template-columns: 1fr !important; }
         }

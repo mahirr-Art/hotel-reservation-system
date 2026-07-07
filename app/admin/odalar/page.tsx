@@ -11,10 +11,20 @@ type Room = {
 export default function AdminOdalarPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
+  const [form, setForm] = useState({
+    name: "",
+    description: "",
+    price: "",
+    capacity: "",
+    quantity: "1",
+    categoryId: "",
+    photos: [] as string[],
+    city: "Sinop Merkez"
+  });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
 
   async function loadData() {
     setLoading(true);
@@ -29,25 +39,34 @@ export default function AdminOdalarPage() {
 
   useEffect(() => { loadData(); }, []);
 
-  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  async function handleFilesUpload(files: File[]) {
+    if (files.length === 0) return;
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-    const data = await res.json();
-    setUploading(false);
-    if (data.url) setForm((f) => ({ ...f, photoUrl: data.url }));
+    try {
+      const uploadPromises = files.map(async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+        const data = await res.json();
+        return data.url as string | undefined;
+      });
+      const urls = await Promise.all(uploadPromises);
+      const validUrls = urls.filter((url): url is string => !!url);
+      setForm((f) => ({ ...f, photos: [...f.photos, ...validUrls] }));
+    } catch (err) {
+      console.error("Upload error:", err);
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const url = editingId ? `/api/admin/odalar/${editingId}` : "/api/admin/odalar";
     const method = editingId ? "PUT" : "POST";
-    const payload = { ...form, photos: form.photoUrl ? [form.photoUrl] : [] };
+    const payload = { ...form, price: Number(form.price), capacity: Number(form.capacity), quantity: Number(form.quantity) };
     await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
+    setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photos: [], city: "Sinop Merkez" });
     setEditingId(null);
     loadData();
   }
@@ -61,7 +80,7 @@ export default function AdminOdalarPage() {
       capacity: room.capacity.toString(),
       quantity: room.quantity.toString(),
       categoryId: room.categoryId,
-      photoUrl: room.photos?.[0] || "",
+      photos: room.photos || [],
       city: room.city,
     });
   }
@@ -160,11 +179,78 @@ export default function AdminOdalarPage() {
           </div>
 
           <div>
-            <label style={labelStyle}>Fotoğraf Yükle</label>
-            <input type="file" accept="image/*" onChange={handleFileUpload} style={{ fontSize: "0.82rem" }} />
-            {uploading && <p style={{ fontSize: "0.78rem", color: "#6B7280", marginTop: "0.25rem" }}>Yükleniyor...</p>}
-            {form.photoUrl && (
-              <img src={form.photoUrl} alt="Önizleme" style={{ marginTop: "0.5rem", height: 100, width: "100%", objectFit: "cover", borderRadius: "8px" }} />
+            <label style={labelStyle}>Oda Fotoğrafları (Çoklu Yükleme & Drag-Drop)</label>
+            <div
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                const files = Array.from(e.dataTransfer.files);
+                handleFilesUpload(files);
+              }}
+              style={{
+                border: isDragging ? "2px dashed #A07840" : "2px dashed #E5E7EB",
+                borderRadius: "12px",
+                padding: "1.5rem",
+                textAlign: "center",
+                background: isDragging ? "#FDFBF7" : "#FAFAFA",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              onClick={() => document.getElementById("fileInput")?.click()}
+            >
+              <input
+                id="fileInput"
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={(e) => {
+                  const files = Array.from(e.target.files || []);
+                  handleFilesUpload(files);
+                }}
+                style={{ display: "none" }}
+              />
+              <span style={{ fontSize: "1.5rem", display: "block", marginBottom: "0.25rem" }}>🖼️</span>
+              <p style={{ fontSize: "0.82rem", fontWeight: 600, color: "#4B5563", margin: "0 0 0.25rem" }}>
+                Fotoğrafları sürükleyip bırakın veya tıklayın
+              </p>
+              <p style={{ fontSize: "0.72rem", color: "#9CA3AF", margin: 0 }}>
+                PNG, JPG veya WEBP (Birden fazla seçebilirsiniz)
+              </p>
+            </div>
+
+            {uploading && (
+              <p style={{ fontSize: "0.78rem", color: "#A07840", fontWeight: 600, marginTop: "0.5rem", display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                ⏳ Fotoğraflar yükleniyor...
+              </p>
+            )}
+
+            {form.photos.length > 0 && (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(70px, 1fr))", gap: "0.5rem", marginTop: "1rem" }}>
+                {form.photos.map((url, i) => (
+                  <div key={url} style={{ position: "relative", height: 70, borderRadius: "8px", overflow: "hidden", border: "1px solid #E5E7EB" }}>
+                    <img src={url} alt={`Oda Görseli ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setForm(f => ({ ...f, photos: f.photos.filter((_, idx) => idx !== i) }));
+                      }}
+                      style={{
+                        position: "absolute", top: 2, right: 2,
+                        background: "rgba(220, 38, 38, 0.85)", color: "white",
+                        border: "none", borderRadius: "50%", width: 16, height: 16,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "9px", fontWeight: "bold", cursor: "pointer",
+                        lineHeight: 1
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 
@@ -174,7 +260,7 @@ export default function AdminOdalarPage() {
                 type="button"
                 onClick={() => {
                   setEditingId(null);
-                  setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photoUrl: "", city: "Sinop Merkez" });
+                  setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photos: [], city: "Sinop Merkez" });
                 }}
                 style={{
                   flex: 1, padding: "0.75rem", borderRadius: "10px", border: "1px solid #E5E7EB",
