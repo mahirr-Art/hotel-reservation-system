@@ -28,6 +28,7 @@ export default function Navbar() {
     { href: "/odalarimiz", label: "Odalarımız" },
     { href: "/kategoriler", label: "Kategoriler" },
     { href: "/tatil", label: "Tatil Paketleri" },
+    { href: "/hizmetlerimiz", label: "Hizmetlerimiz" },
     { href: "/iletisim", label: "İletişim" },
     user
       ? { href: "/kullanici", label: "Profilim" }

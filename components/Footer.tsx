@@ -7,6 +7,7 @@ export default function Footer() {
     { href: "/odalarimiz", label: "Odalarımız" },
     { href: "/kategoriler", label: "Kategoriler" },
     { href: "/tatil", label: "Tatil Paketleri" },
+    { href: "/hizmetlerimiz", label: "Hizmetlerimiz" },
     { href: "/iletisim", label: "İletişim" },
     { href: "/kullanici", label: "Hesabım" },
   ];
@@ -94,9 +95,11 @@ export default function Footer() {
           <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {services.map((s) => (
-              <li key={s} style={{ fontSize: "0.87rem", color: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>›</span>
-                {s}
+              <li key={s}>
+                <Link href="/hizmetlerimiz" className="footer-link">
+                  <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>›</span>
+                  {s}
+                </Link>
               </li>
             ))}
           </ul>
