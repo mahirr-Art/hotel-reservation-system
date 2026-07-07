@@ -122,61 +122,87 @@ export default function TatilPage() {
                 border: "1px solid rgba(0,0,0,0.06)",
                 display: "flex",
                 flexDirection: "column",
+                boxShadow: "0 10px 30px rgba(13,27,42,0.04)",
               }}
             >
               {/* Image header */}
-              <div style={{ position: "relative", height: 200, overflow: "hidden" }}>
+              <div className="img-zoom" style={{ position: "relative", height: 220, overflow: "hidden" }}>
                 <img
                   src={pkg.image}
                   alt={pkg.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s" }}
+                  className="img-zoom-target"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
-                <div style={{ position: "absolute", inset: 0, background: pkg.gradient, opacity: 0.85 }} />
-                <div style={{ position: "absolute", inset: 0, padding: "1.5rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                {/* Clean soft gradient overlay */}
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to bottom, rgba(13,27,42,0.2) 50%, rgba(13,27,42,0.6) 100%)",
+                }} />
+                
+                {/* Badge top-left */}
+                <div style={{ position: "absolute", top: "1rem", left: "1rem" }}>
                   <span style={{
-                    alignSelf: "flex-start",
                     background: pkg.badgeColor,
                     color: "white",
                     fontSize: "0.68rem", fontWeight: 700,
                     letterSpacing: "0.08em", textTransform: "uppercase",
-                    padding: "0.3rem 0.75rem", borderRadius: "20px",
+                    padding: "0.35rem 0.85rem", borderRadius: "20px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                   }}>
                     {pkg.badge}
                   </span>
-                  <div>
-                    <p style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: pkg.accentColor, marginBottom: "0.35rem", opacity: 0.9 }}>
-                      {pkg.subtitle}
-                    </p>
-                    <h2 style={{
-                      fontFamily: "'Playfair Display', serif",
-                      fontSize: "1.4rem", fontWeight: 700, color: "white",
-                      lineHeight: 1.2, marginBottom: "0.5rem",
-                    }}>
-                      {pkg.title}
-                    </h2>
-                    <div style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", border: `1px solid ${pkg.accentColor}44`, borderRadius: "8px", padding: "0.35rem 0.875rem" }}>
-                      <span style={{ fontSize: "0.82rem", fontWeight: 700, color: pkg.accentColor }}>
-                        {pkg.price}
-                      </span>
-                    </div>
-                  </div>
+                </div>
+
+                {/* Price tag bottom-right */}
+                <div style={{
+                  position: "absolute", bottom: "1rem", right: "1rem",
+                  background: "rgba(255,255,255,0.92)",
+                  backdropFilter: "blur(8px)",
+                  border: `1.5px solid ${pkg.badgeColor}cc`,
+                  borderRadius: "10px",
+                  padding: "0.35rem 0.85rem",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+                }}>
+                  <span style={{ fontSize: "0.78rem", fontWeight: 800, color: pkg.badgeColor, letterSpacing: "0.02em" }}>
+                    {pkg.price}
+                  </span>
                 </div>
               </div>
 
               {/* Body */}
-              <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column" }}>
-                <p style={{ fontSize: "0.85rem", color: "var(--text-mid)", lineHeight: 1.7, marginBottom: "1.25rem" }}>
+              <div style={{ padding: "2rem", flex: 1, display: "flex", flexDirection: "column" }}>
+                <span style={{
+                  fontSize: "0.7rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "var(--gold-dark)",
+                  marginBottom: "0.35rem",
+                }}>
+                  {pkg.subtitle}
+                </span>
+
+                <h3 style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "1.45rem", fontWeight: 700,
+                  color: "var(--navy)", marginBottom: "0.75rem",
+                }}>
+                  {pkg.title}
+                </h3>
+
+                <p style={{ fontSize: "0.86rem", color: "var(--text-mid)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
                   {pkg.desc}
                 </p>
 
                 {/* Features */}
-                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem", flex: 1 }}>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.75rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
                   {pkg.features.map((f) => (
                     <li key={f} style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.82rem", color: "var(--text-dark)" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="3">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="3" style={{ flexShrink: 0 }}>
                         <polyline points="20,6 9,17 4,12" />
                       </svg>
-                      {f}
+                      <span style={{ fontWeight: 500 }}>{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -184,9 +210,9 @@ export default function TatilPage() {
                 <Link
                   href="/rezervasyon"
                   className="btn-primary"
-                  style={{ justifyContent: "center", borderRadius: "10px" }}
+                  style={{ justifyContent: "center", borderRadius: "10px", padding: "1rem" }}
                 >
-                  Bu Paketi Seç →
+                  Paketle Rezervasyon Yap →
                 </Link>
               </div>
             </div>

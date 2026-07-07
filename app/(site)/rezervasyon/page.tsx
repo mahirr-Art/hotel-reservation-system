@@ -248,25 +248,46 @@ function RezervasyonForm() {
             <option value="Gerze">Gerze</option>
           </select>
         </label>
-        <label className="text-sm">
-          Giriş Tarihi
-          <input 
-            type="date" 
-            value={checkIn} 
-            min={minDate}
-            max={checkOut || undefined}
-            onChange={(e) => {
-              const val = e.target.value;
-              setCheckIn(val);
-              if (checkOut && val >= checkOut) setCheckOut("");
-            }} 
-            className="mt-1 w-full rounded-lg border px-3 py-2" 
-          />
-        </label>
-        <label className="text-sm">
-          Çıkış Tarihi
-          <input type="date" value={checkOut} min={checkIn || undefined} onChange={(e) => setCheckOut(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2" />
-        </label>
+        <div className="flex flex-col text-sm">
+          <span>Giriş Tarihi</span>
+          <div className="relative mt-1 flex items-center bg-white border rounded-lg h-[42px] cursor-pointer hover:border-teal-600 transition-colors">
+            <span className="absolute left-3 text-neutral-400 pointer-events-none">📅</span>
+            <span className="pl-9 text-sm text-neutral-700 pointer-events-none font-medium">
+              {checkIn ? new Date(checkIn).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) : "Seçiniz"}
+            </span>
+            <input 
+              type="date" 
+              value={checkIn} 
+              min={minDate}
+              max={checkOut || undefined}
+              onChange={(e) => {
+                const val = e.target.value;
+                setCheckIn(val);
+                if (checkOut && val >= checkOut) setCheckOut("");
+              }} 
+              onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+              className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col text-sm">
+          <span>Çıkış Tarihi</span>
+          <div className="relative mt-1 flex items-center bg-white border rounded-lg h-[42px] cursor-pointer hover:border-teal-600 transition-colors">
+            <span className="absolute left-3 text-neutral-400 pointer-events-none">📅</span>
+            <span className="pl-9 text-sm text-neutral-700 pointer-events-none font-medium">
+              {checkOut ? new Date(checkOut).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) : "Seçiniz"}
+            </span>
+            <input 
+              type="date" 
+              value={checkOut} 
+              min={checkIn || minDate}
+              onChange={(e) => setCheckOut(e.target.value)} 
+              onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+              className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+            />
+          </div>
+        </div>
         <label className="text-sm">
           Kişi Sayısı
           <input type="number" min={1} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="mt-1 w-full rounded-lg border px-3 py-2" />

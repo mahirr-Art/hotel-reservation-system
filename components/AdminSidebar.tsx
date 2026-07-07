@@ -83,7 +83,13 @@ const navItems = [
   },
 ];
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+  isMobile?: boolean;
+}
+
+export default function AdminSidebar({ isOpen, onClose, isMobile }: AdminSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -96,14 +102,18 @@ export default function AdminSidebar() {
       flexDirection: "column",
       position: "fixed",
       top: 0,
-      left: 0,
+      left: isMobile ? (isOpen ? 0 : -260) : 0,
       bottom: 0,
       zIndex: 40,
+      transition: "left 0.3s ease",
     }}>
       {/* Logo */}
       <div style={{
         padding: "1.75rem 1.5rem",
         borderBottom: "1px solid rgba(201,169,110,0.12)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
           <div style={{
@@ -124,6 +134,25 @@ export default function AdminSidebar() {
             </p>
           </div>
         </div>
+        {isMobile && (
+          <button
+            onClick={onClose}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "rgba(255,255,255,0.6)",
+              cursor: "pointer",
+              padding: "0.25rem",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Nav */}
@@ -137,6 +166,7 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onClose}
               style={{
                 display: "flex",
                 alignItems: "center",

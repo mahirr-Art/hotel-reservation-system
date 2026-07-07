@@ -90,8 +90,30 @@ export default function HomeSearchForm() {
       {/* Giriş Tarihi */}
       <div style={fieldStyle}>
         <label style={labelStyle}>Giriş Tarihi</label>
-        <div style={inputWrapStyle}>
-          <span style={iconStyle}><CalendarIcon /></span>
+        <div style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          background: "white",
+          border: "1.5px solid #e2e8f0",
+          borderRadius: "4px",
+          height: "44px",
+          width: "100%",
+          transition: "border-color 0.2s",
+          cursor: "pointer",
+        }}
+        className="date-picker-container"
+        >
+          <span style={{ position: "absolute", left: "0.75rem", display: "flex", alignItems: "center", pointerEvents: "none" }}><CalendarIcon /></span>
+          <span style={{
+            fontSize: "0.82rem",
+            color: checkIn ? "var(--text-dark)" : "#94a3b8",
+            paddingLeft: "2.2rem",
+            pointerEvents: "none",
+            fontWeight: 500,
+          }}>
+            {checkIn ? new Date(checkIn).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) : "Giriş Tarihi Seçin"}
+          </span>
           <input
             type="date"
             name="checkIn"
@@ -102,8 +124,15 @@ export default function HomeSearchForm() {
               setCheckIn(val);
               if (checkOut && val >= checkOut) setCheckOut("");
             }}
-            className="search-date-input"
-            style={{ paddingLeft: "2.2rem" }}
+            onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              opacity: 0,
+              width: "100%",
+              height: "100%",
+              cursor: "pointer",
+            }}
           />
         </div>
       </div>
@@ -111,16 +140,45 @@ export default function HomeSearchForm() {
       {/* Çıkış Tarihi */}
       <div style={fieldStyle}>
         <label style={labelStyle}>Çıkış Tarihi</label>
-        <div style={inputWrapStyle}>
-          <span style={iconStyle}><CalendarIcon /></span>
+        <div style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          background: "white",
+          border: "1.5px solid #e2e8f0",
+          borderRadius: "4px",
+          height: "44px",
+          width: "100%",
+          transition: "border-color 0.2s",
+          cursor: "pointer",
+        }}
+        className="date-picker-container"
+        >
+          <span style={{ position: "absolute", left: "0.75rem", display: "flex", alignItems: "center", pointerEvents: "none" }}><CalendarIcon /></span>
+          <span style={{
+            fontSize: "0.82rem",
+            color: checkOut ? "var(--text-dark)" : "#94a3b8",
+            paddingLeft: "2.2rem",
+            pointerEvents: "none",
+            fontWeight: 500,
+          }}>
+            {checkOut ? new Date(checkOut).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) : "Çıkış Tarihi Seçin"}
+          </span>
           <input
             type="date"
             name="checkOut"
             value={checkOut}
             min={checkIn || minCheckIn}
             onChange={(e) => setCheckOut(e.target.value)}
-            className="search-date-input"
-            style={{ paddingLeft: "2.2rem" }}
+            onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              opacity: 0,
+              width: "100%",
+              height: "100%",
+              cursor: "pointer",
+            }}
           />
         </div>
       </div>

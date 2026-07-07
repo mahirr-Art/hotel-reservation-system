@@ -54,11 +54,35 @@ const subjects = [
   "Diğer",
 ];
 
+const faqs = [
+  {
+    question: "Giriş ve çıkış saatleriniz nedir?",
+    answer: "Giriş saati 14:00, çıkış saati ise en geç 12:00'dir. Müsaitliğe göre erken giriş veya geç çıkış talepleri konsiyerjimiz tarafından değerlendirilir."
+  },
+  {
+    question: "Rezervasyon iptal politikanız nedir?",
+    answer: "Rezervasyon tarihinizden 14 gün öncesine kadar ücretsiz iptal gerçekleştirebilir ve ödediğiniz ücretin tamamını geri alabilirsiniz. Son 14 günde yapılan iptallerde ücret iadesi yapılmamaktadır."
+  },
+  {
+    question: "Otelinizde evcil hayvan kabul ediliyor mu?",
+    answer: "Maalesef otelimizin genel hijyen ve konsept kuralları gereği evcil hayvan kabul edemiyoruz."
+  },
+  {
+    question: "Havalimanı transfer hizmetiniz var mı?",
+    answer: "Evet, Sinop Havalimanı ile otelimiz arasında özel araçlarla transfer hizmeti sunuyoruz. Erken rezervasyon paketlerimizde bu hizmet ücretsizdir. Diğer rezervasyonlar için ücretlidir ve önceden rezervasyon yapılması gereklidir."
+  },
+  {
+    question: "Odalarda sigara içiliyor mu?",
+    answer: "Otelimizin tüm kapalı alanları ve odaları dumansız hava sahası kapsamındadır. Sigara tüketimi sadece açık balkonlarda ve bahçe alanlarında serbesttir."
+  }
+];
+
 export default function IletisimPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -111,6 +135,7 @@ export default function IletisimPage() {
           gridTemplateColumns: "1fr 1.5fr",
           gap: "3rem",
           alignItems: "start",
+          marginBottom: "4rem",
         }}
         className="contact-grid"
         >
@@ -320,6 +345,79 @@ export default function IletisimPage() {
                 </form>
               </>
             )}
+          </div>
+        </div>
+
+        {/* FAQ Accordion Section */}
+        <div style={{ marginTop: "6rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <p className="section-label" style={{ marginBottom: "0.5rem" }}>Sıkça Sorulan Sorular</p>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+              Merak Edilenler
+            </h2>
+            <div className="gold-divider" style={{ margin: "0 auto" }} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: "800px", margin: "0 auto" }}>
+            {faqs.map((faq, i) => {
+              const isOpen = openFaq === i;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    background: "white",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(0,0,0,0.06)",
+                    boxShadow: "0 4px 20px rgba(13,27,42,0.02)",
+                    overflow: "hidden",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : i)}
+                    style={{
+                      width: "100%",
+                      padding: "1.25rem 1.75rem",
+                      background: "none",
+                      border: "none",
+                      outline: "none",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      textAlign: "left",
+                    }}
+                  >
+                    <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--navy)", fontFamily: "'Inter', sans-serif" }}>
+                      {faq.question}
+                    </span>
+                    <span style={{
+                      fontSize: "1.2rem",
+                      color: "var(--gold-dark)",
+                      transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                      transition: "transform 0.2s ease",
+                      lineHeight: 1,
+                      display: "inline-block",
+                    }}>
+                      +
+                    </span>
+                  </button>
+                  
+                  {isOpen && (
+                    <div style={{
+                      padding: "0 1.75rem 1.5rem",
+                      fontSize: "0.88rem",
+                      color: "var(--text-mid)",
+                      lineHeight: 1.7,
+                      borderTop: "1px solid #F3F4F6",
+                      paddingTop: "1rem",
+                    }}>
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

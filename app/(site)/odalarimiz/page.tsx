@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import RoomsGrid from "@/components/RoomsGrid";
+import { Suspense } from "react";
 
 export default async function OdalarimizPage() {
   const [rooms, categories] = await Promise.all([
@@ -58,7 +59,9 @@ export default async function OdalarimizPage() {
 
       {/* Main Content Area */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "4rem 1.5rem" }}>
-        <RoomsGrid initialRooms={serializedRooms} categories={serializedCategories} />
+        <Suspense fallback={<p style={{ color: "var(--text-light)", textAlign: "center", padding: "3rem" }}>Yükleniyor...</p>}>
+          <RoomsGrid initialRooms={serializedRooms} categories={serializedCategories} />
+        </Suspense>
       </div>
     </div>
   );

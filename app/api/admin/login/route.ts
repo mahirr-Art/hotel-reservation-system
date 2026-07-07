@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   const response = NextResponse.json({ ok: true });
   response.cookies.set(ADMIN_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" && !request.nextUrl.hostname.includes("localhost"),
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,

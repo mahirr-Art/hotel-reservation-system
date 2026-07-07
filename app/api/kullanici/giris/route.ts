@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   });
   response.cookies.set(USER_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" && !req.nextUrl.hostname.includes("localhost"),
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30,

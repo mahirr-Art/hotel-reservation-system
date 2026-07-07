@@ -3,23 +3,36 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-const links = [
-  { href: "/odalarimiz", label: "Odalarımız" },
-  { href: "/tatil", label: "Tatil Paketleri" },
-  { href: "/iletisim", label: "İletişim" },
-  { href: "/kullanici", label: "Giriş Yap" },
-];
-
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ id: string; fullName: string; email: string } | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", handleScroll, { passive: true });
+
+    fetch("/api/kullanici/ben")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.user) {
+          setUser(data.user);
+        }
+      })
+      .catch(() => {});
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const dynamicLinks = [
+    { href: "/odalarimiz", label: "Odalarımız" },
+    { href: "/kategoriler", label: "Kategoriler" },
+    { href: "/tatil", label: "Tatil Paketleri" },
+    { href: "/iletisim", label: "İletişim" },
+    user
+      ? { href: "/kullanici", label: "Profilim" }
+      : { href: "/kullanici", label: "Giriş Yap" },
+  ];
 
   return (
     <>
@@ -103,7 +116,7 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
+            {dynamicLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -164,7 +177,7 @@ export default function Navbar() {
             className="md:hidden"
           >
             <ul className="flex flex-col gap-4">
-              {links.map((link) => (
+              {dynamicLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

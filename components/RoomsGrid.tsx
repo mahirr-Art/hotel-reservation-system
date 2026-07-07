@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 type Category = {
   id: string;
@@ -27,7 +28,9 @@ interface RoomsGridProps {
 }
 
 export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) {
-  const [activeTab, setActiveTab] = useState<string>("all");
+  const searchParams = useSearchParams();
+  const katParam = searchParams.get("kategori");
+  const [activeTab, setActiveTab] = useState<string>(katParam || "all");
 
   const filteredRooms = activeTab === "all"
     ? initialRooms
