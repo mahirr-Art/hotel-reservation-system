@@ -175,7 +175,7 @@ export default async function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-center animate-zoom-slow"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=cover&w=1920&q=80')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=cover&w=1920&q=80')",
             zIndex: 0,
           }}
         />
