@@ -326,42 +326,69 @@ export default async function HomePage() {
             </p>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
-              {featuredRooms.map((room) => (
-                <Link
-                  key={room.id}
-                  href={`/odalarimiz/${room.id}`}
-                  className="card-hover img-zoom"
-                  style={{ background: "var(--white)", borderRadius: "4px", overflow: "hidden", border: "1px solid rgba(0,0,0,0.06)", textDecoration: "none", display: "block" }}
-                >
-                  <div style={{ aspectRatio: "4/3", background: "var(--cream-dark)", overflow: "hidden", position: "relative" }}>
-                    {room.photos?.[0] ? (
-                      <img src={room.photos[0]} alt={room.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-light)" }}>
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21,15 16,10 5,21" /></svg>
+              {featuredRooms.map((room) => {
+                let name = room.name;
+                let desc = room.description || "";
+                let catName = room.category.name;
+
+                if (lang === "en") {
+                  if (room.name.includes("Deniz Feneri Şömineli Aile Süiti")) {
+                    name = "Lighthouse Family Suite with Fireplace";
+                    desc = "Designed for large families, a luxury suite with two separate bedrooms and a shared fireplace living room. Features 2 bathrooms, fully equipped minibar, and a spacious balcony with Black Sea view.";
+                  } else if (room.name.includes("Kuzey Feneri Jakuzili Süit")) {
+                    name = "North Lighthouse Suite with Jacuzzi";
+                    desc = "With its full-height panoramic windows, this special suite offers a 180-degree Black Sea view. Features in-room jacuzzi, fireplace living area, VIP welcoming treats, and 24-hour private room service.";
+                  } else if (room.name.includes("Deluxe Teraslı Queen Oda")) {
+                    name = "Deluxe Queen Room with Terrace";
+                    desc = "A premium room where you can watch the sunset on your own spacious private terrace. Features modern fireplace detail, smart TV system, and luxury guest amenities.";
+                  } else {
+                    if (room.name.includes("Standart")) name = name.replace("Standart", "Standard");
+                    if (room.name.includes("Süit")) name = name.replace("Süit", "Suite");
+                    if (room.name.includes("Balayı")) name = name.replace("Balayı", "Honeymoon");
+                  }
+
+                  if (room.category.name === "Standart Oda") catName = "Standard Room";
+                  else if (room.category.name === "Deluxe Oda") catName = "Deluxe Room";
+                  else if (room.category.name === "Süit Oda") catName = "Suite Room";
+                }
+
+                return (
+                  <Link
+                    key={room.id}
+                    href={`/odalarimiz/${room.id}`}
+                    className="card-hover img-zoom"
+                    style={{ background: "var(--white)", borderRadius: "4px", overflow: "hidden", border: "1px solid rgba(0,0,0,0.06)", textDecoration: "none", display: "block" }}
+                  >
+                    <div style={{ aspectRatio: "4/3", background: "var(--cream-dark)", overflow: "hidden", position: "relative" }}>
+                      {room.photos?.[0] ? (
+                        <img src={room.photos[0]} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      ) : (
+                        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-light)" }}>
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21,15 16,10 5,21" /></svg>
+                        </div>
+                      )}
+                      <div style={{ position: "absolute", top: "1rem", left: "1rem", background: "var(--gold)", color: "var(--navy)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", padding: "0.3rem 0.75rem", borderRadius: "2px" }}>
+                        {catName}
                       </div>
-                    )}
-                    <div style={{ position: "absolute", top: "1rem", left: "1rem", background: "var(--gold)", color: "var(--navy)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", padding: "0.3rem 0.75rem", borderRadius: "2px" }}>
-                      {room.category.name}
                     </div>
-                  </div>
-                  <div style={{ padding: "1.75rem" }}>
-                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.25rem", fontWeight: 600, color: "var(--navy)", marginBottom: "0.5rem" }}>{room.name}</h3>
-                    <p style={{ fontSize: "0.85rem", color: "var(--text-light)", marginBottom: "1.25rem", lineHeight: 1.6 }}>{room.description}</p>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <div>
-                        <span style={{ fontSize: "0.7rem", color: "var(--text-light)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t.perNight}</span>
-                        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--navy)" }}>
-                          {room.price.toString()} <span style={{ fontSize: "0.9rem", fontWeight: 400 }}>₺</span>
-                        </p>
+                    <div style={{ padding: "1.75rem" }}>
+                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.25rem", fontWeight: 600, color: "var(--navy)", marginBottom: "0.5rem" }}>{name}</h3>
+                      <p style={{ fontSize: "0.85rem", color: "var(--text-light)", marginBottom: "1.25rem", lineHeight: 1.6 }}>{desc}</p>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <div>
+                          <span style={{ fontSize: "0.7rem", color: "var(--text-light)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t.perNight}</span>
+                          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--navy)" }}>
+                            {room.price.toString()} <span style={{ fontSize: "0.9rem", fontWeight: 400 }}>₺</span>
+                          </p>
+                        </div>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-dark)", borderBottom: "1px solid var(--gold)" }}>
+                          {t.detailsArrow}
+                        </span>
                       </div>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-dark)", borderBottom: "1px solid var(--gold)" }}>
-                        {t.detailsArrow}
-                      </span>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
