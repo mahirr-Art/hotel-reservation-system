@@ -320,7 +320,7 @@ function RezervasyonForm() {
 
         {/* İletişim */}
         <div style={{ textAlign: "center", fontSize: "0.82rem", color: "var(--text-light)", lineHeight: 1.7 }}>
-          {lang === "tr" ? "Sorularınız için:" : "Need help?"} <a href="tel:+903682710000" style={{ color: "var(--gold-dark)", fontWeight: 600 }}>+90 368 271 00 00</a> ·{" "}
+          {lang === "tr" ? "Sorularınız için:" : "Need help?"} <a href="tel:+905537905757" style={{ color: "var(--gold-dark)", fontWeight: 600 }}>+90 (553) 790 57 57</a> ·{" "}
           <a href="mailto:info@kuzeyfeneri.com" style={{ color: "var(--gold-dark)", fontWeight: 600 }}>info@kuzeyfeneri.com</a>
         </div>
       </div>

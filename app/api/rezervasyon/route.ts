@@ -191,7 +191,7 @@ export async function POST(request: NextRequest) {
 
                 <p style="font-size: 0.85rem; color: #6B7280; line-height: 1.6;">
                   Sorularınız veya değişiklik talepleriniz için bizimle 7/24 iletişime geçebilirsiniz:<br>
-                  📞 <strong>+90 (368) 271 00 00</strong><br>
+                  📞 <strong>+90 (553) 790 57 57</strong><br>
                   ✉️ <strong>info@kuzeyfeneri.com</strong>
                 </p>
               </div>

@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
     ? "Merhaba, Kuzey Feneri Butik Otel hakkında bilgi almak istiyorum."
     : "Hello, I would like to get information about North Lighthouse Boutique Hotel.";
 
-  const link = `https://wa.me/903682710000?text=${encodeURIComponent(text)}`;
+  const link = `https://wa.me/905537905757?text=${encodeURIComponent(text)}`;
 
   return (
     <a

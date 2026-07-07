@@ -1,101 +1,104 @@
 "use client";
 
 import { useState } from "react";
-
-const contactInfo = [
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-      </svg>
-    ),
-    label: "Adres",
-    value: "Fatih Mah. Sahil Cad. No:12",
-    sub: "Gerze / Sinop 57800",
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-      </svg>
-    ),
-    label: "Telefon",
-    value: "+90 (368) 271 00 00",
-    sub: "7/24 hizmetinizdeyiz",
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-      </svg>
-    ),
-    label: "E-posta",
-    value: "info@kuzeyfeneri.com",
-    sub: "24 saat içinde yanıt",
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
-      </svg>
-    ),
-    label: "Çalışma Saatleri",
-    value: "Her Gün 07:00 – 23:00",
-    sub: "Resepsiyon 24 saat açık",
-  },
-];
-
-const subjects = [
-  "Rezervasyon Hakkında",
-  "Fiyat & Kampanya",
-  "Özel Etkinlik",
-  "Şikayet & Öneri",
-  "Kurumsal",
-  "Diğer",
-];
-
-const faqs = [
-  {
-    question: "Giriş ve çıkış saatleriniz nedir?",
-    answer: "Giriş saati 14:00, çıkış saati ise en geç 12:00'dir. Müsaitliğe göre erken giriş veya geç çıkış talepleri konsiyerjimiz tarafından değerlendirilir."
-  },
-  {
-    question: "Rezervasyon iptal politikanız nedir?",
-    answer: "Rezervasyon tarihinizden 14 gün öncesine kadar ücretsiz iptal gerçekleştirebilir ve ödediğiniz ücretin tamamını geri alabilirsiniz. Son 14 günde yapılan iptallerde ücret iadesi yapılmamaktadır."
-  },
-  {
-    question: "Otelinizde evcil hayvan kabul ediliyor mu?",
-    answer: "Maalesef otelimizin genel hijyen ve konsept kuralları gereği evcil hayvan kabul edemiyoruz."
-  },
-  {
-    question: "Havalimanı transfer hizmetiniz var mı?",
-    answer: "Evet, Sinop Havalimanı ile otelimiz arasında özel araçlarla transfer hizmeti sunuyoruz. Erken rezervasyon paketlerimizde bu hizmet ücretsizdir. Diğer rezervasyonlar için ücretlidir ve önceden rezervasyon yapılması gereklidir."
-  },
-  {
-    question: "Odalarda sigara içiliyor mu?",
-    answer: "Otelimizin tüm kapalı alanları ve odaları dumansız hava sahası kapsamındadır. Sigara tüketimi sadece açık balkonlarda ve bahçe alanlarında serbesttir."
-  }
-];
+import { useTranslation } from "@/lib/lang";
 
 export default function IletisimPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const { lang, t } = useTranslation();
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-  
-  // KVKK states
-  const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [showKvkkModal, setShowKvkkModal] = useState(false);
+  const [kvkkAccepted, setKvkkAccepted] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const contactInfo = [
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      ),
+      label: lang === "tr" ? "Adres" : "Address",
+      value: "Fatih Mah. Sahil Cad. No:12",
+      sub: "Gerze / Sinop 57800",
+    },
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+      ),
+      label: lang === "tr" ? "Telefon" : "Phone",
+      value: "+90 (553) 790 57 57",
+      sub: lang === "tr" ? "7/24 hizmetinizdeyiz" : "Available 24/7",
+    },
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+        </svg>
+      ),
+      label: "E-posta",
+      value: "info@kuzeyfeneri.com",
+      sub: lang === "tr" ? "24 saat içinde yanıt" : "Response within 24 hours",
+    },
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+        </svg>
+      ),
+      label: lang === "tr" ? "Çalışma Saatleri" : "Working Hours",
+      value: lang === "tr" ? "Her Gün 07:00 - 23:00" : "Every Day 07:00 - 23:00",
+      sub: lang === "tr" ? "Resepsiyon 24 saat açık" : "Reception open 24 hours",
+    },
+  ];
+
+  const subjects = lang === "tr" 
+    ? ["Rezervasyon Sorusu", "Özel İstek / Talep", "Grup / Organizasyon", "Geri Bildirim / Şikayet", "Diğer"]
+    : ["Booking Inquiry", "Special Request", "Group / Event", "Feedback / Complaint", "Other"];
+
+  const faqs = [
+    {
+      question: lang === "tr" ? "Otele giriş ve çıkış saatleri nedir?" : "What are the check-in and check-out times?",
+      answer: lang === "tr" 
+        ? "Giriş saati 14:00, çıkış saati ise 12:00'dir. Müsaitlik doğrultusunda erken giriş veya geç çıkış taleplerinize yardımcı olmaktan mutluluk duyarız."
+        : "Check-in time is 14:00 and check-out time is 12:00. Based on availability, we would be happy to assist with early check-in or late check-out requests."
+    },
+    {
+      question: lang === "tr" ? "Fiyatlara kahvaltı dahil mi?" : "Is breakfast included in the prices?",
+      answer: lang === "tr"
+        ? "Evet, tüm konaklama fiyatlarımıza yöresel Sinop ürünleriyle zenginleştirilmiş serpme kahvaltımız dahildir."
+        : "Yes, all our accommodation rates include a rich spread breakfast enriched with local Sinop products."
+    },
+    {
+      question: lang === "tr" ? "Otelde otopark hizmeti var mı?" : "Is there parking service at the hotel?",
+      answer: lang === "tr"
+        ? "Evet, misafirlerimize özel ücretsiz açık otoparkımız ve vale hizmetimiz mevcuttur."
+        : "Yes, we offer free private outdoor parking and valet services for our guests."
+    },
+    {
+      question: lang === "tr" ? "Rezervasyon iptal şartları nelerdir?" : "What are the reservation cancellation policies?",
+      answer: lang === "tr"
+        ? "Rezervasyon iptalleri giriş tarihinden en geç 7 gün öncesine kadar ücretsizdir. Sonrasında yapılan iptallerde ilk gece ücreti tahsil edilir."
+        : "Cancellations are free of charge up to 7 days before check-in. For cancellations made after this, the first night's rate will be charged."
+    }
+  ];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (!kvkkAccepted) {
-      setError("Lütfen KVKK Aydınlatma Metnini okuyup onaylayın.");
-      return;
-    }
     setLoading(true);
+
     const res = await fetch("/api/iletisim", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -103,7 +106,7 @@ export default function IletisimPage() {
     });
     setLoading(false);
     if (!res.ok) {
-      setError("Mesajınız gönderilemedi. Lütfen tekrar deneyin.");
+      setError(lang === "tr" ? "Mesajınız gönderilemedi. Lütfen tekrar deneyin." : "Could not send your message. Please try again.");
       return;
     }
     setSent(true);
@@ -119,19 +122,25 @@ export default function IletisimPage() {
         position: "relative",
         overflow: "hidden",
       }}>
-        <div style={{ position: "absolute", inset: 0, background: "url('/hotel_hero_bg.jpg') center/cover", opacity: 0.08 }} />
+        <div style={{ position: "absolute", inset: 0, background: "url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=cover&w=1920&q=80') center/cover", opacity: 0.12 }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 600, margin: "0 auto" }}>
-          <p className="section-label" style={{ marginBottom: "0.75rem" }}>Bize Ulaşın</p>
+          <p className="section-label" style={{ marginBottom: "0.75rem" }}>{lang === "tr" ? "Bize Ulaşın" : "Contact Us"}</p>
           <h1 style={{
             fontFamily: "'Playfair Display', serif",
             fontSize: "clamp(2rem, 5vw, 3.2rem)",
             fontWeight: 700, color: "white",
             marginBottom: "1rem", lineHeight: 1.2,
           }}>
-            İletişim<em style={{ color: "var(--gold)" }}> & Destek</em>
+            {lang === "tr" ? (
+              <>İletişim<em style={{ color: "var(--gold)" }}> & Destek</em></>
+            ) : (
+              <>Contact<em style={{ color: "var(--gold)" }}> & Support</em></>
+            )}
           </h1>
           <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.95rem", lineHeight: 1.7 }}>
-            Sorularınız, özel istekleriniz veya etkinlik planlamanız için 7/24 buradayız.
+            {lang === "tr" 
+              ? "Sorularınız, özel istekleriniz veya etkinlik planlamanız için 7/24 buradayız."
+              : "We are here 24/7 for your questions, special requests, or event planning."}
           </p>
         </div>
       </div>
@@ -150,7 +159,7 @@ export default function IletisimPage() {
           {/* Left: Info */}
           <div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
-              İletişim Bilgileri
+              {lang === "tr" ? "İletişim Bilgileri" : "Contact Information"}
             </h2>
             <div className="gold-divider" style={{ marginBottom: "2rem" }} />
 
@@ -165,7 +174,7 @@ export default function IletisimPage() {
                     width: 44, height: 44, borderRadius: "12px",
                     background: "var(--navy)",
                     color: "var(--gold)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
+                    display: "flex", alignItems: "center", justifyItems: "center", justifyContent: "center",
                     flexShrink: 0,
                   }}>
                     {info.icon}
@@ -184,7 +193,7 @@ export default function IletisimPage() {
             {/* Social Media */}
             <div>
               <p style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-light)", marginBottom: "1rem" }}>
-                Sosyal Medya
+                {lang === "tr" ? "Sosyal Medya" : "Social Media"}
               </p>
               <div style={{ display: "flex", gap: "0.75rem" }}>
                 {[
@@ -246,33 +255,35 @@ export default function IletisimPage() {
                   ✅
                 </div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.75rem" }}>
-                  Mesajınız Gönderildi!
+                  {lang === "tr" ? "Mesajınız Gönderildi!" : "Message Sent!"}
                 </h3>
                 <p style={{ color: "var(--text-light)", fontSize: "0.9rem", lineHeight: 1.6 }}>
-                  En kısa sürede size dönüş yapacağız. Genellikle 24 saat içinde yanıt veriyoruz.
+                  {lang === "tr" 
+                    ? "En kısa sürede size dönüş yapacağız. Genellikle 24 saat içinde yanıt veriyoruz."
+                    : "We will get back to you as soon as possible. We usually reply within 24 hours."}
                 </p>
                 <button
                   onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); }}
                   className="btn-outline"
                   style={{ marginTop: "1.5rem" }}
                 >
-                  Yeni Mesaj Gönder
+                  {lang === "tr" ? "Yeni Mesaj Gönder" : "Send Another Message"}
                 </button>
               </div>
             ) : (
               <>
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
-                  Mesaj Gönderin
+                  {lang === "tr" ? "Mesaj Gönderin" : "Send a Message"}
                 </h2>
                 <div className="gold-divider" style={{ marginBottom: "2rem" }} />
 
                 <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="form-grid">
                     <div>
-                      <label style={labelStyle}>Ad Soyad *</label>
+                      <label style={labelStyle}>{lang === "tr" ? "Ad Soyad *" : "Full Name *"}</label>
                       <input
                         required
-                        placeholder="Adınız Soyadınız"
+                        placeholder={lang === "tr" ? "Adınız Soyadınız" : "Your Full Name"}
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         style={inputStyle}
@@ -281,7 +292,7 @@ export default function IletisimPage() {
                       />
                     </div>
                     <div>
-                      <label style={labelStyle}>Telefon</label>
+                      <label style={labelStyle}>{lang === "tr" ? "Telefon" : "Phone Number"}</label>
                       <input
                         placeholder="+90 5xx xxx xx xx"
                         value={form.phone}
@@ -294,7 +305,7 @@ export default function IletisimPage() {
                   </div>
 
                   <div>
-                    <label style={labelStyle}>E-posta *</label>
+                    <label style={labelStyle}>{lang === "tr" ? "E-posta *" : "Email Address *"}</label>
                     <input
                       required
                       type="email"
@@ -308,7 +319,7 @@ export default function IletisimPage() {
                   </div>
 
                   <div>
-                    <label style={labelStyle}>Konu *</label>
+                    <label style={labelStyle}>{lang === "tr" ? "Konu *" : "Subject *"}</label>
                     <select
                       required
                       value={form.subject}
@@ -317,17 +328,17 @@ export default function IletisimPage() {
                       onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
                       onBlur={(e) => (e.target.style.borderColor = "#E5E7EB")}
                     >
-                      <option value="">Konu seçin...</option>
+                      <option value="">{lang === "tr" ? "Konu seçin..." : "Select a subject..."}</option>
                       {subjects.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
 
                   <div>
-                    <label style={labelStyle}>Mesajınız *</label>
+                    <label style={labelStyle}>{lang === "tr" ? "Mesajınız *" : "Your Message *"}</label>
                     <textarea
                       required
                       rows={5}
-                      placeholder="Mesajınızı buraya yazın..."
+                      placeholder={lang === "tr" ? "Mesajınızı buraya yazın..." : "Write your message here..."}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       style={{ ...inputStyle, resize: "vertical" }}
@@ -346,15 +357,31 @@ export default function IletisimPage() {
                       style={{ marginTop: "3px", cursor: "pointer" }}
                     />
                     <label htmlFor="kvkkCheck" style={{ fontSize: "0.78rem", color: "var(--text-light)", cursor: "pointer", lineHeight: 1.4 }}>
-                      Kuzey Feneri Butik Otel{" "}
-                      <button
-                        type="button"
-                        onClick={() => setShowKvkkModal(true)}
-                        style={{ color: "var(--gold-dark)", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
-                      >
-                        KVKK Aydınlatma Metnini
-                      </button>{" "}
-                      okudum ve kabul ediyorum.
+                      {lang === "tr" ? (
+                        <>
+                          Kuzey Feneri Butik Otel{" "}
+                          <button
+                            type="button"
+                            onClick={() => setShowKvkkModal(true)}
+                            style={{ color: "var(--gold-dark)", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                          >
+                            KVKK Aydınlatma Metnini
+                          </button>{" "}
+                          okudum ve kabul ediyorum.
+                        </>
+                      ) : (
+                        <>
+                          I have read and agree to the North Lighthouse Boutique Hotel{" "}
+                          <button
+                            type="button"
+                            onClick={() => setShowKvkkModal(true)}
+                            style={{ color: "var(--gold-dark)", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                          >
+                            KVKK Clarification Text
+                          </button>
+                          .
+                        </>
+                      )}
                     </label>
                   </div>
 
@@ -370,7 +397,7 @@ export default function IletisimPage() {
                     className="btn-primary"
                     style={{ justifyContent: "center", borderRadius: "10px", opacity: (loading || !kvkkAccepted) ? 0.7 : 1 }}
                   >
-                    {loading ? "Gönderiliyor..." : "Mesaj Gönder →"}
+                    {loading ? (lang === "tr" ? "Gönderiliyor..." : "Sending...") : (lang === "tr" ? "Mesaj Gönder →" : "Send Message →")}
                   </button>
                 </form>
               </>
@@ -381,9 +408,9 @@ export default function IletisimPage() {
         {/* FAQ Accordion Section */}
         <div style={{ marginTop: "6rem" }}>
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p className="section-label" style={{ marginBottom: "0.5rem" }}>Sıkça Sorulan Sorular</p>
+            <p className="section-label" style={{ marginBottom: "0.5rem" }}>{lang === "tr" ? "Sıkça Sorulan Sorular" : "Frequently Asked Questions"}</p>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
-              Merak Edilenler
+              {lang === "tr" ? "Merak Edilenler" : "FAQ"}
             </h2>
             <div className="gold-divider" style={{ margin: "0 auto" }} />
           </div>
@@ -492,18 +519,22 @@ export default function IletisimPage() {
               ✕
             </button>
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.25rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
-              KVKK Aydınlatma Metni
+              {lang === "tr" ? "KVKK Aydınlatma Metni" : "KVKK Clarification Text"}
             </h3>
             <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
             <p style={{ fontSize: "0.85rem", color: "var(--text-mid)", lineHeight: 1.7, marginBottom: "2rem" }}>
-              Kuzey Feneri Butik Otel olarak kişisel verilerinizin güvenliğine önem veriyoruz. İletişim formu aracılığıyla toplanan ad, e-posta, telefon ve mesaj bilgileriniz, sorularınızı yanıtlamak ve size daha iyi hizmet sunabilmek amacıyla işlenecektir. Verileriniz üçüncü şahıslarla paylaşılmayacaktır.
+              {lang === "tr" ? (
+                "Kuzey Feneri Butik Otel olarak kişisel verilerinizin güvenliğine önem veriyoruz. İletişim formu aracılığıyla toplanan ad, e-posta, telefon ve mesaj bilgileriniz, sorularınızı yanıtlamak ve size daha iyi hizmet sunabilmek amacıyla işlenecektir. Verileriniz üçüncü şahıslarla paylaşılmayacaktır."
+              ) : (
+                "As North Lighthouse Boutique Hotel, we value the security of your personal data. Your name, email, phone number, and message collected through the contact form will be processed to answer your inquiries and provide you with better service. Your data will not be shared with third parties."
+              )}
             </p>
             <button
               onClick={() => { setKvkkAccepted(true); setShowKvkkModal(false); }}
               className="btn-primary"
               style={{ width: "100%", justifyContent: "center", borderRadius: "10px" }}
             >
-              Okudum, Kabul Ediyorum
+              {lang === "tr" ? "Okudum, Kabul Ediyorum" : "I Have Read and Agree"}
             </button>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function Navbar() {
   const { lang, changeLanguage, t } = useTranslation();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     fetch("/api/kullanici/ben")
@@ -53,7 +53,7 @@ export default function Navbar() {
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-              +90 (368) 271 00 00
+              +90 (553) 790 57 57
             </span>
             <span className="flex items-center gap-1.5">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -77,42 +77,23 @@ export default function Navbar() {
       {/* Main navbar */}
       <header
         style={{
-          background: scrolled ? "var(--navy)" : "rgba(13,27,42,0.75)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
+          background: scrolled ? "var(--navy)" : "rgba(13,27,42,0.85)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           borderBottom: scrolled ? "1px solid rgba(201,169,110,0.2)" : "1px solid rgba(255,255,255,0.08)",
-          transition: "all 0.4s ease",
+          transition: "all 0.3s ease",
           position: "sticky",
           top: 0,
           zIndex: 50,
         }}
       >
-        <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        <nav className="navbar-nav">
           {/* Logo */}
           <Link href="/" className="flex flex-col leading-none group" style={{ textDecoration: "none" }}>
-            <span
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "1.35rem",
-                fontWeight: 700,
-                letterSpacing: "0.04em",
-                color: "var(--gold)",
-                lineHeight: 1.1,
-              }}
-            >
+            <span className="logo-title">
               Kuzey Feneri
             </span>
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "0.55rem",
-                fontWeight: 500,
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                color: "var(--gold-light)",
-                opacity: 0.8,
-              }}
-            >
+            <span className="logo-subtitle">
               Butik Otel · Sinop Gerze
             </span>
           </Link>
@@ -151,42 +132,43 @@ export default function Navbar() {
 
           {/* CTA & Language switcher */}
           <div className="flex items-center gap-3">
-            <div style={{ display: "flex", gap: "0.2rem", marginRight: "0.5rem", background: "rgba(255,255,255,0.06)", borderRadius: "20px", padding: "2px 6px", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ display: "flex", gap: "0.2rem", marginRight: "0.25rem", background: "rgba(255,255,255,0.06)", borderRadius: "20px", padding: "2px 6px", border: "1px solid rgba(255,255,255,0.08)" }}>
               <button
                 onClick={() => changeLanguage("tr")}
                 style={{
                   background: "none", border: "none", color: lang === "tr" ? "var(--gold)" : "rgba(255,255,255,0.45)",
-                  fontWeight: lang === "tr" ? 800 : 500, fontSize: "0.72rem", cursor: "pointer", padding: "2px 6px"
+                  fontWeight: lang === "tr" ? 800 : 500, fontSize: "0.7rem", cursor: "pointer", padding: "2px 4px"
                 }}
               >
                 TR
               </button>
-              <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem", alignSelf: "center" }}>|</span>
+              <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.7rem", alignSelf: "center" }}>|</span>
               <button
                 onClick={() => changeLanguage("en")}
                 style={{
                   background: "none", border: "none", color: lang === "en" ? "var(--gold)" : "rgba(255,255,255,0.45)",
-                  fontWeight: lang === "en" ? 800 : 500, fontSize: "0.72rem", cursor: "pointer", padding: "2px 6px"
+                  fontWeight: lang === "en" ? 800 : 500, fontSize: "0.7rem", cursor: "pointer", padding: "2px 4px"
                 }}
               >
                 EN
               </button>
             </div>
             
-            <Link href="/rezervasyon" className="btn-primary hidden md:inline-flex">
+            <Link href="/rezervasyon" className="btn-primary nav-book-btn">
               {t.bookNow}
             </Link>
+
             {/* Hamburger */}
             <button
               id="mobile-menu-btn"
               aria-label="Menüyü aç"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden flex flex-col gap-1.5 p-1"
-              style={{ color: "var(--gold)" }}
+              className="md:hidden flex flex-col gap-1.5 p-2"
+              style={{ color: "var(--gold)", background: "none", border: "none", cursor: "pointer" }}
             >
-              <span style={{ display: "block", width: 22, height: 2, background: "var(--gold)", borderRadius: 2, transition: "transform 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }} />
-              <span style={{ display: "block", width: 22, height: 2, background: "var(--gold)", borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: "opacity 0.3s" }} />
-              <span style={{ display: "block", width: 22, height: 2, background: "var(--gold)", borderRadius: 2, transition: "transform 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" }} />
+              <span style={{ display: "block", width: 20, height: 2, background: "var(--gold)", borderRadius: 2, transition: "transform 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }} />
+              <span style={{ display: "block", width: 20, height: 2, background: "var(--gold)", borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: "opacity 0.3s" }} />
+              <span style={{ display: "block", width: 20, height: 2, background: "var(--gold)", borderRadius: 2, transition: "transform 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" }} />
             </button>
           </div>
         </nav>
@@ -222,7 +204,7 @@ export default function Navbar() {
                 </li>
               ))}
               <li>
-                <Link href="/rezervasyon" onClick={() => setMenuOpen(false)} className="btn-primary mt-2">
+                <Link href="/rezervasyon" onClick={() => setMenuOpen(false)} className="btn-primary mt-2" style={{ width: "100%", justifyContent: "center" }}>
                   {t.bookNow}
                 </Link>
               </li>
@@ -230,6 +212,52 @@ export default function Navbar() {
           </div>
         )}
       </header>
+
+      <style>{`
+        .navbar-nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.6rem 1rem !important;
+          max-width: 80rem;
+          margin: 0 auto;
+        }
+        .logo-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.1rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          color: var(--gold);
+          line-height: 1.1;
+        }
+        .logo-subtitle {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.48rem;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--gold-light);
+          opacity: 0.8;
+        }
+        .nav-book-btn {
+          display: none !important;
+        }
+        @media (min-width: 768px) {
+          .navbar-nav {
+            padding: 1rem 1.5rem !important;
+          }
+          .logo-title {
+            font-size: 1.35rem;
+          }
+          .logo-subtitle {
+            font-size: 0.55rem;
+            letter-spacing: 0.25em;
+          }
+          .nav-book-btn {
+            display: inline-flex !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

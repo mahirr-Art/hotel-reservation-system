@@ -159,6 +159,7 @@ export default async function HomePage() {
     <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
       {/* ─── HERO SECTION ─── */}
       <section
+        className="homepage-hero"
         style={{
           position: "relative",
           height: "100vh",
@@ -167,7 +168,6 @@ export default async function HomePage() {
           justifyContent: "center",
           textAlign: "center",
           color: "white",
-          padding: "0 1.5rem",
           overflow: "hidden",
         }}
       >
@@ -533,6 +533,18 @@ export default async function HomePage() {
           {t.ctaButton}
         </Link>
       </section>
+
+      <style>{`
+        .homepage-hero {
+          padding: 85px 1.5rem 0 !important;
+          box-sizing: border-box;
+        }
+        @media (min-width: 768px) {
+          .homepage-hero {
+            padding: 0 1.5rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
