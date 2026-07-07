@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useTranslation } from "@/lib/lang";
 
 type Category = {
   id: string;
@@ -31,6 +32,7 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
   const searchParams = useSearchParams();
   const katParam = searchParams.get("kategori");
   const [activeTab, setActiveTab] = useState<string>(katParam || "all");
+  const { lang, t } = useTranslation();
 
   const filteredRooms = activeTab === "all"
     ? initialRooms
@@ -38,11 +40,13 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
 
   // Dynamic Category Description
   const activeCategoryDesc = activeTab === "all"
-    ? "Karadeniz'in eşsiz manzarasıyla buluşan, her bütçe ve konsept için özenle tasarlanmış odalarımız."
+    ? (lang === "tr" 
+        ? "Karadeniz'in eşsiz manzarasıyla buluşan, her bütçe ve konsept için özenle tasarlanmış odalarımız."
+        : "Our rooms are carefully designed for every budget and concept, meeting the unique view of the Black Sea.")
     : categories.find(c => c.id === activeTab)?.description;
 
   const activeCategoryName = activeTab === "all"
-    ? "Tüm Odalar"
+    ? (lang === "tr" ? "Tüm Odalar" : "All Rooms")
     : categories.find(c => c.id === activeTab)?.name;
 
   return (
@@ -82,7 +86,7 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
             }
           }}
         >
-          Tüm Odalar
+          {lang === "tr" ? "Tüm Odalar" : "All Rooms"}
         </button>
 
         {categories.map((cat) => {
@@ -152,7 +156,7 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
       {filteredRooms.length === 0 ? (
         <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-light)" }}>
           <p style={{ fontSize: "2rem", marginBottom: "1rem" }}>🛏️</p>
-          <p>Seçilen kategoride şu an oda bulunmuyor.</p>
+          <p>{lang === "tr" ? "Seçilen kategoride şu an oda bulunmuyor." : "No rooms are currently available in the selected category."}</p>
         </div>
       ) : (
         <div
@@ -243,8 +247,8 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
                   marginBottom: "1.25rem",
                 }}>
                   {[
-                    { icon: "👤", label: `${room.capacity} Kişi` },
-                    { icon: "🚪", label: `${room.quantity} Oda` },
+                    { icon: "👤", label: lang === "tr" ? `${room.capacity} Kişi` : `${room.capacity} Guests` },
+                    { icon: "🚪", label: lang === "tr" ? `${room.quantity} Oda` : `${room.quantity} Rooms` },
                   ].map((item) => (
                     <span key={item.label} style={{
                       display: "flex", alignItems: "center", gap: "0.35rem",
@@ -265,7 +269,7 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
                   display: "flex", alignItems: "center", justifyContent: "space-between",
                 }}>
                   <span style={{ fontSize: "0.72rem", color: "var(--text-light)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.08em" }}>
-                    Gecelik
+                    {t.perNight}
                   </span>
                   <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.3rem", fontWeight: 700, color: "var(--navy)" }}>
                     {Number(room.price).toLocaleString("tr-TR")} ₺

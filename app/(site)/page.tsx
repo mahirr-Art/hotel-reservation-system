@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import TestimonialForm from "@/components/TestimonialForm";
 import HomeSearchForm from "@/components/HomeSearchForm";
@@ -6,8 +7,13 @@ import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
 import WeatherWidget from "@/components/WeatherWidget";
 import PhotoGallery from "@/components/PhotoGallery";
+import { translations } from "@/lib/translations";
 
 export default async function HomePage() {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("lang")?.value || "tr") as "tr" | "en";
+  const t = translations[lang] || translations.tr;
+
   const [featuredRooms, testimonials] = await Promise.all([
     prisma.room.findMany({
       take: 3,
@@ -30,11 +36,14 @@ export default async function HomePage() {
           <circle cx="12" cy="14" r="3" />
         </svg>
       ),
-      title: "Açık Yüzme Havuzu",
-      desc: "Karadeniz manzaralı ısıtmalı açık havuzumuzda serinleyin.",
-      detail:
-        "Karadeniz'in eşsiz manzarasına karşı konumlanan olimpik ölçülerdeki açık yüzme havuzumuz, sabah 07:00'den gece 22:00'ye kadar hizmet vermektedir. Yetişkin havuzu, çocuk havuzu ve jakuzi bölümlerimizle tüm aile için unutulmaz bir deneyim sunuyoruz.",
-      features: ["Olimpik boyutlar", "Isıtma sistemi", "Çocuk havuzu", "Jakuzi bölümü", "Havuz barı", "Şezlong & şemsiye", "Soyunma kabinleri", "Havlu hizmeti"],
+      title: lang === "tr" ? "Açık Yüzme Havuzu" : "Outdoor Swimming Pool",
+      desc: lang === "tr" ? "Karadeniz manzaralı ısıtmalı açık havuzumuzda serinleyin." : "Cool off in our heated outdoor pool with a Black Sea view.",
+      detail: lang === "tr"
+        ? "Karadeniz'in eşsiz manzarasına karşı konumlanan olimpik ölçülerdeki açık yüzme havuzumuz, sabah 07:00'den gece 22:00'ye kadar hizmet vermektedir. Yetişkin havuzu, çocuk havuzu ve jakuzi bölümlerimizle tüm aile için unutulmaz bir deneyim sunuyoruz."
+        : "Our Olympic-sized outdoor swimming pool, positioned against the unique view of the Black Sea, serves from 07:00 in the morning until 22:00 at night. We offer an unforgettable experience for the whole family with our adult, child, and jacuzzi sections.",
+      features: lang === "tr"
+        ? ["Olimpik boyutlar", "Isıtma sistemi", "Çocuk havuzu", "Jakuzi bölümü", "Havuz barı", "Şezlong & şemsiye", "Soyunma kabinleri", "Havlu hizmeti"]
+        : ["Olympic size", "Heating system", "Kids pool", "Jacuzzi section", "Pool bar", "Sunbed & umbrella", "Changing rooms", "Towel service"],
     },
     {
       icon: (
@@ -43,10 +52,13 @@ export default async function HomePage() {
         </svg>
       ),
       title: "Spa & Wellness",
-      desc: "Uzman ellerde masaj, hamam ve terapi deneyimi.",
-      detail:
-        "5 özel tedavi odası, Türk hamamı, buhar odası, sauna ve masaj salonumuzla bütüncül bir dinlenme deneyimi sunuyoruz. Uzman masöz ve terapistlerimiz ile vücudunuzu ve zihninizi yeniden canlandırın.",
-      features: ["Türk hamamı", "Sauna & buhar odası", "Aromaterapi masajı", "Derin doku masajı", "Çift masaj odası", "Cilt bakımı", "Refleksoloji", "Meditatif terapi"],
+      desc: lang === "tr" ? "Uzman ellerde masaj, hamam ve terapi deneyimi." : "Massage, bath, and therapy experience in expert hands.",
+      detail: lang === "tr"
+        ? "5 özel tedavi odası, Türk hamamı, buhar odası, sauna ve masaj salonumuzla bütüncül bir dinlenme deneyimi sunuyoruz. Uzman masöz ve terapistlerimiz ile vücudunuzu ve zihninizi yeniden canlandırın."
+        : "We offer a holistic relaxation experience with 5 private treatment rooms, a Turkish bath, a steam room, a sauna, and a massage parlor. Revitalize your body and mind with our expert masseuses and therapists.",
+      features: lang === "tr"
+        ? ["Türk hamamı", "Sauna & buhar odası", "Aromaterapi masajı", "Derin doku masajı", "Çift masaj odası", "Cilt bakımı", "Refleksoloji", "Meditatif terapi"]
+        : ["Turkish bath", "Sauna & steam room", "Aromatherapy massage", "Deep tissue massage", "Couples room", "Skincare", "Reflexology", "Meditative therapy"],
     },
     {
       icon: (
@@ -54,11 +66,14 @@ export default async function HomePage() {
           <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3" />
         </svg>
       ),
-      title: "Lüks Restoran",
-      desc: "Ödüllü şeflerimizin hazırladığı yerel ve uluslararası lezzetler.",
-      detail:
-        "Karadeniz'in taze deniz ürünlerini ve bölgeye özgü lezzetleri öne çıkaran menümüzle gastronomi tutkunlarına özel bir deneyim sunuyoruz. Gün batımı manzarası eşliğinde fine dining keyfi yaşayın.",
-      features: ["Kahvaltı büfesi", "À la carte öğle", "Fine dining akşam yemeği", "Canlı müzik", "Vejetaryen seçenekler", "Çocuk menüsü", "Şarap koleksiyonu", "Özel etkinlik mekanı"],
+      title: lang === "tr" ? "Lüks Restoran" : "Luxury Restaurant",
+      desc: lang === "tr" ? "Ödüllü şeflerimizin hazırladığı yerel ve uluslararası lezzetler." : "Local and international flavors prepared by award-winning chefs.",
+      detail: lang === "tr"
+        ? "Karadeniz'in taze deniz ürünlerini ve bölgeye özgü lezzetleri öne çıkaran menümüzle gastronomi tutkunlarına özel bir deneyim sunuyoruz. Gün batımı manzarası eşliğinde fine dining keyfi yaşayın."
+        : "We offer a unique experience to gastronomy lovers with our menu highlighting fresh Black Sea seafood and local delicacies. Enjoy fine dining accompanied by the sunset view.",
+      features: lang === "tr"
+        ? ["Kahvaltı büfesi", "À la carte öğle", "Fine dining akşam yemeği", "Canlı müzik", "Vejetaryen seçenekler", "Çocuk menüsü", "Şarap koleksiyonu", "Özel etkinlik mekanı"]
+        : ["Breakfast buffet", "À la carte lunch", "Fine dining dinner", "Live music", "Vegetarian options", "Kids menu", "Wine collection", "Event venue"],
     },
     {
       icon: (
@@ -68,10 +83,13 @@ export default async function HomePage() {
         </svg>
       ),
       title: "7/24 Konsiyerj",
-      desc: "Günün her saatinde kişisel asistanınız yanınızda.",
-      detail:
-        "Profesyonel konsiyerj ekibimiz gece gündüz hizmetinizdedir. Tur organizasyonu, restoran rezervasyonu, transfer hizmetleri ve özel istekleriniz için tek bir telefon araması yeterli.",
-      features: ["Tur organizasyonu", "Transfer hizmeti", "Restoran rezervasyonu", "Hava alanı karşılama", "Özel etkinlik planlama", "Dil tercümanlığı", "Çamaşır servisi", "Oda servisi 24/7"],
+      desc: lang === "tr" ? "Günün her saatinde kişisel asistanınız yanınızda." : "Your personal assistant is with you at any time of the day.",
+      detail: lang === "tr"
+        ? "Profesyonel konsiyerj ekibimiz gece gündüz hizmetinizdedir. Tur organizasyonu, restoran rezervasyonu, transfer hizmetleri ve özel istekleriniz için tek bir telefon araması yeterli."
+        : "Our professional concierge team is at your service day and night. One phone call is enough for tour organizations, restaurant reservations, transfer services, and custom requests.",
+      features: lang === "tr"
+        ? ["Tur organizasyonu", "Transfer hizmeti", "Restoran rezervasyonu", "Hava alanı karşılama", "Özel etkinlik planlama", "Dil tercümanlığı", "Çamaşır servisi", "Oda servisi 24/7"]
+        : ["Tour organizations", "Transfer services", "Table reservations", "Airport pickup", "Event planning", "Language translation", "Laundry service", "Room service 24/7"],
     },
     {
       icon: (
@@ -80,11 +98,14 @@ export default async function HomePage() {
           <path d="M8 21h8M12 17v4" />
         </svg>
       ),
-      title: "Fitness & Spor",
-      desc: "Modern ekipmanlarla donanmış spor salonu ve aktivite alanları.",
-      detail:
-        "1.200 m² alan üzerinde kurulu fitness merkezimiz, en son teknoloji kardiyovasküler aletler, serbest ağırlık bölümü, yoga & pilates stüdyosu ve kişisel antrenör hizmetiyle donatılmıştır.",
-      features: ["Kardiyovasküler aletler", "Serbest ağırlıklar", "Yoga stüdyosu", "Pilates sınıfı", "Kişisel antrenör", "Tenis kortu", "Plaj voleybolu", "Bisiklet kiralama"],
+      title: lang === "tr" ? "Fitness & Spor" : "Fitness & Sports",
+      desc: lang === "tr" ? "Modern ekipmanlarla donanmış spor salonu ve aktivite alanları." : "Gym and activity areas equipped with modern equipment.",
+      detail: lang === "tr"
+        ? "1.200 m² alan üzerinde kurulu fitness merkezimiz, en son teknoloji kardiyovasküler aletler, serbest ağırlık bölümü, yoga & pilates stüdyosu ve kişisel antrenör hizmetiyle donatılmıştır."
+        : "Built on 1,200 m² of space, our fitness center is equipped with state-of-the-art cardiovascular machines, a free-weight section, yoga & pilates studios, and personal trainer services.",
+      features: lang === "tr"
+        ? ["Kardiyovasküler aletler", "Serbest ağırlıklar", "Yoga stüdyosu", "Pilates sınıfı", "Kişisel antrenör", "Tenis kortu", "Plaj voleybolu", "Bisiklet kiralama"]
+        : ["Cardio machines", "Free weights", "Yoga studio", "Pilates class", "Personal trainers", "Tennis court", "Beach volleyball", "Bike rental"],
     },
     {
       icon: (
@@ -93,129 +114,133 @@ export default async function HomePage() {
           <polyline points="9,22 9,12 15,12 15,22" />
         </svg>
       ),
-      title: "Panoramik Manzara",
-      desc: "Deniz ve dağ manzaralı özel odalarda sonsuz güzellik.",
-      detail:
-        "Otelimizin tüm odaları Karadeniz'e veya Sinop dağlarına bakan muhteşem manzaralarla tasarlanmıştır. Balkonlu superior ve deluxe odalarımızda sabahın ilk ışıklarıyla beraber büyülü manzaranın tadını çıkarın.",
-      features: ["Karadeniz manzarası", "Dağ manzarası", "Özel balkon", "Panoramik teras", "Gün batımı görünümü", "Yıldız gözlemi alanı", "Fotoğraf noktaları", "Sonsuzluk havuzu"],
+      title: lang === "tr" ? "Panoramik Manzara" : "Panoramic View",
+      desc: lang === "tr" ? "Deniz ve dağ manzaralı özel odalarda sonsuz güzellik." : "Endless beauty in private rooms with sea and mountain views.",
+      detail: lang === "tr"
+        ? "Otelimizin tüm odaları Karadeniz'e veya Sinop dağlarına bakan muhteşem manzaralarla tasarlanmıştır. Balkonlu superior ve deluxe odalarımızda sabahın ilk ışıklarıyla beraber büyülü manzaranın tadını çıkarın."
+        : "All rooms of our hotel are designed with spectacular views overlooking the Black Sea or Sinop mountains. Enjoy the magical view with the first rays of morning in our superior and deluxe rooms with balconies.",
+      features: lang === "tr"
+        ? ["Karadeniz manzarası", "Dağ manzarası", "Özel balkon", "Panoramik teras", "Gün batımı görünümü", "Yıldız gözlemi alanı", "Fotoğraf noktaları", "Sonsuzluk havuzu"]
+        : ["Black sea view", "Mountain view", "Private balcony", "Panoramic terrace", "Sunset view", "Stargazing area", "Photography spots", "Infinity pool"],
     },
   ];
 
   const stats = [
-    { num: "500+", label: "Mutlu Misafir" },
-    { num: "50+", label: "Lüks Oda" },
-    { num: "15", label: "Yıllık Deneyim" },
-    { num: "4.9", label: "Ortalama Puan" },
+    { num: "500+", label: lang === "tr" ? "Mutlu Misafir" : "Happy Guests" },
+    { num: "50+", label: lang === "tr" ? "Lüks Oda" : "Luxury Rooms" },
+    { num: "15", label: lang === "tr" ? "Yıllık Deneyim" : "Years of Experience" },
+    { num: "4.9", label: lang === "tr" ? "Ortalama Puan" : "Average Score" },
   ];
-
-
 
   const earlyBookingPerks = [
     {
       icon: "🏷️",
-      title: "%20 İndirim",
-      desc: "60 gün önceden rezervasyon yapanlara özel fiyat avantajı.",
+      title: lang === "tr" ? "%20 İndirim" : "20% Discount",
+      desc: lang === "tr" ? "60 gün önceden rezervasyon yapanlara özel fiyat avantajı." : "Special price advantage for bookings 60 days in advance.",
     },
     {
       icon: "🎁",
-      title: "Ücretsiz Karşılama",
-      desc: "Oda servisiyle ikram edilen karşılama sepeti ve şampanya.",
+      title: lang === "tr" ? "Ücretsiz Karşılama" : "Free Welcome",
+      desc: lang === "tr" ? "Oda servisiyle ikram edilen karşılama sepeti ve şampanya." : "Welcome basket and champagne served with room service.",
     },
     {
       icon: "🛏️",
-      title: "Erken Check-in",
-      desc: "Müsaitliğe göre saat 10:00'dan itibaren erken giriş imkânı.",
+      title: lang === "tr" ? "Erken Check-in" : "Early Check-in",
+      desc: lang === "tr" ? "Müsaitliğe göre saat 10:00'dan itibaren erken giriş imkânı." : "Early entrance opportunity from 10:00 AM based on availability.",
     },
     {
       icon: "🏊",
-      title: "Ücretsiz Spa",
-      desc: "1 saatlik hamam + masaj deneyimi hediye olarak sunulur.",
-    },
-    {
-      icon: "🚗",
-      title: "Ücretsiz Transfer",
-      desc: "Havalimanı – otel arası ücretsiz özel araç transferi.",
-    },
-    {
-      icon: "❌",
-      title: "Ücretsiz İptal",
-      desc: "14 güne kadar ücretsiz iptal ve tam para iadesi garantisi.",
+      title: lang === "tr" ? "Ücretsiz Spa" : "Complimentary Spa",
+      desc: lang === "tr" ? "1 saatlik hamam + masaj deneyimi hediye olarak sunulur." : "1 hour of Turkish bath + massage experience is offered as a gift.",
     },
   ];
 
   return (
-    <div>
-      {/* ─── HERO ─── */}
+    <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      {/* ─── HERO SECTION ─── */}
       <section
         style={{
           position: "relative",
-          minHeight: "100vh",
+          height: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          textAlign: "center",
+          color: "white",
+          padding: "0 1.5rem",
           overflow: "hidden",
         }}
       >
+        {/* Background Zoom Image */}
         <div
+          className="absolute inset-0 bg-cover bg-center animate-zoom-slow"
           style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "url('/hotel_hero_bg.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=cover&w=1920&q=80')",
+            zIndex: 0,
           }}
         />
+        {/* Navy Overlay with gold gradient tint */}
         <div
+          className="absolute inset-0"
           style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(180deg, rgba(13,27,42,0.65) 0%, rgba(13,27,42,0.45) 50%, rgba(13,27,42,0.8) 100%)",
+            background: "linear-gradient(to bottom, rgba(13,27,42,0.85) 0%, rgba(13,27,42,0.7) 60%, var(--navy) 100%)",
+            zIndex: 1,
           }}
         />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 10,
-            textAlign: "center",
-            padding: "2rem 1.5rem",
-            maxWidth: "900px",
-            width: "100%",
-            margin: "0 auto",
-          }}
-        >
-          <p className="section-label animate-fade-in-up" style={{ color: "var(--gold-light)", marginBottom: "1.25rem" }}>
-            ✦ Hoş Geldiniz ✦
+
+        {/* Content */}
+        <div style={{ position: "relative", zIndex: 2, maxWidth: "800px" }}>
+          <p
+            className="animate-fade-in-up"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "clamp(0.65rem, 1.5vw, 0.85rem)",
+              fontWeight: 600,
+              letterSpacing: "0.4em",
+              textTransform: "uppercase",
+              color: "var(--gold)",
+              marginBottom: "1.25rem",
+              opacity: 0,
+            }}
+          >
+            ✦ {t.heroSubtitle} ✦
           </p>
           <h1
             className="animate-fade-in-up delay-100"
             style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(2.5rem, 6vw, 5rem)",
+              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
               fontWeight: 700,
-              color: "var(--white)",
               lineHeight: 1.1,
-              marginBottom: "1.25rem",
+              marginBottom: "1.5rem",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
               opacity: 0,
             }}
           >
-            Karadeniz&apos;i Hisset,{" "}
-            <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Gerze&apos;yi Keşfet</em>
+            {t.heroTitle}
           </h1>
+          <div
+            className="gold-divider animate-fade-in-up delay-150"
+            style={{ margin: "0 auto 1.5rem", width: 80, height: 2, opacity: 0 }}
+          />
           <p
             className="animate-fade-in-up delay-200"
             style={{
-              color: "rgba(255,255,255,0.8)",
-              fontSize: "1.05rem",
-              maxWidth: "560px",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "clamp(0.85rem, 2vw, 1.05rem)",
+              color: "rgba(255,255,255,0.75)",
+              marginBottom: "2.5rem",
+              maxWidth: "600px",
               margin: "0 auto 2.5rem",
               fontWeight: 300,
               lineHeight: 1.7,
               opacity: 0,
             }}
           >
-            Sinop Gerze kıyısında, Karadeniz&apos;in masmavi suları eşliğinde huzur dolu bir konaklama
-            deneyimi sizi bekliyor.
+            {t.heroDesc}
           </p>
 
           {/* Keşfet CTA Buttons */}
@@ -230,10 +255,10 @@ export default async function HomePage() {
           className="animate-fade-in-up delay-300"
           >
             <Link href="/odalarimiz" className="btn-primary" style={{ borderRadius: "30px", padding: "0.85rem 2rem", fontSize: "0.85rem" }}>
-              Odalarımızı Keşfet
+              {t.discoverRooms}
             </Link>
             <Link href="/iletisim" className="btn-outline" style={{ borderRadius: "30px", padding: "0.85rem 2rem", fontSize: "0.85rem", color: "white", borderColor: "rgba(255,255,255,0.4)" }}>
-              Bize Ulaşın
+              {t.contactUs}
             </Link>
           </div>
 
@@ -250,7 +275,9 @@ export default async function HomePage() {
             className="animate-fade-in delay-600"
             style={{ marginTop: "3rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", opacity: 0 }}
           >
-            <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Kaydır</span>
+            <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
+              {lang === "tr" ? "Kaydır" : "Scroll"}
+            </span>
             <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom, var(--gold), transparent)" }} />
           </div>
         </div>
@@ -260,12 +287,14 @@ export default async function HomePage() {
       <section style={{ background: "var(--navy)", padding: "5rem 1.5rem" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-            <p className="section-label" style={{ marginBottom: "0.75rem" }}>Ayrıcalıklarımız</p>
+            <p className="section-label" style={{ marginBottom: "0.75rem" }}>
+              {lang === "tr" ? "Ayrıcalıklarımız" : "Our Amenities"}
+            </p>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)", marginBottom: "0.75rem" }}>
-              Neden Kuzey Feneri?
+              {t.whyChooseUs}
             </h2>
             <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.45)", maxWidth: "480px", margin: "0 auto 1.5rem" }}>
-              Her bir ayrıcalığa tıklayarak detayları keşfedin
+              {t.amenitiesSubtitle}
             </p>
             <div className="gold-divider" style={{ margin: "0 auto" }} />
           </div>
@@ -282,17 +311,19 @@ export default async function HomePage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem", gap: "1rem" }}>
             <div>
-              <p className="section-label" style={{ marginBottom: "0.75rem" }}>Seçkin Koleksiyonumuz</p>
+              <p className="section-label" style={{ marginBottom: "0.75rem" }}>{t.featuredRoomsSubtitle}</p>
               <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--navy)" }}>
-                Öne Çıkan Odalar
+                {t.featuredRoomsTitle}
               </h2>
               <div className="gold-divider" style={{ marginTop: "1rem" }} />
             </div>
-            <Link href="/odalarimiz" className="link-navy">Tüm Odalar →</Link>
+            <Link href="/odalarimiz" className="link-navy">{t.allRoomsLink}</Link>
           </div>
 
           {featuredRooms.length === 0 ? (
-            <p style={{ color: "var(--text-light)", textAlign: "center", padding: "3rem" }}>Henüz oda eklenmedi.</p>
+            <p style={{ color: "var(--text-light)", textAlign: "center", padding: "3rem" }}>
+              {lang === "tr" ? "Henüz oda eklenmedi." : "No rooms have been added yet."}
+            </p>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
               {featuredRooms.map((room) => (
@@ -319,13 +350,13 @@ export default async function HomePage() {
                     <p style={{ fontSize: "0.85rem", color: "var(--text-light)", marginBottom: "1.25rem", lineHeight: 1.6 }}>{room.description}</p>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <div>
-                        <span style={{ fontSize: "0.7rem", color: "var(--text-light)", textTransform: "uppercase", letterSpacing: "0.1em" }}>gecelik</span>
+                        <span style={{ fontSize: "0.7rem", color: "var(--text-light)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t.perNight}</span>
                         <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--navy)" }}>
                           {room.price.toString()} <span style={{ fontSize: "0.9rem", fontWeight: 400 }}>₺</span>
                         </p>
                       </div>
                       <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-dark)", borderBottom: "1px solid var(--gold)" }}>
-                        Detaylar →
+                        {t.detailsArrow}
                       </span>
                     </div>
                   </div>
@@ -347,22 +378,35 @@ export default async function HomePage() {
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "2rem", marginBottom: "3.5rem" }}>
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(201,169,110,0.12)", border: "1px solid rgba(201,169,110,0.25)", borderRadius: "20px", padding: "0.35rem 1rem", marginBottom: "1rem" }}>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)" }}>🔥 Sınırlı Süre</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)" }}>
+                  🔥 {t.earlyBookingSubtitle}
+                </span>
               </div>
               <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)", marginBottom: "0.75rem" }}>
-                Erken Rezervasyon<br />
-                <em style={{ color: "var(--gold)" }}>Ayrıcalıkları</em>
+                {lang === "tr" ? (
+                  <>
+                    Erken Rezervasyon<br />
+                    <em style={{ color: "var(--gold)" }}>Ayrıcalıkları</em>
+                  </>
+                ) : (
+                  <>
+                    Early Booking<br />
+                    <em style={{ color: "var(--gold)" }}>Privileges</em>
+                  </>
+                )}
               </h2>
               <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.55)", maxWidth: "400px", lineHeight: 1.7 }}>
-                60 gün önceden rezervasyon yapın, özel fırsatlardan yararlanın. Kontenjanlar sınırlıdır.
+                {t.earlyBookingDesc}
               </p>
               <div className="gold-divider" style={{ marginTop: "1.25rem" }} />
             </div>
 
             {/* Countdown box */}
             <div style={{ background: "rgba(201,169,110,0.08)", border: "1px solid rgba(201,169,110,0.2)", borderRadius: "12px", padding: "1.5rem 2rem", textAlign: "center", minWidth: 200 }}>
-              <p style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>Bu Fırsat Sona Eriyor</p>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 700, color: "var(--gold)", lineHeight: 1 }}>31 Ağustos</p>
+              <p style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>
+                {t.countdownTitle}
+              </p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 700, color: "var(--gold)", lineHeight: 1 }}>{t.countdownDate}</p>
               <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.4)", marginTop: "0.25rem" }}>2026</p>
             </div>
           </div>
@@ -385,10 +429,10 @@ export default async function HomePage() {
           {/* CTA Row */}
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(201,169,110,0.12)" }}>
             <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", textAlign: "center" }}>
-              Erken rezervasyon fırsatı için hemen rezervasyon yapın →
+              {lang === "tr" ? "Erken rezervasyon fırsatı için hemen rezervasyon yapın →" : "Book now to catch early booking offers →"}
             </p>
             <Link href="/rezervasyon" className="btn-primary">
-              Şimdi Rezervasyon Yap
+              {t.bookNow}
             </Link>
           </div>
         </div>
@@ -410,8 +454,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-
-
       {/* ─── GALLERY SECTION ─── */}
       <PhotoGallery />
 
@@ -419,14 +461,14 @@ export default async function HomePage() {
       <section style={{ background: "var(--navy)", padding: "5rem 1.5rem" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p className="section-label" style={{ marginBottom: "0.75rem" }}>Misafir Yorumları</p>
+            <p className="section-label" style={{ marginBottom: "0.75rem" }}>{t.testimonialsSubtitle}</p>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "var(--white)" }}>
-              Misafirlerimiz Ne Diyor?
+              {t.testimonialsTitle}
             </h2>
             <div className="gold-divider" style={{ margin: "1rem auto 0" }} />
           </div>
           {testimonials.length === 0 ? (
-            <p style={{ textAlign: "center", color: "rgba(255,255,255,0.4)" }}>Henüz yorum eklenmedi.</p>
+            <p style={{ textAlign: "center", color: "rgba(255,255,255,0.4)" }}>{t.noTestimonials}</p>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
               {testimonials.map((t) => (
@@ -442,17 +484,26 @@ export default async function HomePage() {
       {/* ─── CTA ─── */}
       <section style={{ background: "linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 50%, var(--gold-light) 100%)", padding: "5rem 1.5rem", textAlign: "center" }}>
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--navy)", opacity: 0.7, marginBottom: "1rem" }}>
-          ✦ Özel Fırsatlar ✦
+          {lang === "tr" ? "✦ Özel Fırsatlar ✦" : "✦ Special Offers ✦"}
         </p>
         <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 700, color: "var(--navy)", marginBottom: "1rem", lineHeight: 1.2 }}>
-          Gerze&apos;de Unutulmaz<br />
-          <em>Bir Tatil Sizi Bekliyor</em>
+          {lang === "tr" ? (
+            <>
+              Gerze&apos;de Unutulmaz<br />
+              <em>Bir Tatil Sizi Bekliyor</em>
+            </>
+          ) : (
+            <>
+              An Unforgettable Vacation<br />
+              <em>Awaits You in Gerze</em>
+            </>
+          )}
         </p>
         <p style={{ color: "var(--navy)", opacity: 0.7, fontSize: "1rem", marginBottom: "2.5rem", maxWidth: "480px", margin: "0 auto 2.5rem" }}>
-          Erken rezervasyon yapın, %20&apos;ye varan indirimlerden yararlanın.
+          {t.ctaDesc}
         </p>
         <Link href="/rezervasyon" className="btn-cta">
-          Rezervasyon Yap →
+          {t.ctaButton}
         </Link>
       </section>
     </div>

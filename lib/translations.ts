@@ -12,7 +12,19 @@ export const translations = {
     back: "Geri Dön",
     loading: "Yükleniyor...",
     save: "Kaydet",
-    
+    all: "Tümü",
+    nights: "gece",
+    guestsCount: "kişi",
+    perNight: "gecelik",
+    details: "Detaylar",
+    detailsArrow: "Detaylar →",
+    callUs: "Bizi Arayın",
+    emailUs: "E-posta",
+    address: "Adres",
+    socialMedia: "Sosyal Medya",
+    important: "Önemli",
+    capacity: "Kapasite",
+
     // Home Page
     heroTitle: "Kuzey Feneri",
     heroSubtitle: "Karadeniz'in Huzur Kıyısında Lüks Bir Kaçış",
@@ -22,8 +34,24 @@ export const translations = {
     welcome: "Kuzey Feneri'ne Hoş Geldiniz",
     welcomeTitle: "Karadeniz'in İncisi Sinop'ta Huzur Dolu Bir Tatil",
     welcomeDesc: "Kuzey Feneri, sakinliği ve doğayı modern lüks ile harmanlıyor. Geniş odaları, eşsiz gün batımı manzarası ve kaliteli hizmetleri ile misafirlerine unutulmaz anlar sunar.",
+    whyChooseUs: "Neden Kuzey Feneri?",
+    amenitiesSubtitle: "Her bir ayrıcalığa tıklayarak detayları keşfedin",
+    featuredRoomsTitle: "Öne Çıkan Odalar",
+    featuredRoomsSubtitle: "Seçkin Koleksiyonumuz",
+    allRoomsLink: "Tüm Odalar →",
+    earlyBookingTitle: "Erken Rezervasyon Ayrıcalıkları",
+    earlyBookingSubtitle: "Sınırlı Süre",
+    earlyBookingDesc: "60 gün önceden rezervasyon yapın, özel fırsatlardan yararlanın. Kontenjanlar sınırlıdır.",
+    countdownTitle: "Bu Fırsat Sona Eriyor",
+    countdownDate: "31 Ağustos",
+    testimonialsTitle: "Misafirlerimiz Ne Diyor?",
+    testimonialsSubtitle: "Misafir Yorumları",
+    noTestimonials: "Henüz yorum eklenmedi.",
+    ctaTitle: "Gerze'de Unutulmaz Bir Tatil Sizi Bekliyor",
+    ctaDesc: "Erken rezervasyon yapın, %20'ye varan indirimlerden yararlanın.",
+    ctaButton: "Rezervasyon Yap →",
     
-    // Amenity Modals (Ayrıcalıklar)
+    // Amenities Detail Modals
     poolTitle: "Isıtmalı Açık Havuz",
     poolDesc: "Karadeniz manzarasına karşı ısıtmalı açık havuzumuzda yılın her mevsimi yüzmenin tadını çıkarın. Havuz barımızda serinletici kokteyller sizi bekliyor.",
     spaTitle: "Spa & Wellness",
@@ -37,7 +65,7 @@ export const translations = {
     viewTitle: "Panoramik Deniz Manzarası",
     viewDesc: "Otelin her noktasından izlenebilen, Karadeniz'in uçsuz bucaksız ufkunda gün batımının eşsiz renk cümbüşüne şahit olun.",
 
-    // Weather widget
+    // Weather Widget
     weatherTitle: "Gerze Canlı Hava Durumu",
     weatherTemp: "Sıcaklık",
     weatherCond: "Durum",
@@ -58,6 +86,54 @@ export const translations = {
     promoError: "Geçersiz veya süresi dolmuş kod.",
     totalPrice: "Toplam Fiyat",
     discountedPrice: "İndirimli Fiyat",
+
+    // Footer
+    footerDesc: "Sinop Gerze kıyısında Karadeniz manzaralı modern lüks butik otel deneyimi.",
+    footerCopyright: "© 2026 Kuzey Feneri Butik Otel. Tüm hakları saklıdır.",
+    quickLinks: "Hızlı Bağlantılar",
+    contactInfo: "İletişim Bilgileri",
+
+    // Tatil Page
+    tatilTitle: "Tatil Paketlerimiz",
+    tatilSubtitle: "Özel Kampanyalar",
+    tatilDesc: "Size ve sevdiklerinize özel hazırlanmış ayrıcalıklı paketler. Her bütçeye, her anıya uygun seçenekler.",
+    tatilFeaturesTitle: "Paket Ayrıcalıkları:",
+    tatilBook: "Paketle Rezervasyon Yap",
+    tatilCtaTitle: "Paket Bulamadınız mı?",
+    tatilCtaDesc: "Size özel bir teklif hazırlamak için bizimle iletişime geçin. Kurumsal, düğün veya özel etkinlik paketleri için arayın.",
+    tatilCtaIletisim: "İletişime Geç",
+    tatilCtaRezervasyon: "Hemen Rezervasyon Yap",
+
+    // Hizmetlerimiz Page
+    hizmetTitle: "Lüks Hizmetlerimiz",
+    hizmetSubtitle: "Ayrıcalıklı Bir Deneyim",
+    hizmetDesc: "Kuzey Feneri'nde konaklamanızı unutulmaz kılacak dünya standartlarında lüks hizmetler sunuyoruz.",
+
+    // Kategoriler Page
+    kategoriTitle: "Oda Kategorileri",
+    kategoriSubtitle: "Konseptlerimiz",
+    kategoriDesc: "Kuzey Feneri'nin her detayı özenle düşünülmüş, Karadeniz manzaralı oda seçeneklerini keşfedin.",
+    kategoriActive: "Aktif Oda",
+
+    // Odalarimiz Page
+    odalarTitle: "Odalarımız & Süitlerimiz",
+    odalarSubtitle: "Lüks Konaklama",
+    odalarDesc: "Karadeniz'in sonsuz maviliğine uyanacağınız, konfor ve lüksün birleştiği deniz manzaralı süitler.",
+    odalarFilterAll: "Tüm Odalar",
+    odalarFilterGerze: "Gerze Konumu",
+    odalarFilterMerkez: "Merkez Konumu",
+
+    // Oda Detay Page
+    odaDetayBack: "← Odalara Dön",
+    odaDetayPrice: "₺ / Gecelik",
+    odaDetaySpecs: "Oda Özellikleri",
+    odaDetayCapacityLabel: "Kapasite: {count} Kişi",
+    odaDetayLocationLabel: "Konum: {city}",
+    odaDetayCategoryLabel: "Kategori: {category}",
+    odaDetayCalendarTitle: "Müsaitlik Durumu (Doluluk Takvimi)",
+    odaDetayCalendarDesc: "Aşağıdaki takvimden seçtiğiniz odaya ait güncel doluluk durumunu kontrol edebilirsiniz.",
+    odaDetayReservationCardTitle: "Rezervasyon Yapın",
+    odaDetayReservationCardDesc: "Tarihleri ve misafir sayısını seçerek hemen rezervasyon adımlarına geçin.",
   },
   en: {
     // Navbar & Common
@@ -72,6 +148,18 @@ export const translations = {
     back: "Go Back",
     loading: "Loading...",
     save: "Save",
+    all: "All",
+    nights: "nights",
+    guestsCount: "guests",
+    perNight: "per night",
+    details: "Details",
+    detailsArrow: "Details →",
+    callUs: "Call Us",
+    emailUs: "Email Us",
+    address: "Address",
+    socialMedia: "Social Media",
+    important: "Important",
+    capacity: "Capacity",
 
     // Home Page
     heroTitle: "North Lighthouse",
@@ -82,8 +170,24 @@ export const translations = {
     welcome: "Welcome to North Lighthouse",
     welcomeTitle: "A Peaceful Holiday in Sinop, the Pearl of the Black Sea",
     welcomeDesc: "North Lighthouse blends serenity and nature with modern luxury. It offers unforgettable moments to its guests with spacious rooms, unique sunset views, and high-quality services.",
-
-    // Amenity Modals (Ayrıcalıklar)
+    whyChooseUs: "Why North Lighthouse?",
+    amenitiesSubtitle: "Click on each amenity to discover the details",
+    featuredRoomsTitle: "Featured Rooms",
+    featuredRoomsSubtitle: "Our Selected Collection",
+    allRoomsLink: "All Rooms →",
+    earlyBookingTitle: "Early Booking Privileges",
+    earlyBookingSubtitle: "Limited Time",
+    earlyBookingDesc: "Book 60 days in advance, enjoy special privileges. Allocations are limited.",
+    countdownTitle: "This Offer Ends On",
+    countdownDate: "August 31",
+    testimonialsTitle: "What Our Guests Say",
+    testimonialsSubtitle: "Guest Reviews",
+    noTestimonials: "No reviews added yet.",
+    ctaTitle: "An Unforgettable Vacation Awaits You in Gerze",
+    ctaDesc: "Book early, get up to 20% discount.",
+    ctaButton: "Book Now →",
+    
+    // Amenities Detail Modals
     poolTitle: "Heated Outdoor Pool",
     poolDesc: "Enjoy swimming in all seasons in our heated outdoor pool against the Black Sea view. Refreshing cocktails await you at our pool bar.",
     spaTitle: "Spa & Wellness",
@@ -97,7 +201,7 @@ export const translations = {
     viewTitle: "Panoramic Sea View",
     viewDesc: "Witness the unique color feast of the sunset on the endless horizon of the Black Sea, which can be viewed from every point of the hotel.",
 
-    // Weather widget
+    // Weather Widget
     weatherTitle: "Gerze Live Weather",
     weatherTemp: "Temperature",
     weatherCond: "Condition",
@@ -118,5 +222,53 @@ export const translations = {
     promoError: "Invalid or expired promo code.",
     totalPrice: "Total Price",
     discountedPrice: "Discounted Price",
+
+    // Footer
+    footerDesc: "A modern luxury boutique hotel experience on the coast of Sinop Gerze with Black Sea view.",
+    footerCopyright: "© 2026 North Lighthouse Boutique Hotel. All rights reserved.",
+    quickLinks: "Quick Links",
+    contactInfo: "Contact Info",
+
+    // Tatil Page
+    tatilTitle: "Our Holiday Packages",
+    tatilSubtitle: "Special Campaigns",
+    tatilDesc: "Special privileged packages prepared for you and your loved ones. Suitable for every budget and memory.",
+    tatilFeaturesTitle: "Package Perks:",
+    tatilBook: "Book with Package",
+    tatilCtaTitle: "Can't Find a Package?",
+    tatilCtaDesc: "Contact us to prepare a custom offer for you. Call us for corporate, wedding, or special event packages.",
+    tatilCtaIletisim: "Get in Touch",
+    tatilCtaRezervasyon: "Book Now",
+
+    // Hizmetlerimiz Page
+    hizmetTitle: "Our Luxury Services",
+    hizmetSubtitle: "A Privileged Experience",
+    hizmetDesc: "We offer world-class luxury services at North Lighthouse to make your stay truly unforgettable.",
+
+    // Kategoriler Page
+    kategoriTitle: "Room Categories",
+    kategoriSubtitle: "Our Concepts",
+    kategoriDesc: "Discover the carefully thought-out room options of North Lighthouse with a view of the Black Sea.",
+    kategoriActive: "Active Room",
+
+    // Odalarimiz Page
+    odalarTitle: "Our Rooms & Suites",
+    odalarSubtitle: "Luxury Lodging",
+    odalarDesc: "Sea view suites combining comfort and luxury, where you will wake up to the endless blue of the Black Sea.",
+    odalarFilterAll: "All Rooms",
+    odalarFilterGerze: "Gerze Location",
+    odalarFilterMerkez: "Center Location",
+
+    // Oda Detay Page
+    odaDetayBack: "← Back to Rooms",
+    odaDetayPrice: "₺ / Night",
+    odaDetaySpecs: "Room Amenities",
+    odaDetayCapacityLabel: "Capacity: {count} Guests",
+    odaDetayLocationLabel: "Location: {city}",
+    odaDetayCategoryLabel: "Category: {category}",
+    odaDetayCalendarTitle: "Availability Status (Calendar)",
+    odaDetayCalendarDesc: "You can check the up-to-date availability status of the selected room from the calendar below.",
+    odaDetayReservationCardTitle: "Book this Room",
+    odaDetayReservationCardDesc: "Select check-in/check-out dates and guest count to proceed to reservation step.",
   }
 };

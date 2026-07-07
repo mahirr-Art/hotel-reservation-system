@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { translations } from "@/lib/translations";
 
 export const revalidate = 0; // Dynamic rendering
 
@@ -12,6 +14,10 @@ const categoryImages: Record<string, string> = {
 const defaultImage = "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=cover&w=800&q=80";
 
 export default async function KategorilerPage() {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("lang")?.value || "tr") as "tr" | "en";
+  const t = translations[lang] || translations.tr;
+
   const categories = await prisma.category.findMany({
     include: {
       rooms: {
@@ -33,17 +39,21 @@ export default async function KategorilerPage() {
       }}>
         <div style={{ position: "absolute", inset: 0, background: "url('/hotel_hero_bg.jpg') center/cover", opacity: 0.08 }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, margin: "0 auto" }}>
-          <p className="section-label" style={{ marginBottom: "0.75rem" }}>Konseptlerimiz</p>
+          <p className="section-label" style={{ marginBottom: "0.75rem" }}>{t.kategoriSubtitle}</p>
           <h1 style={{
             fontFamily: "'Playfair Display', serif",
             fontSize: "clamp(2rem, 5vw, 3.5rem)",
             fontWeight: 700, color: "white",
             marginBottom: "1rem", lineHeight: 1.2,
           }}>
-            Oda <em style={{ color: "var(--gold)" }}>Kategorileri</em>
+            {lang === "tr" ? (
+              <>Oda <em style={{ color: "var(--gold)" }}>Kategorileri</em></>
+            ) : (
+              <>Room <em style={{ color: "var(--gold)" }}>Categories</em></>
+            )}
           </h1>
           <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.95rem", lineHeight: 1.7 }}>
-            Kuzey Feneri'nin her detayı özenle düşünülmüş, Karadeniz manzaralı oda seçeneklerini keşfedin.
+            {t.kategoriDesc}
           </p>
         </div>
       </div>
@@ -55,6 +65,18 @@ export default async function KategorilerPage() {
             const image = categoryImages[cat.id] || defaultImage;
             const roomCount = cat.rooms.length;
             const isEven = index % 2 === 0;
+
+            let catName = cat.name;
+            let catDesc = cat.description || "";
+            if (lang === "en") {
+              if (cat.name === "Standart Oda") catName = "Standard Room";
+              else if (cat.name === "Deluxe Oda") catName = "Deluxe Room";
+              else if (cat.name === "Süit Oda") catName = "Suite Room";
+
+              if (!cat.description || cat.description.includes("Karadeniz'in huzur")) {
+                catDesc = "Our rooms in this category offer the peaceful view of the Black Sea and modern comfort together.";
+              }
+            }
 
             return (
               <div
@@ -74,7 +96,7 @@ export default async function KategorilerPage() {
                 <div className="img-zoom" style={{ flex: "1 1 45%", minHeight: "300px", position: "relative", overflow: "hidden" }}>
                   <img
                     src={image}
-                    alt={cat.name}
+                    alt={catName}
                     style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                   />
                   <div style={{
@@ -93,7 +115,7 @@ export default async function KategorilerPage() {
                       letterSpacing: "0.1em", textTransform: "uppercase",
                       padding: "0.3rem 0.75rem", borderRadius: "20px",
                     }}>
-                      {roomCount} Aktif Oda
+                      {roomCount} {t.kategoriActive}
                     </span>
                   </div>
 
@@ -102,13 +124,13 @@ export default async function KategorilerPage() {
                     fontSize: "1.75rem", fontWeight: 700,
                     color: "var(--navy)", marginBottom: "1rem",
                   }}>
-                    {cat.name}
+                    {catName}
                   </h2>
                   <p style={{
                     fontSize: "0.9rem", color: "var(--text-mid)",
                     lineHeight: 1.7, marginBottom: "2rem"
                   }}>
-                    {cat.description || "Bu kategorideki odalarımız Karadeniz'in huzur veren manzarası ve modern konforu bir arada sunmaktadır."}
+                    {catDesc}
                   </p>
 
                   <div style={{ marginTop: "auto" }}>
@@ -117,7 +139,7 @@ export default async function KategorilerPage() {
                       className="btn-primary"
                       style={{ borderRadius: "8px" }}
                     >
-                      Odaları Keşfet →
+                      {t.discoverRooms} →
                     </Link>
                   </div>
                 </div>

@@ -1,8 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import RoomsGrid from "@/components/RoomsGrid";
 import { Suspense } from "react";
+import { cookies } from "next/headers";
+import { translations } from "@/lib/translations";
 
 export default async function OdalarimizPage() {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("lang")?.value || "tr") as "tr" | "en";
+  const t = translations[lang] || translations.tr;
+
   const [rooms, categories] = await Promise.all([
     prisma.room.findMany({
       include: { category: true },
@@ -13,22 +19,48 @@ export default async function OdalarimizPage() {
     }),
   ]);
 
-  // Clean room prices to string for rendering consistency
-  const serializedRooms = rooms.map(room => ({
-    ...room,
-    price: room.price.toString(),
-    category: {
-      id: room.category.id,
-      name: room.category.name,
-      description: room.category.description || "",
+  // Clean room prices to string for rendering consistency & translate names
+  const serializedRooms = rooms.map(room => {
+    let name = room.name;
+    let desc = room.description;
+    let catName = room.category.name;
+    
+    if (lang === "en") {
+      if (room.name.includes("Standart")) name = name.replace("Standart", "Standard");
+      if (room.name.includes("Süit")) name = name.replace("Süit", "Suite");
+      if (room.name.includes("Balayı")) name = name.replace("Balayı", "Honeymoon");
+      
+      if (room.category.name === "Standart Oda") catName = "Standard Room";
+      else if (room.category.name === "Deluxe Oda") catName = "Deluxe Room";
+      else if (room.category.name === "Süit Oda") catName = "Suite Room";
     }
-  }));
 
-  const serializedCategories = categories.map(cat => ({
-    id: cat.id,
-    name: cat.name,
-    description: cat.description || "",
-  }));
+    return {
+      ...room,
+      name,
+      description: desc,
+      price: room.price.toString(),
+      category: {
+        id: room.category.id,
+        name: catName,
+        description: room.category.description || "",
+      }
+    };
+  });
+
+  const serializedCategories = categories.map(cat => {
+    let name = cat.name;
+    if (lang === "en") {
+      if (cat.name === "Standart Oda") name = "Standard Room";
+      else if (cat.name === "Deluxe Oda") name = "Deluxe Room";
+      else if (cat.name === "Süit Oda") name = "Suite Room";
+    }
+    return {
+      id: cat.id,
+      name,
+      description: cat.description || "",
+    };
+  });
 
   return (
     <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
@@ -42,24 +74,28 @@ export default async function OdalarimizPage() {
       }}>
         <div style={{ position: "absolute", inset: 0, background: "url('/hotel_hero_bg.jpg') center/cover", opacity: 0.08 }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, margin: "0 auto" }}>
-          <p className="section-label" style={{ marginBottom: "0.75rem" }}>Konaklamalarımız</p>
+          <p className="section-label" style={{ marginBottom: "0.75rem" }}>{t.odalarSubtitle}</p>
           <h1 style={{
             fontFamily: "'Playfair Display', serif",
             fontSize: "clamp(2rem, 5vw, 3.5rem)",
             fontWeight: 700, color: "white",
             marginBottom: "1rem", lineHeight: 1.2,
           }}>
-            Otelimizin <em style={{ color: "var(--gold)" }}>Odaları</em>
+            {lang === "tr" ? (
+              <>Otelimizin <em style={{ color: "var(--gold)" }}>Odaları</em></>
+            ) : (
+              <>Our Hotel <em style={{ color: "var(--gold)" }}>Rooms</em></>
+            )}
           </h1>
           <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.95rem", lineHeight: 1.7 }}>
-            Karadeniz'in eşsiz manzarasıyla buluşan, her bütçe ve konsept için özenle tasarlanmış odalarımız.
+            {t.odalarDesc}
           </p>
         </div>
       </div>
 
       {/* Main Content Area */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "4rem 1.5rem" }}>
-        <Suspense fallback={<p style={{ color: "var(--text-light)", textAlign: "center", padding: "3rem" }}>Yükleniyor...</p>}>
+        <Suspense fallback={<p style={{ color: "var(--text-light)", textAlign: "center", padding: "3rem" }}>{t.loading}</p>}>
           <RoomsGrid initialRooms={serializedRooms} categories={serializedCategories} />
         </Suspense>
       </div>

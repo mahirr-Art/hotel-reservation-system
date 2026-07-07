@@ -1,15 +1,17 @@
 import Link from "next/link";
+import { useTranslation } from "@/lib/lang";
 
 export default function Footer() {
+  const { lang, t } = useTranslation();
   const year = new Date().getFullYear();
 
   const quickLinks = [
-    { href: "/odalarimiz", label: "Odalarımız" },
-    { href: "/kategoriler", label: "Kategoriler" },
-    { href: "/tatil", label: "Tatil Paketleri" },
-    { href: "/hizmetlerimiz", label: "Hizmetlerimiz" },
-    { href: "/iletisim", label: "İletişim" },
-    { href: "/kullanici", label: "Hesabım" },
+    { href: "/odalarimiz", label: t.rooms },
+    { href: "/kategoriler", label: t.categories },
+    { href: "/tatil", label: t.tatil },
+    { href: "/hizmetlerimiz", label: t.hizmetlerimiz },
+    { href: "/iletisim", label: t.iletisim },
+    { href: "/kullanici", label: t.profilim },
   ];
 
   const services = [
@@ -27,7 +29,7 @@ export default function Footer() {
   ];
 
   const contacts = [
-    { icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z", text: "Fatih Mah. Sahil Cad. No:12, Gerze / Sinop" },
+    { icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z", text: lang === "tr" ? "Fatih Mah. Sahil Cad. No:12, Gerze / Sinop" : "Sahil St. No:12, Gerze / Sinop, Turkey" },
     { icon: "M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z", text: "+90 (368) 271 00 00" },
     { icon: "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6", text: "info@kuzeyfeneri.com" },
   ];
@@ -51,12 +53,12 @@ export default function Footer() {
               Kuzey Feneri
             </div>
             <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.6rem", fontWeight: 500, letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--gold-light)", opacity: 0.7, marginBottom: "1.25rem" }}>
-              Butik Otel · Sinop Gerze
+              {lang === "tr" ? "Butik Otel · Sinop Gerze" : "Boutique Hotel · Sinop Gerze"}
             </div>
           </Link>
           <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
           <p style={{ fontSize: "0.87rem", lineHeight: 1.8, maxWidth: "240px" }}>
-            Sinop Gerze kıyısında, Karadeniz'in eşsiz manzarasında huzur ve konforu bir arada yaşayın.
+            {t.footerDesc}
           </p>
           <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.5rem" }}>
             {socials.map((s) => (
@@ -72,14 +74,14 @@ export default function Footer() {
         {/* Quick links */}
         <div>
           <h4 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--white)", marginBottom: "1.25rem" }}>
-            Hızlı Bağlantılar
+            {t.quickLinks}
           </h4>
           <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {quickLinks.map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="footer-link">
-                  <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>›</span>
+                  <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>› </span>
                   {l.label}
                 </Link>
               </li>
@@ -90,14 +92,14 @@ export default function Footer() {
         {/* Services */}
         <div>
           <h4 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--white)", marginBottom: "1.25rem" }}>
-            Hizmetlerimiz
+            {t.hizmetlerimiz}
           </h4>
           <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {services.map((s) => (
               <li key={s}>
                 <Link href="/hizmetlerimiz" className="footer-link">
-                  <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>›</span>
+                  <span style={{ color: "var(--gold)", fontSize: "0.6rem" }}>› </span>
                   {s}
                 </Link>
               </li>
@@ -108,7 +110,7 @@ export default function Footer() {
         {/* Contact */}
         <div>
           <h4 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--white)", marginBottom: "1.25rem" }}>
-            İletişim
+            {t.iletisim}
           </h4>
           <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem", fontSize: "0.87rem" }}>
@@ -126,13 +128,13 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div style={{ borderTop: "1px solid rgba(201,169,110,0.12)", padding: "1.5rem", textAlign: "center", fontSize: "0.78rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>
-        © {year} Kuzey Feneri Butik Otel. Tüm hakları saklıdır.
+        {t.footerCopyright}
         <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>
-        Gizlilik Politikası
+        {lang === "tr" ? "Gizlilik Politikası" : "Privacy Policy"}
         <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>
-        Kullanım Koşulları
+        {lang === "tr" ? "Kullanım Koşulları" : "Terms of Use"}
         <span style={{ color: "var(--gold)", margin: "0 0.5rem" }}>·</span>
-        <Link href="/admin" className="hover:text-white transition-colors">Yönetici Girişi</Link>
+        <Link href="/admin" className="hover:text-white transition-colors">{lang === "tr" ? "Yönetici Girişi" : "Admin Login"}</Link>
       </div>
     </footer>
   );
