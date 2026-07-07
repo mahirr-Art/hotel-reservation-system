@@ -66,6 +66,22 @@ async function main() {
 
   await prisma.room.create({
     data: {
+      name: "Standard Bahçe Manzaralı Oda",
+      description: "Doğa ile iç içe, otelimizin yemyeşil bahçesine bakan konforlu standart oda. Huzur arayan misafirlerimiz için mükemmel bir seçenek.",
+      price: 1600,
+      capacity: 2,
+      quantity: 4,
+      city: "Sinop Merkez",
+      photos: [
+        "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=cover&w=1200&q=80",
+        "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=cover&w=1200&q=80"
+      ],
+      categoryId: standart.id
+    }
+  });
+
+  await prisma.room.create({
+    data: {
       name: "Deluxe Balkonlu King Oda",
       description: "Geniş özel balkonuyla Karadeniz'in serin esintisini odanıza taşır. Lüks king yatak, LCD TV, espresso makinesi, yağmur duşlu banyo ve özel çalışma alanı ile donatılmıştır.",
       price: 2950,
@@ -83,6 +99,22 @@ async function main() {
 
   await prisma.room.create({
     data: {
+      name: "Deluxe Teraslı Queen Oda",
+      description: "Kendinize ait geniş teras alanında gün batımını izleyebileceğiniz premium oda. Modern şömine detayı, akıllı TV sistemi ve lüks buklet seti bulunmaktadır.",
+      price: 3200,
+      capacity: 2,
+      quantity: 2,
+      city: "Gerze",
+      photos: [
+        "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=cover&w=1200&q=80",
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=cover&w=1200&q=80"
+      ],
+      categoryId: deluxe.id
+    }
+  });
+
+  await prisma.room.create({
+    data: {
       name: "Kuzey Feneri Jakuzili Süit",
       description: "Tam boy panoramik pencereleriyle 180 derece Karadeniz manzaralı bu özel süit; oda içi jakuzi, şömineli geniş oturma alanı, VIP karşılama ikramları ve 24 saat özel oda servisi ayrıcalığı sunar.",
       price: 4800,
@@ -91,6 +123,22 @@ async function main() {
       city: "Gerze",
       photos: [
         "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=cover&w=1200&q=80",
+        "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=cover&w=1200&q=80",
+        "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=cover&w=1200&q=80"
+      ],
+      categoryId: suite.id
+    }
+  });
+
+  await prisma.room.create({
+    data: {
+      name: "Deniz Feneri Şömineli Aile Süiti",
+      description: "Geniş aileler için tasarlanmış, iki ayrı yatak odası ve şömineli ortak oturma odasına sahip lüks süit. 2 adet banyo, tam donanımlı minibar ve geniş deniz manzaralı balkon mevcuttur.",
+      price: 6000,
+      capacity: 4,
+      quantity: 2,
+      city: "Gerze",
+      photos: [
         "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=cover&w=1200&q=80",
         "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=cover&w=1200&q=80"
       ],
