@@ -15,6 +15,7 @@ const reservationSchema = z.object({
   checkOut: z.string(),
   guestCount: z.number().int().min(1),
   paymentMethod: z.string().optional(),
+  promoCode: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { roomId, checkIn, checkOut, guestCount, fullName, email, phone, paymentMethod } = parsed.data;
+  const { roomId, checkIn, checkOut, guestCount, fullName, email, phone, paymentMethod, promoCode } = parsed.data;
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
 
@@ -82,7 +83,15 @@ export async function POST(request: NextRequest) {
   // Send Confirmation Email
   const reservationIdString = reservation.id.slice(-8).toUpperCase();
   const nights = Math.max(1, Math.round((checkOutDate.getTime() - checkInDate.getTime()) / 86400000));
-  const totalPrice = Number(room.price) * nights;
+  let totalPrice = Number(room.price) * nights;
+  let discountAmount = 0;
+  if (promoCode) {
+    const code = promoCode.toUpperCase();
+    if (code === "YAZ2026") discountAmount = totalPrice * 0.20;
+    else if (code === "BALAYI") discountAmount = totalPrice * 0.15;
+    else if (code === "KUZEY10") discountAmount = totalPrice * 0.10;
+    totalPrice = totalPrice - discountAmount;
+  }
 
   if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY.includes("YOUR_RESEND_API_KEY")) {
     console.log("\n==================================================");

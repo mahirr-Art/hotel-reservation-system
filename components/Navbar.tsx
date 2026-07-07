@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useTranslation } from "@/lib/lang";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<{ id: string; fullName: string; email: string } | null>(null);
+  const { lang, changeLanguage, t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -25,14 +27,14 @@ export default function Navbar() {
   }, []);
 
   const dynamicLinks = [
-    { href: "/odalarimiz", label: "Odalarımız" },
-    { href: "/kategoriler", label: "Kategoriler" },
-    { href: "/tatil", label: "Tatil Paketleri" },
-    { href: "/hizmetlerimiz", label: "Hizmetlerimiz" },
-    { href: "/iletisim", label: "İletişim" },
+    { href: "/odalarimiz", label: t.rooms },
+    { href: "/kategoriler", label: t.categories },
+    { href: "/tatil", label: t.tatil },
+    { href: "/hizmetlerimiz", label: t.hizmetlerimiz },
+    { href: "/iletisim", label: t.iletisim },
     user
-      ? { href: "/kullanici", label: "Profilim" }
-      : { href: "/kullanici", label: "Giriş Yap" },
+      ? { href: "/kullanici", label: t.profilim }
+      : { href: "/kullanici", label: t.girisyap },
   ];
 
   return (
@@ -147,10 +149,32 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* CTA */}
+          {/* CTA & Language switcher */}
           <div className="flex items-center gap-3">
+            <div style={{ display: "flex", gap: "0.2rem", marginRight: "0.5rem", background: "rgba(255,255,255,0.06)", borderRadius: "20px", padding: "2px 6px", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <button
+                onClick={() => changeLanguage("tr")}
+                style={{
+                  background: "none", border: "none", color: lang === "tr" ? "var(--gold)" : "rgba(255,255,255,0.45)",
+                  fontWeight: lang === "tr" ? 800 : 500, fontSize: "0.72rem", cursor: "pointer", padding: "2px 6px"
+                }}
+              >
+                TR
+              </button>
+              <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem", alignSelf: "center" }}>|</span>
+              <button
+                onClick={() => changeLanguage("en")}
+                style={{
+                  background: "none", border: "none", color: lang === "en" ? "var(--gold)" : "rgba(255,255,255,0.45)",
+                  fontWeight: lang === "en" ? 800 : 500, fontSize: "0.72rem", cursor: "pointer", padding: "2px 6px"
+                }}
+              >
+                EN
+              </button>
+            </div>
+            
             <Link href="/rezervasyon" className="btn-primary hidden md:inline-flex">
-              Rezervasyon Yap
+              {t.bookNow}
             </Link>
             {/* Hamburger */}
             <button
@@ -199,7 +223,7 @@ export default function Navbar() {
               ))}
               <li>
                 <Link href="/rezervasyon" onClick={() => setMenuOpen(false)} className="btn-primary mt-2">
-                  Rezervasyon Yap
+                  {t.bookNow}
                 </Link>
               </li>
             </ul>

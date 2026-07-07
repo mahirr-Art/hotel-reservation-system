@@ -4,6 +4,8 @@ import TestimonialForm from "@/components/TestimonialForm";
 import HomeSearchForm from "@/components/HomeSearchForm";
 import TestimonialCard from "@/components/TestimonialCard";
 import AmenityCard from "@/components/AmenityCard";
+import WeatherWidget from "@/components/WeatherWidget";
+import PhotoGallery from "@/components/PhotoGallery";
 
 export default async function HomePage() {
   const [featuredRooms, testimonials] = await Promise.all([
@@ -235,6 +237,11 @@ export default async function HomePage() {
             </Link>
           </div>
 
+          {/* Weather Widget */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", opacity: 0 }} className="animate-fade-in-up delay-500">
+            <WeatherWidget />
+          </div>
+
           {/* Search form */}
           <HomeSearchForm />
 
@@ -404,6 +411,9 @@ export default async function HomePage() {
       </section>
 
 
+
+      {/* ─── GALLERY SECTION ─── */}
+      <PhotoGallery />
 
       {/* ─── TESTIMONIALS ─── */}
       <section style={{ background: "var(--navy)", padding: "5rem 1.5rem" }}>

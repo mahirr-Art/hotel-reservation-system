@@ -52,6 +52,14 @@
 - **Tatil Paketleri** — Görsel zenginliği artırılmış 4 özel paket kartı (Yaz Erken Rezervasyon, Balayı, Uzun Hafta Sonu, Aile Paketi) ve özel teklif banner'ı
 - **Rezervasyon** — Online rezervasyon formu. **Yeni bir e-posta adresiyle rezervasyon yapıldığında sistem otomatik olarak bir kullanıcı hesabı oluşturur.**
 
+### 🌟 Türkiye Premium Otel Özellikleri (Yeni Eklenenler)
+- **🌐 Çoklu Dil Desteği (TR / EN Seçici):** Navbar sağ kısmına eklenen seçici ile dil anında değiştirilebilir. Tüm kritik başlıklar, menüler ve aydınlatma metinleri dinamik olarak yerelleştirilir.
+- **💬 WhatsApp Hızlı Destek Hattı:** Sağ altta yer alan hafif animasyonlu, yeşil renkli yüzen buton ile misafirlerin doğrudan otelin WhatsApp hattına tek tıkla şablon mesaj ile ulaşması sağlanır.
+- **☀️ Sinop Gerze Canlı Hava Durumu Widget'ı:** Anasayfa Hero alanına yerleştirilen ve Gerze'nin güncel sıcaklık ve hava durumunu simüle eden lüks ve dinamik hava durumu kartı.
+- **🎫 Kupon Kodu / İndirim Alanı:** Rezervasyon ödeme adımında kupon kodu uygulayabilme. `YAZ2026` (%20), `BALAYI` (%15) veya `KUZEY10` (%10) kupon kodları girildiğinde brüt, indirim ve net tutar anında dinamik olarak güncellenir ve onay maillerine de yansır.
+- **📸 Galeri Filtreleme & Lightbox:** Anasayfada yer alan; Odalar, Spa & Havuz ve Restoran filtre butonlarına sahip interaktif fotoğraf galerisi. Fotoğraflara tıklandığında tam ekran açılan lüks bir Lightbox slider (önceki/sonraki/kapat) modalı bulunur.
+- **⚖️ KVKK ve Aydınlatma Metni Entegrasyonu:** Rezervasyon tamamlama ve İletişim formu altına yasal zorunluluk olan KVKK onay kutusu eklenmiştir. Tıklandığında açılan popup modal aydınlatma metnini gösterir.
+
 ---
 
 ### 🔐 Admin Paneli (`/admin`)

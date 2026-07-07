@@ -83,10 +83,18 @@ export default function IletisimPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  
+  // KVKK states
+  const [kvkkAccepted, setKvkkAccepted] = useState(false);
+  const [showKvkkModal, setShowKvkkModal] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (!kvkkAccepted) {
+      setError("Lütfen KVKK Aydınlatma Metnini okuyup onaylayın.");
+      return;
+    }
     setLoading(true);
     const res = await fetch("/api/iletisim", {
       method: "POST",
@@ -328,6 +336,28 @@ export default function IletisimPage() {
                     />
                   </div>
 
+                  {/* KVKK Checkbox */}
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", margin: "1rem 0" }}>
+                    <input
+                      type="checkbox"
+                      id="kvkkCheck"
+                      checked={kvkkAccepted}
+                      onChange={(e) => setKvkkAccepted(e.target.checked)}
+                      style={{ marginTop: "3px", cursor: "pointer" }}
+                    />
+                    <label htmlFor="kvkkCheck" style={{ fontSize: "0.78rem", color: "var(--text-light)", cursor: "pointer", lineHeight: 1.4 }}>
+                      Kuzey Feneri Butik Otel{" "}
+                      <button
+                        type="button"
+                        onClick={() => setShowKvkkModal(true)}
+                        style={{ color: "var(--gold-dark)", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                      >
+                        KVKK Aydınlatma Metnini
+                      </button>{" "}
+                      okudum ve kabul ediyorum.
+                    </label>
+                  </div>
+
                   {error && (
                     <div style={{ background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "10px", padding: "0.75rem 1rem", fontSize: "0.85rem", color: "#DC2626" }}>
                       {error}
@@ -336,9 +366,9 @@ export default function IletisimPage() {
 
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !kvkkAccepted}
                     className="btn-primary"
-                    style={{ justifyContent: "center", borderRadius: "10px", opacity: loading ? 0.7 : 1 }}
+                    style={{ justifyContent: "center", borderRadius: "10px", opacity: (loading || !kvkkAccepted) ? 0.7 : 1 }}
                   >
                     {loading ? "Gönderiliyor..." : "Mesaj Gönder →"}
                   </button>
@@ -421,6 +451,63 @@ export default function IletisimPage() {
           </div>
         </div>
       </div>
+
+      {/* KVKK Modal */}
+      {showKvkkModal && (
+        <div
+          onClick={() => setShowKvkkModal(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(13,27,42,0.85)",
+            backdropFilter: "blur(6px)",
+            zIndex: 99999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1.5rem",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: "24px",
+              padding: "2.5rem",
+              maxWidth: 500,
+              width: "100%",
+              boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
+              position: "relative",
+              border: "1px solid rgba(0,0,0,0.06)",
+            }}
+          >
+            <button
+              onClick={() => setShowKvkkModal(false)}
+              style={{
+                position: "absolute", top: "1.25rem", right: "1.25rem",
+                background: "none", border: "none", fontSize: "1.5rem",
+                cursor: "pointer", color: "#9CA3AF"
+              }}
+            >
+              ✕
+            </button>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.25rem", fontWeight: 700, color: "var(--navy)", marginBottom: "0.5rem" }}>
+              KVKK Aydınlatma Metni
+            </h3>
+            <div className="gold-divider" style={{ marginBottom: "1.25rem" }} />
+            <p style={{ fontSize: "0.85rem", color: "var(--text-mid)", lineHeight: 1.7, marginBottom: "2rem" }}>
+              Kuzey Feneri Butik Otel olarak kişisel verilerinizin güvenliğine önem veriyoruz. İletişim formu aracılığıyla toplanan ad, e-posta, telefon ve mesaj bilgileriniz, sorularınızı yanıtlamak ve size daha iyi hizmet sunabilmek amacıyla işlenecektir. Verileriniz üçüncü şahıslarla paylaşılmayacaktır.
+            </p>
+            <button
+              onClick={() => { setKvkkAccepted(true); setShowKvkkModal(false); }}
+              className="btn-primary"
+              style={{ width: "100%", justifyContent: "center", borderRadius: "10px" }}
+            >
+              Okudum, Kabul Ediyorum
+            </button>
+          </div>
+        </div>
+      )}
 
       <style>{`
         @media (max-width: 768px) {
