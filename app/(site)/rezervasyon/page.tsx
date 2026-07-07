@@ -85,7 +85,24 @@ function RezervasyonForm() {
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error?.toString() || "Bir hata oluştu");
+      let errMsg = "Bir hata oluştu";
+      if (typeof data.error === "string") {
+        errMsg = data.error;
+      } else if (data.error && typeof data.error === "object") {
+        if (data.error.fieldErrors) {
+          const errors = Object.values(data.error.fieldErrors).flat();
+          if (errors.length > 0) {
+            errMsg = errors.map(err => {
+              if (typeof err === 'string') return err;
+              if (typeof err === 'object' && err !== null && 'message' in err) return (err as any).message;
+              return JSON.stringify(err);
+            }).join(", ");
+          }
+        } else {
+          errMsg = JSON.stringify(data.error);
+        }
+      }
+      setError(errMsg);
       return;
     }
     setReservationId(data.reservation?.id?.slice(-8).toUpperCase() || "--------");
@@ -338,19 +355,31 @@ function RezervasyonForm() {
 
           {selectedRoomId && (
             <form onSubmit={submitReservation} className="grid gap-4 sm:grid-cols-2">
-              {user ? (
+              {user && user.fullName && user.email && user.phone && user.phone.length >= 7 ? (
                 <div className="sm:col-span-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-2">
                   <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Hesap Bilgileri</p>
                   <p className="text-sm font-medium text-neutral-800">
                     <strong>{user.fullName}</strong> ({user.email}) hesabı ile rezervasyon yapıyorsunuz.
                   </p>
-                  {user.phone && <p className="text-xs text-neutral-500 mt-1">İletişim: {user.phone}</p>}
+                  <p className="text-xs text-neutral-500 mt-1">İletişim: {user.phone}</p>
                 </div>
               ) : (
                 <>
-                  <input required placeholder="Ad Soyad" value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-lg border px-3 py-2" />
-                  <input required type="email" placeholder="E-posta" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border px-3 py-2" />
-                  <input required placeholder="Telefon" value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-lg border px-3 py-2 sm:col-span-2" />
+                  {user ? (
+                    <div className="sm:col-span-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-1">
+                      <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">Hesap Bilgileri</p>
+                      <p className="text-sm font-medium text-neutral-800">
+                        <strong>{user.fullName}</strong> ({user.email}) hesabı ile rezervasyon yapıyorsunuz.
+                      </p>
+                      <p className="text-xs text-amber-600 font-semibold mt-2">⚠️ Lütfen rezervasyon işlemlerini tamamlamak için geçerli bir telefon numarası girin:</p>
+                    </div>
+                  ) : (
+                    <>
+                      <input required placeholder="Ad Soyad" value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-lg border px-3 py-2" />
+                      <input required type="email" placeholder="E-posta" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border px-3 py-2" />
+                    </>
+                  )}
+                  <input required placeholder="Telefon (En az 7 haneli)" value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-lg border px-3 py-2 sm:col-span-2" />
                 </>
               )}
               
