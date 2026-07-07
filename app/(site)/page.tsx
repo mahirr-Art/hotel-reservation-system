@@ -175,7 +175,7 @@ export default async function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-center animate-zoom-slow"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=cover&w=1920&q=80')",
+            backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/a/ad/%C4%B0nceburun_lighthouse.jpg')",
             zIndex: 0,
           }}
         />
