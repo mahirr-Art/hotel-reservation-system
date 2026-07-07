@@ -175,7 +175,7 @@ export default async function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-center animate-zoom-slow"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=cover&w=1920&q=80')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=cover&w=1920&q=80')",
             zIndex: 0,
           }}
         />
@@ -536,12 +536,12 @@ export default async function HomePage() {
 
       <style>{`
         .homepage-hero {
-          padding: 85px 1.5rem 0 !important;
+          padding: 130px 1.5rem 0 !important;
           box-sizing: border-box;
         }
         @media (min-width: 768px) {
           .homepage-hero {
-            padding: 0 1.5rem !important;
+            padding: 150px 1.5rem 0 !important;
           }
         }
       `}</style>

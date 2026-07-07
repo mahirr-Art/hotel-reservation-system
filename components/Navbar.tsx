@@ -82,8 +82,10 @@ export default function Navbar() {
           WebkitBackdropFilter: "blur(12px)",
           borderBottom: scrolled ? "1px solid rgba(201,169,110,0.2)" : "1px solid rgba(255,255,255,0.08)",
           transition: "all 0.3s ease",
-          position: "sticky",
+          position: "fixed",
           top: 0,
+          left: 0,
+          right: 0,
           zIndex: 50,
         }}
       >
