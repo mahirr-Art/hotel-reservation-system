@@ -5,8 +5,10 @@ export default function Footer() {
 
   const quickLinks = [
     { href: "/odalarimiz", label: "Odalarımız" },
+    { href: "/kategoriler", label: "Kategoriler" },
     { href: "/tatil", label: "Tatil Paketleri" },
     { href: "/iletisim", label: "İletişim" },
+    { href: "/kullanici", label: "Hesabım" },
   ];
 
   const services = [
