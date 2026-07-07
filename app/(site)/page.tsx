@@ -216,6 +216,25 @@ export default async function HomePage() {
             deneyimi sizi bekliyor.
           </p>
 
+          {/* Keşfet CTA Buttons */}
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "1.25rem",
+            marginBottom: "3rem",
+            flexWrap: "wrap",
+            opacity: 0,
+          }}
+          className="animate-fade-in-up delay-300"
+          >
+            <Link href="/odalarimiz" className="btn-primary" style={{ borderRadius: "30px", padding: "0.85rem 2rem", fontSize: "0.85rem" }}>
+              Odalarımızı Keşfet
+            </Link>
+            <Link href="/iletisim" className="btn-outline" style={{ borderRadius: "30px", padding: "0.85rem 2rem", fontSize: "0.85rem", color: "white", borderColor: "rgba(255,255,255,0.4)" }}>
+              Bize Ulaşın
+            </Link>
+          </div>
+
           {/* Search form */}
           <HomeSearchForm />
 

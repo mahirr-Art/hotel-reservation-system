@@ -13,20 +13,27 @@ export default function AdminLoginPage() {
     setError("");
     setLoading(true);
 
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setLoading(false);
+        setError(data.error || "E-posta veya şifre hatalı");
+        return;
+      }
+
+      // Hard redirect — cookie'nin middleware tarafından okunabilmesi için
+      window.location.href = "/admin";
+    } catch (err) {
       setLoading(false);
-      setError("E-posta veya şifre hatalı");
-      return;
+      setError("Sunucuya bağlanılamadı. Lütfen internetinizi veya sunucu durumunu kontrol edin.");
     }
-
-    // Hard redirect — cookie'nin middleware tarafından okunabilmesi için
-    window.location.href = "/admin";
   }
 
   return (

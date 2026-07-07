@@ -108,115 +108,117 @@ export default function TatilPage() {
         </div>
       </div>
 
-      {/* Packages */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "4rem 1.5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "2rem" }}>
-          {packages.map((pkg) => (
-            <div
-              key={pkg.id}
-              className="card-hover"
-              style={{
-                borderRadius: "24px",
-                overflow: "hidden",
-                background: "white",
-                border: "1px solid rgba(0,0,0,0.06)",
-                display: "flex",
-                flexDirection: "column",
-                boxShadow: "0 10px 30px rgba(13,27,42,0.04)",
-              }}
-            >
-              {/* Image header */}
-              <div className="img-zoom" style={{ position: "relative", height: 220, overflow: "hidden" }}>
-                <img
-                  src={pkg.image}
-                  alt={pkg.title}
-                  className="img-zoom-target"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-                {/* Clean soft gradient overlay */}
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to bottom, rgba(13,27,42,0.2) 50%, rgba(13,27,42,0.6) 100%)",
-                }} />
-                
-                {/* Badge top-left */}
-                <div style={{ position: "absolute", top: "1rem", left: "1rem" }}>
-                  <span style={{
-                    background: pkg.badgeColor,
-                    color: "white",
-                    fontSize: "0.68rem", fontWeight: 700,
-                    letterSpacing: "0.08em", textTransform: "uppercase",
-                    padding: "0.35rem 0.85rem", borderRadius: "20px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+      {/* Packages Content */}
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "5rem 1.5rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4.5rem", marginBottom: "4rem" }}>
+          {packages.map((pkg, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div
+                key={pkg.id}
+                style={{
+                  display: "flex",
+                  flexDirection: isEven ? "row" : "row-reverse",
+                  background: "white",
+                  borderRadius: "24px",
+                  overflow: "hidden",
+                  border: "1px solid rgba(0,0,0,0.06)",
+                  boxShadow: "0 15px 40px rgba(13,27,42,0.03)",
+                }}
+                className="package-card"
+              >
+                {/* Visual Image */}
+                <div style={{ flex: "1 1 50%", minHeight: "360px", position: "relative", overflow: "hidden" }}>
+                  <img
+                    src={pkg.image}
+                    alt={pkg.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(to top, rgba(13,27,42,0.35) 0%, transparent 60%)"
+                  }} />
+
+                  {/* Badge top-left */}
+                  <div style={{ position: "absolute", top: "1.25rem", left: "1.25rem" }}>
+                    <span style={{
+                      background: pkg.badgeColor,
+                      color: "white",
+                      fontSize: "0.68rem", fontWeight: 700,
+                      letterSpacing: "0.1em", textTransform: "uppercase",
+                      padding: "0.4rem 0.9rem", borderRadius: "20px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                    }}>
+                      {pkg.badge}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content details */}
+                <div style={{ flex: "1 1 50%", padding: "3rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
+                    <span style={{
+                      color: "var(--gold-dark)",
+                      fontSize: "0.72rem", fontWeight: 700,
+                      letterSpacing: "0.15em", textTransform: "uppercase",
+                    }}>
+                      {pkg.subtitle}
+                    </span>
+                    <span style={{
+                      background: `${pkg.badgeColor}12`,
+                      border: `1px solid ${pkg.badgeColor}33`,
+                      color: pkg.badgeColor,
+                      fontSize: "0.72rem", fontWeight: 800,
+                      padding: "0.25rem 0.6rem", borderRadius: "6px"
+                    }}>
+                      {pkg.price}
+                    </span>
+                  </div>
+
+                  <h2 style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: "1.8rem", fontWeight: 700,
+                    color: "var(--navy)", marginBottom: "1rem",
                   }}>
-                    {pkg.badge}
-                  </span>
-                </div>
+                    {pkg.title}
+                  </h2>
+                  
+                  <p style={{
+                    fontSize: "0.88rem", color: "var(--text-mid)",
+                    lineHeight: 1.7, marginBottom: "1.5rem"
+                  }}>
+                    {pkg.desc}
+                  </p>
 
-                {/* Price tag bottom-right */}
-                <div style={{
-                  position: "absolute", bottom: "1rem", right: "1rem",
-                  background: "rgba(255,255,255,0.92)",
-                  backdropFilter: "blur(8px)",
-                  border: `1.5px solid ${pkg.badgeColor}cc`,
-                  borderRadius: "10px",
-                  padding: "0.35rem 0.85rem",
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                }}>
-                  <span style={{ fontSize: "0.78rem", fontWeight: 800, color: pkg.badgeColor, letterSpacing: "0.02em" }}>
-                    {pkg.price}
-                  </span>
+                  <div style={{ marginBottom: "1.75rem" }}>
+                    <p style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--navy)", marginBottom: "0.6rem" }}>
+                      Paket Ayrıcalıkları:
+                    </p>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }} className="pkg-features">
+                      {pkg.features.map((f, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="3" style={{ flexShrink: 0, marginTop: "2px" }}>
+                            <polyline points="20,6 9,17 4,12" />
+                          </svg>
+                          <span style={{ fontSize: "0.8rem", color: "var(--text-dark)", lineHeight: 1.3, fontWeight: 500 }}>{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "1rem", marginTop: "auto" }}>
+                    <Link
+                      href="/rezervasyon"
+                      className="btn-primary"
+                      style={{ borderRadius: "8px", padding: "0.75rem 1.5rem", fontSize: "0.82rem" }}
+                    >
+                      Paketle Rezervasyon Yap
+                    </Link>
+                  </div>
                 </div>
               </div>
-
-              {/* Body */}
-              <div style={{ padding: "2rem", flex: 1, display: "flex", flexDirection: "column" }}>
-                <span style={{
-                  fontSize: "0.7rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  color: "var(--gold-dark)",
-                  marginBottom: "0.35rem",
-                }}>
-                  {pkg.subtitle}
-                </span>
-
-                <h3 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "1.45rem", fontWeight: 700,
-                  color: "var(--navy)", marginBottom: "0.75rem",
-                }}>
-                  {pkg.title}
-                </h3>
-
-                <p style={{ fontSize: "0.86rem", color: "var(--text-mid)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-                  {pkg.desc}
-                </p>
-
-                {/* Features */}
-                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.75rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
-                  {pkg.features.map((f) => (
-                    <li key={f} style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.82rem", color: "var(--text-dark)" }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" strokeWidth="3" style={{ flexShrink: 0 }}>
-                        <polyline points="20,6 9,17 4,12" />
-                      </svg>
-                      <span style={{ fontWeight: 500 }}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/rezervasyon"
-                  className="btn-primary"
-                  style={{ justifyContent: "center", borderRadius: "10px", padding: "1rem" }}
-                >
-                  Paketle Rezervasyon Yap →
-                </Link>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* CTA Banner */}
@@ -245,6 +247,20 @@ export default function TatilPage() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .package-card {
+            flex-direction: column !important;
+          }
+          .package-card > div {
+            flex: 1 1 100% !important;
+          }
+          .pkg-features {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

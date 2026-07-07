@@ -67,12 +67,11 @@ export default async function KategorilerPage() {
                   overflow: "hidden",
                   border: "1px solid rgba(0,0,0,0.06)",
                   boxShadow: "0 10px 30px rgba(13,27,42,0.04)",
-                  transition: "transform 0.3s ease",
                 }}
-                className="category-card"
+                className="category-card card-hover"
               >
                 {/* Visual Image */}
-                <div style={{ flex: "1 1 45%", minHeight: "300px", position: "relative", overflow: "hidden" }}>
+                <div className="img-zoom" style={{ flex: "1 1 45%", minHeight: "300px", position: "relative", overflow: "hidden" }}>
                   <img
                     src={image}
                     alt={cat.name}
