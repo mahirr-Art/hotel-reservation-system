@@ -81,6 +81,7 @@ export default function HomeSearchForm() {
             className="search-date-input"
             style={{ paddingLeft: "2.2rem", appearance: "none" }}
           >
+            <option value="all">Tüm Konumlar</option>
             <option value="Sinop Merkez">Sinop Merkez</option>
             <option value="Gerze">Gerze</option>
           </select>

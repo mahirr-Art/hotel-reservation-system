@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   const city = searchParams.get("city");
 
   const baseWhere: any = { capacity: { gte: guestCount } };
-  if (city) baseWhere.city = city;
+  if (city && city !== "all" && city !== "Tüm Konumlar") baseWhere.city = city;
 
   if (!checkIn || !checkOut) {
     const rooms = await prisma.room.findMany({ where: baseWhere, include: { category: true } });

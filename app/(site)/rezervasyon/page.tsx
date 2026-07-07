@@ -7,7 +7,7 @@ type Room = { id: string; name: string; price: string; capacity: number; availab
 
 function RezervasyonForm() {
   const searchParams = useSearchParams();
-  const [city, setCity] = useState(searchParams.get("city") || "Sinop Merkez");
+  const [city, setCity] = useState(searchParams.get("city") || "all");
   const [checkIn, setCheckIn] = useState(searchParams.get("checkIn") || "");
   const [checkOut, setCheckOut] = useState(searchParams.get("checkOut") || "");
   const [guestCount, setGuestCount] = useState(Number(searchParams.get("guests")) || 2);
@@ -274,6 +274,7 @@ function RezervasyonForm() {
         <label className="text-sm">
           Şehir
           <select value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2">
+            <option value="all">Tüm Konumlar</option>
             <option value="Sinop Merkez">Sinop Merkez</option>
             <option value="Gerze">Gerze</option>
           </select>
