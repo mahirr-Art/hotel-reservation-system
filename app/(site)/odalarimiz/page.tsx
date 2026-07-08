@@ -25,14 +25,18 @@ export default async function OdalarimizPage() {
     let desc = room.description;
     let catName = room.category.name;
     
-    if (lang === "en") {
+    if (lang === "tr") {
+      if (room.category.name === "Standard") catName = "Standart Oda";
+      else if (room.category.name === "Deluxe") catName = "Deluxe Oda";
+      else if (room.category.name === "Suite") catName = "Süit Oda";
+    } else {
       if (room.name.includes("Standart")) name = name.replace("Standart", "Standard");
       if (room.name.includes("Süit")) name = name.replace("Süit", "Suite");
       if (room.name.includes("Balayı")) name = name.replace("Balayı", "Honeymoon");
       
-      if (room.category.name === "Standart Oda") catName = "Standard Room";
-      else if (room.category.name === "Deluxe Oda") catName = "Deluxe Room";
-      else if (room.category.name === "Süit Oda") catName = "Suite Room";
+      if (room.category.name === "Standard") catName = "Standard Room";
+      else if (room.category.name === "Deluxe") catName = "Deluxe Room";
+      else if (room.category.name === "Suite") catName = "Suite Room";
     }
 
     return {
@@ -50,10 +54,14 @@ export default async function OdalarimizPage() {
 
   const serializedCategories = categories.map(cat => {
     let name = cat.name;
-    if (lang === "en") {
-      if (cat.name === "Standart Oda") name = "Standard Room";
-      else if (cat.name === "Deluxe Oda") name = "Deluxe Room";
-      else if (cat.name === "Süit Oda") name = "Suite Room";
+    if (lang === "tr") {
+      if (cat.name === "Standard") name = "Standart Oda";
+      else if (cat.name === "Deluxe") name = "Deluxe Oda";
+      else if (cat.name === "Suite") name = "Süit Oda";
+    } else {
+      if (cat.name === "Standard") name = "Standard Room";
+      else if (cat.name === "Deluxe") name = "Deluxe Room";
+      else if (cat.name === "Suite") name = "Suite Room";
     }
     return {
       id: cat.id,

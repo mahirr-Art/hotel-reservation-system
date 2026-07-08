@@ -21,6 +21,14 @@ type Room = {
   city: string;
   photos: string[];
   category: Category;
+  beds: number;
+  bathrooms: number;
+  petFriendly: boolean;
+  kitchen: boolean;
+  parking: boolean;
+  wifi: boolean;
+  ac: boolean;
+  features: string[];
 };
 
 interface RoomsGridProps {
@@ -243,19 +251,23 @@ export default function RoomsGrid({ initialRooms, categories }: RoomsGridProps) 
                 </p>
 
                 <div style={{
-                  display: "flex", gap: "0.75rem", flexWrap: "wrap",
+                  display: "flex", gap: "0.5rem", flexWrap: "wrap",
                   marginBottom: "1.25rem",
                 }}>
                   {[
                     { icon: "👤", label: lang === "tr" ? `${room.capacity} Kişi` : `${room.capacity} Guests` },
-                    { icon: "🚪", label: lang === "tr" ? `${room.quantity} Oda` : `${room.quantity} Rooms` },
-                  ].map((item) => (
-                    <span key={item.label} style={{
-                      display: "flex", alignItems: "center", gap: "0.35rem",
-                      fontSize: "0.78rem", color: "var(--text-mid)",
+                    { icon: "🛏️", label: lang === "tr" ? `${room.beds} Yatak` : `${room.beds} Beds` },
+                    { icon: "🚿", label: lang === "tr" ? `${room.bathrooms} Banyo` : `${room.bathrooms} Baths` },
+                    room.petFriendly ? { icon: "🐾", label: lang === "tr" ? "Evcil Hayvan" : "Pets OK" } : null,
+                    room.wifi ? { icon: "📶", label: "Wifi" } : null,
+                  ].filter(Boolean).map((item: any) => (
+                    <span key={item.label || item.icon} style={{
+                      display: "flex", alignItems: "center", gap: "0.3rem",
+                      fontSize: "0.74rem", color: "var(--text-mid)",
                       background: "var(--cream)", borderRadius: "6px",
-                      padding: "0.25rem 0.6rem",
+                      padding: "0.2rem 0.5rem",
                       border: "1px solid var(--cream-dark)",
+                      whiteSpace: "nowrap",
                     }}>
                       {item.icon} {item.label}
                     </span>

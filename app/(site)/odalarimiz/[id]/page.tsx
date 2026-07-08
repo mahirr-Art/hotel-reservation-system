@@ -26,14 +26,18 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
 
   let roomName = room.name;
   let catName = room.category.name;
-  if (lang === "en") {
+  if (lang === "tr") {
+    if (room.category.name === "Standard") catName = "Standart Oda";
+    else if (room.category.name === "Deluxe") catName = "Deluxe Oda";
+    else if (room.category.name === "Suite") catName = "Süit Oda";
+  } else {
     if (roomName.includes("Standart")) roomName = roomName.replace("Standart", "Standard");
     if (roomName.includes("Süit")) roomName = roomName.replace("Süit", "Suite");
     if (roomName.includes("Balayı")) roomName = roomName.replace("Balayı", "Honeymoon");
 
-    if (room.category.name === "Standart Oda") catName = "Standard Room";
-    else if (room.category.name === "Deluxe Oda") catName = "Deluxe Room";
-    else if (room.category.name === "Süit Oda") catName = "Suite Room";
+    if (room.category.name === "Standard") catName = "Standard Room";
+    else if (room.category.name === "Deluxe") catName = "Deluxe Room";
+    else if (room.category.name === "Suite") catName = "Suite Room";
   }
 
   return (
@@ -149,27 +153,63 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ id:
               <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--navy)", marginBottom: "1.25rem" }}>
                 {lang === "tr" ? "Oda Bilgileri" : "Room Information"}
               </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "0.875rem" }}>
                 {[
                   { icon: "👤", label: lang === "tr" ? "Kapasite" : "Capacity", value: lang === "tr" ? `${room.capacity} Kişi` : `${room.capacity} Guests` },
-                  { icon: "🚪", label: lang === "tr" ? "Oda Adedi" : "Total Rooms", value: lang === "tr" ? `${room.quantity} Adet` : `${room.quantity} Units` },
+                  { icon: "🛏️", label: lang === "tr" ? "Yatak Sayısı" : "Beds", value: lang === "tr" ? `${room.beds} Yatak` : `${room.beds} Beds` },
+                  { icon: "🚿", label: lang === "tr" ? "Banyo Sayısı" : "Bathrooms", value: lang === "tr" ? `${room.bathrooms} Banyo` : `${room.bathrooms} Baths` },
+                  { icon: "📶", label: "Wifi", value: room.wifi ? (lang === "tr" ? "Ücretsiz" : "Free") : (lang === "tr" ? "Yok" : "No") },
+                  { icon: "❄️", label: lang === "tr" ? "Klima" : "AC", value: room.ac ? (lang === "tr" ? "Mevcut" : "Yes") : (lang === "tr" ? "Yok" : "No") },
+                  { icon: "🍳", label: lang === "tr" ? "Mutfak" : "Kitchen", value: room.kitchen ? (lang === "tr" ? "Mevcut" : "Yes") : (lang === "tr" ? "Yok" : "No") },
+                  { icon: "🅿️", label: lang === "tr" ? "Otopark" : "Parking", value: room.parking ? (lang === "tr" ? "Ücretsiz" : "Free") : (lang === "tr" ? "Yok" : "No") },
+                  { icon: "🐾", label: lang === "tr" ? "Evcil Hayvan" : "Pets", value: room.petFriendly ? (lang === "tr" ? "İzin Verilir" : "Allowed") : (lang === "tr" ? "Yasak" : "Forbidden") },
                   { icon: "📍", label: lang === "tr" ? "Konum" : "Location", value: room.city },
                   { icon: "🏷️", label: lang === "tr" ? "Kategori" : "Category", value: catName },
                 ].map((item) => (
                   <div key={item.label} style={{
                     background: "var(--cream)", borderRadius: "12px",
-                    padding: "1rem", textAlign: "center",
+                    padding: "0.875rem", textAlign: "center",
                     border: "1px solid var(--cream-dark)",
                   }}>
-                    <span style={{ fontSize: "1.5rem", display: "block", marginBottom: "0.35rem" }}>{item.icon}</span>
-                    <p style={{ fontSize: "0.68rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-light)", marginBottom: "0.2rem" }}>
+                    <span style={{ fontSize: "1.25rem", display: "block", marginBottom: "0.25rem" }}>{item.icon}</span>
+                    <p style={{ fontSize: "0.62rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-light)", marginBottom: "0.2rem", whiteSpace: "nowrap" }}>
                       {item.label}
                     </p>
-                    <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--navy)" }}>{item.value}</p>
+                    <p style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--navy)" }}>{item.value}</p>
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* Room Features */}
+            {room.features && room.features.length > 0 && (
+              <div style={{
+                background: "white", borderRadius: "16px", padding: "1.75rem",
+                border: "1px solid rgba(0,0,0,0.06)", marginBottom: "2rem",
+              }}>
+                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--navy)", marginBottom: "1.25rem" }}>
+                  {lang === "tr" ? "Öne Çıkan Ayrıcalıklar" : "Featured Amenities"}
+                </h2>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+                  {room.features.map((feature, index) => (
+                    <span
+                      key={index}
+                      style={{
+                        background: "var(--cream)",
+                        color: "var(--navy)",
+                        border: "1px solid var(--cream-dark)",
+                        borderRadius: "20px",
+                        padding: "0.4rem 1rem",
+                        fontSize: "0.85rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      ✓ {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Availability Calendar */}
             <div style={{
