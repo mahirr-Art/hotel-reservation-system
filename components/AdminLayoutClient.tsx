@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import AdminSidebar from "./AdminSidebar";
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
+  const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
     function handleResize() {
@@ -19,6 +22,10 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   return (
     <div style={{

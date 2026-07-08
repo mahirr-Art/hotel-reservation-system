@@ -41,10 +41,12 @@ export default function AdminLoginPage() {
       minHeight: "100vh",
       background: "linear-gradient(135deg, #0D1B2A 0%, #1A2E45 50%, #0D1B2A 100%)",
       display: "flex",
+      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "1rem",
+      padding: "2rem 1rem",
       fontFamily: "'Inter', sans-serif",
+      overflowY: "auto",
     }}>
       {/* Background decoration */}
       <div style={{ position: "fixed", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
