@@ -30,6 +30,14 @@ model Room {
   quantity     Int           @default(1)
   city         String        @default("Sinop Merkez")
   photos       String[]      @default([])
+  beds         Int           @default(1)
+  bathrooms    Int           @default(1)
+  petFriendly  Boolean       @default(false)
+  kitchen      Boolean       @default(false)
+  parking      Boolean       @default(false)
+  wifi         Boolean       @default(true)
+  ac           Boolean       @default(true)
+  features     String[]      @default([])
   category     Category      @relation(fields: [categoryId], references: [id])
   categoryId   String
   reservations Reservation[]

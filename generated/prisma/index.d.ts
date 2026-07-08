@@ -2569,12 +2569,16 @@ export namespace Prisma {
     price: Decimal | null
     capacity: number | null
     quantity: number | null
+    beds: number | null
+    bathrooms: number | null
   }
 
   export type RoomSumAggregateOutputType = {
     price: Decimal | null
     capacity: number | null
     quantity: number | null
+    beds: number | null
+    bathrooms: number | null
   }
 
   export type RoomMinAggregateOutputType = {
@@ -2585,6 +2589,13 @@ export namespace Prisma {
     capacity: number | null
     quantity: number | null
     city: string | null
+    beds: number | null
+    bathrooms: number | null
+    petFriendly: boolean | null
+    kitchen: boolean | null
+    parking: boolean | null
+    wifi: boolean | null
+    ac: boolean | null
     categoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2598,6 +2609,13 @@ export namespace Prisma {
     capacity: number | null
     quantity: number | null
     city: string | null
+    beds: number | null
+    bathrooms: number | null
+    petFriendly: boolean | null
+    kitchen: boolean | null
+    parking: boolean | null
+    wifi: boolean | null
+    ac: boolean | null
     categoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2612,6 +2630,14 @@ export namespace Prisma {
     quantity: number
     city: number
     photos: number
+    beds: number
+    bathrooms: number
+    petFriendly: number
+    kitchen: number
+    parking: number
+    wifi: number
+    ac: number
+    features: number
     categoryId: number
     createdAt: number
     updatedAt: number
@@ -2623,12 +2649,16 @@ export namespace Prisma {
     price?: true
     capacity?: true
     quantity?: true
+    beds?: true
+    bathrooms?: true
   }
 
   export type RoomSumAggregateInputType = {
     price?: true
     capacity?: true
     quantity?: true
+    beds?: true
+    bathrooms?: true
   }
 
   export type RoomMinAggregateInputType = {
@@ -2639,6 +2669,13 @@ export namespace Prisma {
     capacity?: true
     quantity?: true
     city?: true
+    beds?: true
+    bathrooms?: true
+    petFriendly?: true
+    kitchen?: true
+    parking?: true
+    wifi?: true
+    ac?: true
     categoryId?: true
     createdAt?: true
     updatedAt?: true
@@ -2652,6 +2689,13 @@ export namespace Prisma {
     capacity?: true
     quantity?: true
     city?: true
+    beds?: true
+    bathrooms?: true
+    petFriendly?: true
+    kitchen?: true
+    parking?: true
+    wifi?: true
+    ac?: true
     categoryId?: true
     createdAt?: true
     updatedAt?: true
@@ -2666,6 +2710,14 @@ export namespace Prisma {
     quantity?: true
     city?: true
     photos?: true
+    beds?: true
+    bathrooms?: true
+    petFriendly?: true
+    kitchen?: true
+    parking?: true
+    wifi?: true
+    ac?: true
+    features?: true
     categoryId?: true
     createdAt?: true
     updatedAt?: true
@@ -2767,6 +2819,14 @@ export namespace Prisma {
     quantity: number
     city: string
     photos: string[]
+    beds: number
+    bathrooms: number
+    petFriendly: boolean
+    kitchen: boolean
+    parking: boolean
+    wifi: boolean
+    ac: boolean
+    features: string[]
     categoryId: string
     createdAt: Date
     updatedAt: Date
@@ -2800,6 +2860,14 @@ export namespace Prisma {
     quantity?: boolean
     city?: boolean
     photos?: boolean
+    beds?: boolean
+    bathrooms?: boolean
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: boolean
     categoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2817,6 +2885,14 @@ export namespace Prisma {
     quantity?: boolean
     city?: boolean
     photos?: boolean
+    beds?: boolean
+    bathrooms?: boolean
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: boolean
     categoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2832,6 +2908,14 @@ export namespace Prisma {
     quantity?: boolean
     city?: boolean
     photos?: boolean
+    beds?: boolean
+    bathrooms?: boolean
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: boolean
     categoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2847,12 +2931,20 @@ export namespace Prisma {
     quantity?: boolean
     city?: boolean
     photos?: boolean
+    beds?: boolean
+    bathrooms?: boolean
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: boolean
     categoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "capacity" | "quantity" | "city" | "photos" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
+  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "capacity" | "quantity" | "city" | "photos" | "beds" | "bathrooms" | "petFriendly" | "kitchen" | "parking" | "wifi" | "ac" | "features" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
   export type RoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     reservations?: boolean | Room$reservationsArgs<ExtArgs>
@@ -2880,6 +2972,14 @@ export namespace Prisma {
       quantity: number
       city: string
       photos: string[]
+      beds: number
+      bathrooms: number
+      petFriendly: boolean
+      kitchen: boolean
+      parking: boolean
+      wifi: boolean
+      ac: boolean
+      features: string[]
       categoryId: string
       createdAt: Date
       updatedAt: Date
@@ -3316,6 +3416,14 @@ export namespace Prisma {
     readonly quantity: FieldRef<"Room", 'Int'>
     readonly city: FieldRef<"Room", 'String'>
     readonly photos: FieldRef<"Room", 'String[]'>
+    readonly beds: FieldRef<"Room", 'Int'>
+    readonly bathrooms: FieldRef<"Room", 'Int'>
+    readonly petFriendly: FieldRef<"Room", 'Boolean'>
+    readonly kitchen: FieldRef<"Room", 'Boolean'>
+    readonly parking: FieldRef<"Room", 'Boolean'>
+    readonly wifi: FieldRef<"Room", 'Boolean'>
+    readonly ac: FieldRef<"Room", 'Boolean'>
+    readonly features: FieldRef<"Room", 'String[]'>
     readonly categoryId: FieldRef<"Room", 'String'>
     readonly createdAt: FieldRef<"Room", 'DateTime'>
     readonly updatedAt: FieldRef<"Room", 'DateTime'>
@@ -9082,6 +9190,14 @@ export namespace Prisma {
     quantity: 'quantity',
     city: 'city',
     photos: 'photos',
+    beds: 'beds',
+    bathrooms: 'bathrooms',
+    petFriendly: 'petFriendly',
+    kitchen: 'kitchen',
+    parking: 'parking',
+    wifi: 'wifi',
+    ac: 'ac',
+    features: 'features',
     categoryId: 'categoryId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -9243,6 +9359,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'ReservationStatus'
    */
   export type EnumReservationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReservationStatus'>
@@ -9253,13 +9376,6 @@ export namespace Prisma {
    * Reference to a field of type 'ReservationStatus[]'
    */
   export type ListEnumReservationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReservationStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -9342,6 +9458,14 @@ export namespace Prisma {
     quantity?: IntFilter<"Room"> | number
     city?: StringFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
+    beds?: IntFilter<"Room"> | number
+    bathrooms?: IntFilter<"Room"> | number
+    petFriendly?: BoolFilter<"Room"> | boolean
+    kitchen?: BoolFilter<"Room"> | boolean
+    parking?: BoolFilter<"Room"> | boolean
+    wifi?: BoolFilter<"Room"> | boolean
+    ac?: BoolFilter<"Room"> | boolean
+    features?: StringNullableListFilter<"Room">
     categoryId?: StringFilter<"Room"> | string
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
@@ -9358,6 +9482,14 @@ export namespace Prisma {
     quantity?: SortOrder
     city?: SortOrder
     photos?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
+    petFriendly?: SortOrder
+    kitchen?: SortOrder
+    parking?: SortOrder
+    wifi?: SortOrder
+    ac?: SortOrder
+    features?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9377,6 +9509,14 @@ export namespace Prisma {
     quantity?: IntFilter<"Room"> | number
     city?: StringFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
+    beds?: IntFilter<"Room"> | number
+    bathrooms?: IntFilter<"Room"> | number
+    petFriendly?: BoolFilter<"Room"> | boolean
+    kitchen?: BoolFilter<"Room"> | boolean
+    parking?: BoolFilter<"Room"> | boolean
+    wifi?: BoolFilter<"Room"> | boolean
+    ac?: BoolFilter<"Room"> | boolean
+    features?: StringNullableListFilter<"Room">
     categoryId?: StringFilter<"Room"> | string
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
@@ -9393,6 +9533,14 @@ export namespace Prisma {
     quantity?: SortOrder
     city?: SortOrder
     photos?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
+    petFriendly?: SortOrder
+    kitchen?: SortOrder
+    parking?: SortOrder
+    wifi?: SortOrder
+    ac?: SortOrder
+    features?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9415,6 +9563,14 @@ export namespace Prisma {
     quantity?: IntWithAggregatesFilter<"Room"> | number
     city?: StringWithAggregatesFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
+    beds?: IntWithAggregatesFilter<"Room"> | number
+    bathrooms?: IntWithAggregatesFilter<"Room"> | number
+    petFriendly?: BoolWithAggregatesFilter<"Room"> | boolean
+    kitchen?: BoolWithAggregatesFilter<"Room"> | boolean
+    parking?: BoolWithAggregatesFilter<"Room"> | boolean
+    wifi?: BoolWithAggregatesFilter<"Room"> | boolean
+    ac?: BoolWithAggregatesFilter<"Room"> | boolean
+    features?: StringNullableListFilter<"Room">
     categoryId?: StringWithAggregatesFilter<"Room"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
@@ -9809,6 +9965,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutRoomsInput
@@ -9824,6 +9988,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     categoryId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9839,6 +10011,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutRoomsNestedInput
@@ -9854,6 +10034,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9869,6 +10057,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     categoryId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9883,6 +10079,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9896,6 +10100,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10421,6 +10633,11 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type CategoryScalarRelationFilter = {
     is?: CategoryWhereInput
     isNot?: CategoryWhereInput
@@ -10445,6 +10662,14 @@ export namespace Prisma {
     quantity?: SortOrder
     city?: SortOrder
     photos?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
+    petFriendly?: SortOrder
+    kitchen?: SortOrder
+    parking?: SortOrder
+    wifi?: SortOrder
+    ac?: SortOrder
+    features?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10454,6 +10679,8 @@ export namespace Prisma {
     price?: SortOrder
     capacity?: SortOrder
     quantity?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
   }
 
   export type RoomMaxOrderByAggregateInput = {
@@ -10464,6 +10691,13 @@ export namespace Prisma {
     capacity?: SortOrder
     quantity?: SortOrder
     city?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
+    petFriendly?: SortOrder
+    kitchen?: SortOrder
+    parking?: SortOrder
+    wifi?: SortOrder
+    ac?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10477,6 +10711,13 @@ export namespace Prisma {
     capacity?: SortOrder
     quantity?: SortOrder
     city?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
+    petFriendly?: SortOrder
+    kitchen?: SortOrder
+    parking?: SortOrder
+    wifi?: SortOrder
+    ac?: SortOrder
     categoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10486,6 +10727,8 @@ export namespace Prisma {
     price?: SortOrder
     capacity?: SortOrder
     quantity?: SortOrder
+    beds?: SortOrder
+    bathrooms?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -10518,6 +10761,14 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumReservationStatusFilter<$PrismaModel = never> = {
@@ -10640,11 +10891,6 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type TestimonialCountOrderByAggregateInput = {
     id?: SortOrder
     authorTag?: SortOrder
@@ -10681,14 +10927,6 @@ export namespace Prisma {
 
   export type TestimonialSumOrderByAggregateInput = {
     rating?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -10810,6 +11048,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type RoomCreatefeaturesInput = {
+    set: string[]
+  }
+
   export type CategoryCreateNestedOneWithoutRoomsInput = {
     create?: XOR<CategoryCreateWithoutRoomsInput, CategoryUncheckedCreateWithoutRoomsInput>
     connectOrCreate?: CategoryCreateOrConnectWithoutRoomsInput
@@ -10847,6 +11089,15 @@ export namespace Prisma {
   }
 
   export type RoomUpdatephotosInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type RoomUpdatefeaturesInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -10903,10 +11154,6 @@ export namespace Prisma {
     upsert?: RoomUpsertWithoutReservationsInput
     connect?: RoomWhereUniqueInput
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutReservationsInput, RoomUpdateWithoutReservationsInput>, RoomUncheckedUpdateWithoutReservationsInput>
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -11033,6 +11280,11 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -11076,6 +11328,14 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumReservationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ReservationStatus | EnumReservationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ReservationStatus[] | ListEnumReservationStatusFieldRefInput<$PrismaModel>
@@ -11091,19 +11351,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumReservationStatusFilter<$PrismaModel>
     _max?: NestedEnumReservationStatusFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -11140,6 +11387,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: ReservationCreateNestedManyWithoutRoomInput
@@ -11154,6 +11409,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: ReservationUncheckedCreateNestedManyWithoutRoomInput
@@ -11197,6 +11460,14 @@ export namespace Prisma {
     quantity?: IntFilter<"Room"> | number
     city?: StringFilter<"Room"> | string
     photos?: StringNullableListFilter<"Room">
+    beds?: IntFilter<"Room"> | number
+    bathrooms?: IntFilter<"Room"> | number
+    petFriendly?: BoolFilter<"Room"> | boolean
+    kitchen?: BoolFilter<"Room"> | boolean
+    parking?: BoolFilter<"Room"> | boolean
+    wifi?: BoolFilter<"Room"> | boolean
+    ac?: BoolFilter<"Room"> | boolean
+    features?: StringNullableListFilter<"Room">
     categoryId?: StringFilter<"Room"> | string
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
@@ -11324,6 +11595,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutRoomsInput
@@ -11338,6 +11617,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     categoryId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11368,6 +11655,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutRoomsNestedInput
@@ -11382,6 +11677,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     categoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11396,6 +11699,14 @@ export namespace Prisma {
     quantity?: number
     city?: string
     photos?: RoomCreatephotosInput | string[]
+    beds?: number
+    bathrooms?: number
+    petFriendly?: boolean
+    kitchen?: boolean
+    parking?: boolean
+    wifi?: boolean
+    ac?: boolean
+    features?: RoomCreatefeaturesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11409,6 +11720,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: ReservationUpdateManyWithoutRoomNestedInput
@@ -11423,6 +11742,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: ReservationUncheckedUpdateManyWithoutRoomNestedInput
@@ -11437,6 +11764,14 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     city?: StringFieldUpdateOperationsInput | string
     photos?: RoomUpdatephotosInput | string[]
+    beds?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    petFriendly?: BoolFieldUpdateOperationsInput | boolean
+    kitchen?: BoolFieldUpdateOperationsInput | boolean
+    parking?: BoolFieldUpdateOperationsInput | boolean
+    wifi?: BoolFieldUpdateOperationsInput | boolean
+    ac?: BoolFieldUpdateOperationsInput | boolean
+    features?: RoomUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

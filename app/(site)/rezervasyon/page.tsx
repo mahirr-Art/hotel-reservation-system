@@ -37,6 +37,19 @@ function RezervasyonForm() {
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [showKvkkModal, setShowKvkkModal] = useState(false);
 
+  // Airbnb Filter states
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
+  const [beds, setBeds] = useState<number | "">("");
+  const [bathrooms, setBathrooms] = useState<number | "">("");
+  const [petFriendly, setPetFriendly] = useState(false);
+  const [kitchen, setKitchen] = useState(false);
+  const [parking, setParking] = useState(false);
+  const [wifi, setWifi] = useState(false);
+  const [ac, setAc] = useState(false);
+  const [minPrice, setMinPrice] = useState<number | "">("");
+  const [maxPrice, setMaxPrice] = useState<number | "">("");
+  const [filteredCount, setFilteredCount] = useState(0);
+
   useEffect(() => {
     setMinDate(new Date().toISOString().split("T")[0]);
 
@@ -83,6 +96,28 @@ function RezervasyonForm() {
     }
   }
 
+  useEffect(() => {
+    if (!showFiltersModal) return;
+
+    let url = `/api/odalar?checkIn=${checkIn || ""}&checkOut=${checkOut || ""}&kisiSayisi=${guestCount}&city=${city}`;
+    if (beds) url += `&beds=${beds}`;
+    if (bathrooms) url += `&bathrooms=${bathrooms}`;
+    if (petFriendly) url += `&petFriendly=true`;
+    if (kitchen) url += `&kitchen=true`;
+    if (parking) url += `&parking=true`;
+    if (wifi) url += `&wifi=true`;
+    if (ac) url += `&ac=true`;
+    if (minPrice) url += `&minPrice=${minPrice}`;
+    if (maxPrice) url += `&maxPrice=${maxPrice}`;
+
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => {
+        setFilteredCount(data.rooms?.length || 0);
+      })
+      .catch(() => {});
+  }, [showFiltersModal, beds, bathrooms, petFriendly, kitchen, parking, wifi, ac, minPrice, maxPrice, city, checkIn, checkOut, guestCount]);
+
   async function searchRooms() {
     setError("");
     if (!checkIn || !checkOut) {
@@ -90,11 +125,39 @@ function RezervasyonForm() {
       return;
     }
     setLoading(true);
-    const res = await fetch(`/api/odalar?checkIn=${checkIn}&checkOut=${checkOut}&kisiSayisi=${guestCount}&city=${city}`);
+    let url = `/api/odalar?checkIn=${checkIn}&checkOut=${checkOut}&kisiSayisi=${guestCount}&city=${city}`;
+    if (beds) url += `&beds=${beds}`;
+    if (bathrooms) url += `&bathrooms=${bathrooms}`;
+    if (petFriendly) url += `&petFriendly=true`;
+    if (kitchen) url += `&kitchen=true`;
+    if (parking) url += `&parking=true`;
+    if (wifi) url += `&wifi=true`;
+    if (ac) url += `&ac=true`;
+    if (minPrice) url += `&minPrice=${minPrice}`;
+    if (maxPrice) url += `&maxPrice=${maxPrice}`;
+
+    const res = await fetch(url);
     const data = await res.json();
     setRooms(data.rooms || []);
     setLoading(false);
     setStep("form");
+  }
+
+  function applyFilters() {
+    setShowFiltersModal(false);
+    searchRooms();
+  }
+
+  function clearAllFilters() {
+    setBeds("");
+    setBathrooms("");
+    setPetFriendly(false);
+    setKitchen(false);
+    setParking(false);
+    setWifi(false);
+    setAc(false);
+    setMinPrice("");
+    maxPrice !== "" && setMaxPrice("");
   }
 
   async function submitReservation(e: React.FormEvent) {
@@ -333,7 +396,7 @@ function RezervasyonForm() {
       <h1 className="text-3xl font-semibold mb-2">{lang === "tr" ? "Rezervasyon" : "Online Booking"}</h1>
       <p className="text-neutral-600 mb-10">{lang === "tr" ? "Konum ve tarihlerinizi seçin, müsait odalar arasından seçim yapın." : "Choose your dates, guests count, and explore premium available suites."}</p>
 
-      <div className="grid gap-4 sm:grid-cols-5 mb-8">
+      <div className="grid gap-4 sm:grid-cols-6 mb-8">
         <label className="text-sm">
           {lang === "tr" ? "Konum" : "Location"}
           <select value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2">
@@ -389,7 +452,25 @@ function RezervasyonForm() {
           <input type="number" min={1} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="mt-1 w-full rounded-lg border px-3 py-2" />
         </label>
 
-        <button onClick={searchRooms} disabled={loading} className="self-end rounded-lg bg-teal-600 text-white px-4 py-2 font-medium hover:bg-teal-700">
+        {/* Airbnb style Filters Trigger Button */}
+        <div className="flex flex-col text-sm">
+          <span>&nbsp;</span>
+          <button 
+            type="button" 
+            onClick={() => setShowFiltersModal(true)} 
+            className="mt-1 rounded-lg border border-neutral-300 bg-white text-neutral-700 px-3 h-[42px] font-medium hover:border-neutral-500 flex items-center justify-center gap-1.5 cursor-pointer select-none"
+          >
+            <span>🎛️</span>
+            <span>{lang === "tr" ? "Filtreler" : "Filters"}</span>
+            {(beds !== "" || bathrooms !== "" || petFriendly || kitchen || parking || wifi || ac || minPrice !== "" || maxPrice !== "") && (
+              <span className="flex items-center justify-center w-5 h-5 text-[10px] bg-teal-600 text-white rounded-full font-bold">
+                {[beds !== "", bathrooms !== "", petFriendly, kitchen, parking, wifi, ac, minPrice !== "", maxPrice !== ""].filter(Boolean).length}
+              </span>
+            )}
+          </button>
+        </div>
+
+        <button onClick={searchRooms} disabled={loading} className="self-end rounded-lg bg-teal-600 text-white px-4 py-2 font-medium hover:bg-teal-700 h-[42px]">
           {loading ? (lang === "tr" ? "Aranıyor..." : "Searching...") : (lang === "tr" ? "Müsaitlik Ara" : "Search Rooms")}
         </button>
       </div>
@@ -601,6 +682,257 @@ function RezervasyonForm() {
             >
               {lang === "tr" ? "Okudum, Kabul Ediyorum" : "I Agree & Accept"}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Airbnb-style Filters Modal popup */}
+      {showFiltersModal && (
+        <div
+          onClick={() => setShowFiltersModal(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.5)",
+            backdropFilter: "blur(4px)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1.5rem",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: "16px",
+              maxWidth: 580,
+              width: "100%",
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.15)",
+              animation: "fadeInUp 0.25s ease",
+            }}
+          >
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1.25rem 1.5rem", borderBottom: "1px solid #EAEAEA" }}>
+              <button onClick={() => setShowFiltersModal(false)} style={{ background: "none", border: "none", fontSize: "1.25rem", cursor: "pointer", color: "#222" }}>✕</button>
+              <span style={{ fontSize: "1rem", fontWeight: 700, color: "#222" }}>{lang === "tr" ? "Filtreler" : "Filters"}</span>
+              <div style={{ width: 24 }} /> {/* balancer */}
+            </div>
+
+            {/* Scrollable Content */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "1.5rem" }}>
+              
+              {/* Size Özel Öneriler (Features) */}
+              <div style={{ marginBottom: "2rem" }}>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#222", marginBottom: "1rem" }}>
+                  {lang === "tr" ? "Size özel öneriler" : "Suggestions for you"}
+                </h3>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "0.875rem" }}>
+                  {/* Otopark */}
+                  <div
+                    onClick={() => setParking(!parking)}
+                    style={{
+                      border: parking ? "2px solid #222" : "1px solid #E2E8F0",
+                      borderRadius: "12px", padding: "1rem", textAlign: "center", cursor: "pointer",
+                      background: parking ? "#F7F7F7" : "white", transition: "all 0.2s"
+                    }}
+                  >
+                    <div style={{ color: parking ? "#14b8a6" : "#4B5563", marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M9 17V7h4a3 3 0 0 1 0 6H9" /></svg>
+                    </div>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#222" }}>{lang === "tr" ? "Ücretsiz otopark" : "Free parking"}</span>
+                  </div>
+
+                  {/* Mutfak */}
+                  <div
+                    onClick={() => setKitchen(!kitchen)}
+                    style={{
+                      border: kitchen ? "2px solid #222" : "1px solid #E2E8F0",
+                      borderRadius: "12px", padding: "1rem", textAlign: "center", cursor: "pointer",
+                      background: kitchen ? "#F7F7F7" : "white", transition: "all 0.2s"
+                    }}
+                  >
+                    <div style={{ color: kitchen ? "#14b8a6" : "#4B5563", marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3" /></svg>
+                    </div>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#222" }}>{lang === "tr" ? "Mutfak" : "Kitchen"}</span>
+                  </div>
+
+                  {/* Evcil Hayvan */}
+                  <div
+                    onClick={() => setPetFriendly(!petFriendly)}
+                    style={{
+                      border: petFriendly ? "2px solid #222" : "1px solid #E2E8F0",
+                      borderRadius: "12px", padding: "1rem", textAlign: "center", cursor: "pointer",
+                      background: petFriendly ? "#F7F7F7" : "white", transition: "all 0.2s"
+                    }}
+                  >
+                    <div style={{ color: petFriendly ? "#14b8a6" : "#4B5563", marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="14" r="4" /><circle cx="6.5" cy="8.5" r="2.5" /><circle cx="9.5" cy="4.5" r="2.5" /><circle cx="14.5" cy="4.5" r="2.5" /><circle cx="17.5" cy="8.5" r="2.5" /></svg>
+                    </div>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#222" }}>{lang === "tr" ? "Evcil hayvan" : "Pet-friendly"}</span>
+                  </div>
+
+                  {/* Wifi */}
+                  <div
+                    onClick={() => setWifi(!wifi)}
+                    style={{
+                      border: wifi ? "2px solid #222" : "1px solid #E2E8F0",
+                      borderRadius: "12px", padding: "1rem", textAlign: "center", cursor: "pointer",
+                      background: wifi ? "#F7F7F7" : "white", transition: "all 0.2s"
+                    }}
+                  >
+                    <div style={{ color: wifi ? "#14b8a6" : "#4B5563", marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.1a6 6 0 0 1 6.94 0M12 20h.01" /></svg>
+                    </div>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#222" }}>{lang === "tr" ? "Kablosuz Wifi" : "Wireless Wifi"}</span>
+                  </div>
+
+                  {/* Klima */}
+                  <div
+                    onClick={() => setAc(!ac)}
+                    style={{
+                      border: ac ? "2px solid #222" : "1px solid #E2E8F0",
+                      borderRadius: "12px", padding: "1rem", textAlign: "center", cursor: "pointer",
+                      background: ac ? "#F7F7F7" : "white", transition: "all 0.2s"
+                    }}
+                  >
+                    <div style={{ color: ac ? "#14b8a6" : "#4B5563", marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M2 12h20M12 12l8-8M12 12l-8 8M12 12l8 8M12 12l-8-8" /></svg>
+                    </div>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#222" }}>{lang === "tr" ? "Klima (AC)" : "Air Conditioning"}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Yatak & Oda Özellikleri (Beds & Baths) */}
+              <div style={{ marginBottom: "2rem", borderTop: "1px solid #EAEAEA", paddingTop: "1.5rem" }}>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#222", marginBottom: "1rem" }}>
+                  {lang === "tr" ? "Yataklar ve banyolar" : "Beds and bathrooms"}
+                </h3>
+                
+                {/* Yataklar */}
+                <div style={{ marginBottom: "1.25rem" }}>
+                  <span style={{ fontSize: "0.88rem", color: "#4B5563", display: "block", marginBottom: "0.5rem" }}>{lang === "tr" ? "Yatak Odaları" : "Bedrooms"}</span>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    {([
+                      { val: "", label: lang === "tr" ? "Tümü" : "Any" },
+                      { val: 1, label: "1+" },
+                      { val: 2, label: "2+" },
+                      { val: 3, label: "3+" }
+                    ] as { val: number | ""; label: string }[]).map((item) => (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={() => setBeds(item.val)}
+                        style={{
+                          flex: 1, padding: "0.6rem", borderRadius: "100px", border: beds === item.val ? "2px solid #222" : "1px solid #E2E8F0",
+                          background: beds === item.val ? "#222" : "white", color: beds === item.val ? "white" : "#222",
+                          fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s"
+                        }}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Banyolar */}
+                <div>
+                  <span style={{ fontSize: "0.88rem", color: "#4B5563", display: "block", marginBottom: "0.5rem" }}>{lang === "tr" ? "Banyolar" : "Bathrooms"}</span>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    {([
+                      { val: "", label: lang === "tr" ? "Tümü" : "Any" },
+                      { val: 1, label: "1+" },
+                      { val: 2, label: "2+" }
+                    ] as { val: number | ""; label: string }[]).map((item) => (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={() => setBathrooms(item.val)}
+                        style={{
+                          flex: 1, padding: "0.6rem", borderRadius: "100px", border: bathrooms === item.val ? "2px solid #222" : "1px solid #E2E8F0",
+                          background: bathrooms === item.val ? "#222" : "white", color: bathrooms === item.val ? "white" : "#222",
+                          fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s"
+                        }}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Fiyat Aralığı (Price Range) */}
+              <div style={{ borderTop: "1px solid #EAEAEA", paddingTop: "1.5rem" }}>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#222", marginBottom: "0.25rem" }}>
+                  {lang === "tr" ? "Fiyat aralığı" : "Price range"}
+                </h3>
+                <p style={{ fontSize: "0.78rem", color: "#718096", marginBottom: "1.25rem" }}>
+                  {lang === "tr" ? "Tüm ücretler dahil seyahat fiyatı" : "Price inclusive of all fees"}
+                </p>
+
+                {/* Histogram */}
+                <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "50px", marginBottom: "1rem", padding: "0 10px" }}>
+                  {[20, 25, 15, 30, 40, 55, 70, 85, 90, 80, 75, 60, 50, 45, 60, 70, 80, 95, 85, 60, 40, 30, 20, 15, 10].map((h, i) => (
+                    <div key={i} style={{ flex: 1, height: `${h}%`, background: "rgba(20,184,166,0.35)", borderRadius: "2px" }} />
+                  ))}
+                </div>
+
+                {/* Price Inputs */}
+                <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                  <div style={{ flex: 1, position: "relative" }}>
+                    <span style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", fontSize: "0.88rem", color: "#718096" }}>₺</span>
+                    <input
+                      type="number"
+                      placeholder={lang === "tr" ? "En az" : "Min"}
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value ? Number(e.target.value) : "")}
+                      style={{ width: "100%", border: "1px solid #E2E8F0", borderRadius: "8px", padding: "0.6rem 0.6rem 0.6rem 1.75rem", fontSize: "0.85rem", color: "#222" }}
+                    />
+                  </div>
+                  <span style={{ color: "#718096" }}>—</span>
+                  <div style={{ flex: 1, position: "relative" }}>
+                    <span style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", fontSize: "0.88rem", color: "#718096" }}>₺</span>
+                    <input
+                      type="number"
+                      placeholder={lang === "tr" ? "En çok" : "Max"}
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : "")}
+                      style={{ width: "100%", border: "1px solid #E2E8F0", borderRadius: "8px", padding: "0.6rem 0.6rem 0.6rem 1.75rem", fontSize: "0.85rem", color: "#222" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Footer */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1.25rem 1.5rem", borderTop: "1px solid #EAEAEA" }}>
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                style={{ background: "none", border: "none", textDecoration: "underline", color: "#222", fontSize: "0.88rem", fontWeight: 600, cursor: "pointer" }}
+              >
+                {lang === "tr" ? "Tümünü temizle" : "Clear all"}
+              </button>
+              <button
+                type="button"
+                onClick={applyFilters}
+                style={{
+                  background: "#222", color: "white", border: "none", borderRadius: "8px", padding: "0.75rem 1.5rem",
+                  fontSize: "0.88rem", fontWeight: 700, cursor: "pointer", transition: "background 0.2s"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#000"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "#222"}
+              >
+                {lang === "tr" ? `${filteredCount} yeri göster` : `Show ${filteredCount} places`}
+              </button>
+            </div>
           </div>
         </div>
       )}
