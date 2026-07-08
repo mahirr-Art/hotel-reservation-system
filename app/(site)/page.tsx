@@ -296,9 +296,11 @@ export default async function HomePage() {
             </p>
             <div className="gold-divider" style={{ margin: "0 auto" }} />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem" }}>
+          <div className="amenities-scroll-container">
             {amenities.map((a) => (
-              <AmenityCard key={a.title} {...a} />
+              <div key={a.title} className="amenity-card-wrapper">
+                <AmenityCard {...a} />
+              </div>
             ))}
           </div>
         </div>
@@ -545,6 +547,22 @@ export default async function HomePage() {
           margin-top: 20px;
           width: 100%;
         }
+        .amenities-scroll-container {
+          display: flex;
+          overflow-x: auto;
+          gap: 1.5rem;
+          padding: 1rem 0.25rem 2.5rem;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .amenities-scroll-container::-webkit-scrollbar {
+          display: none;
+        }
+        .amenity-card-wrapper {
+          flex: 0 0 280px;
+          scroll-snap-align: start;
+        }
         @media (min-width: 768px) {
           .homepage-hero {
             height: 100vh;
@@ -553,6 +571,12 @@ export default async function HomePage() {
           }
           .hero-content-box {
             margin-top: 0;
+          }
+          .amenities-scroll-container {
+            padding: 1rem 0.25rem 2.5rem;
+          }
+          .amenity-card-wrapper {
+            flex: 0 0 320px;
           }
         }
       `}</style>
