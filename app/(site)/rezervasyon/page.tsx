@@ -160,6 +160,146 @@ function RezervasyonForm() {
     maxPrice !== "" && setMaxPrice("");
   }
 
+  const [mapInstance, setMapInstance] = useState<any>(null);
+
+  // Dynamic Leaflet Map setup
+  useEffect(() => {
+    if (typeof window === "undefined" || step !== "form") return;
+
+    if (!document.getElementById("leaflet-css")) {
+      const link = document.createElement("link");
+      link.id = "leaflet-css";
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      document.head.appendChild(link);
+    }
+
+    if (!document.getElementById("leaflet-js")) {
+      const script = document.createElement("script");
+      script.id = "leaflet-js";
+      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      script.async = true;
+      script.onload = () => {
+        initLeafletMap();
+      };
+      document.head.appendChild(script);
+    } else {
+      setTimeout(initLeafletMap, 100);
+    }
+
+    function initLeafletMap() {
+      const L = (window as any).L;
+      if (!L) return;
+
+      const mapContainer = document.getElementById("rooms-map");
+      if (!mapContainer) return;
+
+      let map = (window as any)._leafletMap;
+      if (!map) {
+        map = L.map("rooms-map").setView([42.0264, 35.1624], 11);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        (window as any)._leafletMap = map;
+      }
+      setMapInstance(map);
+    }
+  }, [step]);
+
+  // Update Leaflet markers
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = (window as any)._leafletMap;
+    if (!L || !map || !rooms) return;
+
+    if ((window as any)._leafletMarkers) {
+      (window as any)._leafletMarkers.forEach((m: any) => m.remove());
+    }
+    (window as any)._leafletMarkers = [];
+
+    const bounds: any[] = [];
+
+    rooms.forEach((room: any, idx: number) => {
+      let lat = 42.0264;
+      let lng = 35.1624;
+      if (room.city === "Gerze") {
+        lat = 41.8010;
+        lng = 35.1960;
+      }
+      const jitterLat = (Math.sin(idx) * 0.008);
+      const jitterLng = (Math.cos(idx) * 0.008);
+      const markerLat = lat + jitterLat;
+      const markerLng = lng + jitterLng;
+
+      const customIcon = L.divIcon({
+        className: "custom-div-icon",
+        html: `<div style="background: white; border: 2px solid #14b8a6; box-shadow: 0 2px 6px rgba(0,0,0,0.15); border-radius: 20px; padding: 4px 10px; font-weight: 700; font-size: 12px; white-space: nowrap; color: #0f172a; text-align: center;">${room.price} ₺</div>`,
+        iconSize: [66, 26],
+        iconAnchor: [33, 13]
+      });
+
+      const popupHtml = `
+        <div style="font-family: system-ui, -apple-system, sans-serif; width: 180px; padding: 2px;">
+          <img src="${room.photos[0] || ''}" style="width: 100%; height: 90px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;" />
+          <h4 style="margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #1e293b;">${room.name}</h4>
+          <p style="margin: 0 0 8px; font-size: 11px; color: #64748b;">${room.category?.name || 'Oda'}</p>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 800; font-size: 13px; color: #0d9488;">${room.price} ₺</span>
+            <button onclick="
+              const radio = document.getElementById('room-${room.id}');
+              if (radio) {
+                radio.click();
+                radio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            " style="background: #14b8a6; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: 700;">Seç</button>
+          </div>
+        </div>
+      `;
+
+      const marker = L.marker([markerLat, markerLng], { icon: customIcon })
+        .addTo(map)
+        .bindPopup(popupHtml);
+
+      (window as any)._leafletMarkers.push(marker);
+      bounds.push([markerLat, markerLng]);
+    });
+
+    if (bounds.length > 0) {
+      map.fitBounds(bounds, { padding: [40, 40] });
+    }
+  }, [rooms, mapInstance]);
+
+  async function triggerQuickSearch(overrides: {
+    kitchen?: boolean;
+    petFriendly?: boolean;
+    parking?: boolean;
+    wifi?: boolean;
+    ac?: boolean;
+  }) {
+    setLoading(true);
+    const activeKitchen = overrides.kitchen !== undefined ? overrides.kitchen : kitchen;
+    const activePet = overrides.petFriendly !== undefined ? overrides.petFriendly : petFriendly;
+    const activeParking = overrides.parking !== undefined ? overrides.parking : parking;
+    const activeWifi = overrides.wifi !== undefined ? overrides.wifi : wifi;
+    const activeAc = overrides.ac !== undefined ? overrides.ac : ac;
+
+    let url = `/api/odalar?checkIn=${checkIn}&checkOut=${checkOut}&kisiSayisi=${guestCount}&city=${city}`;
+    if (beds) url += `&beds=${beds}`;
+    if (bathrooms) url += `&bathrooms=${bathrooms}`;
+    if (activePet) url += `&petFriendly=true`;
+    if (activeKitchen) url += `&kitchen=true`;
+    if (activeParking) url += `&parking=true`;
+    if (activeWifi) url += `&wifi=true`;
+    if (activeAc) url += `&ac=true`;
+    if (minPrice) url += `&minPrice=${minPrice}`;
+    if (maxPrice) url += `&maxPrice=${maxPrice}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+    setRooms(data.rooms || []);
+    setLoading(false);
+  }
+
   async function submitReservation(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -392,14 +532,14 @@ function RezervasyonForm() {
 
   /* ─── ANA FORM ─── */
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="max-w-7xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-semibold mb-2">{lang === "tr" ? "Rezervasyon" : "Online Booking"}</h1>
       <p className="text-neutral-600 mb-10">{lang === "tr" ? "Konum ve tarihlerinizi seçin, müsait odalar arasından seçim yapın." : "Choose your dates, guests count, and explore premium available suites."}</p>
 
-      <div className="grid gap-4 sm:grid-cols-6 mb-8">
+      <div className="grid gap-4 sm:grid-cols-5 mb-8">
         <label className="text-sm">
           {lang === "tr" ? "Konum" : "Location"}
-          <select value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2">
+          <select value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 w-full rounded-lg border px-3 py-2 bg-white text-neutral-800">
             <option value="all">{lang === "tr" ? "Tüm Konumlar" : "All Locations"}</option>
             <option value="Sinop Merkez">Sinop Merkez</option>
             <option value="Gerze">Gerze</option>
@@ -449,184 +589,269 @@ function RezervasyonForm() {
 
         <label className="text-sm">
           {lang === "tr" ? "Kişi Sayısı" : "Guests Count"}
-          <input type="number" min={1} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="mt-1 w-full rounded-lg border px-3 py-2" />
+          <input type="number" min={1} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="mt-1 w-full rounded-lg border px-3 py-2 bg-white text-neutral-800" />
         </label>
 
-        {/* Airbnb style Filters Trigger Button */}
-        <div className="flex flex-col text-sm">
-          <span>&nbsp;</span>
+        <button onClick={searchRooms} disabled={loading} className="self-end rounded-lg bg-teal-600 text-white px-4 py-2 font-medium hover:bg-teal-700 h-[42px] cursor-pointer">
+          {loading ? (lang === "tr" ? "Aranıyor..." : "Searching...") : (lang === "tr" ? "Müsaitlik Ara" : "Search Rooms")}
+        </button>
+      </div>
+
+      {/* Quick Filter Row ("filtrenin yarısı içinde yarısı dışında olsun") */}
+      {step === "form" && (
+        <div className="flex items-center gap-2 mb-6 overflow-x-auto py-2 scrollbar-none border-b pb-4">
           <button 
             type="button" 
             onClick={() => setShowFiltersModal(true)} 
-            className="mt-1 rounded-lg border border-neutral-300 bg-white text-neutral-700 px-3 h-[42px] font-medium hover:border-neutral-500 flex items-center justify-center gap-1.5 cursor-pointer select-none"
+            className="flex items-center gap-1.5 px-4 py-2 border border-neutral-300 rounded-full text-sm font-semibold bg-white hover:border-black cursor-pointer whitespace-nowrap select-none h-9"
           >
             <span>🎛️</span>
-            <span>{lang === "tr" ? "Filtreler" : "Filters"}</span>
+            <span>{lang === "tr" ? "Tüm Filtreler" : "All Filters"}</span>
             {(beds !== "" || bathrooms !== "" || petFriendly || kitchen || parking || wifi || ac || minPrice !== "" || maxPrice !== "") && (
               <span className="flex items-center justify-center w-5 h-5 text-[10px] bg-teal-600 text-white rounded-full font-bold">
                 {[beds !== "", bathrooms !== "", petFriendly, kitchen, parking, wifi, ac, minPrice !== "", maxPrice !== ""].filter(Boolean).length}
               </span>
             )}
           </button>
-        </div>
+          
+          <div className="w-px h-6 bg-neutral-200" />
 
-        <button onClick={searchRooms} disabled={loading} className="self-end rounded-lg bg-teal-600 text-white px-4 py-2 font-medium hover:bg-teal-700 h-[42px]">
-          {loading ? (lang === "tr" ? "Aranıyor..." : "Searching...") : (lang === "tr" ? "Müsaitlik Ara" : "Search Rooms")}
-        </button>
-      </div>
+          {/* Mutfak */}
+          <button
+            type="button"
+            onClick={() => { setKitchen(!kitchen); triggerQuickSearch({ kitchen: !kitchen }); }}
+            className={`px-4 py-1.5 border rounded-full text-sm font-semibold cursor-pointer whitespace-nowrap transition-all h-9 ${kitchen ? "border-black bg-neutral-900 text-white" : "bg-white border-neutral-300 hover:border-black text-neutral-700"}`}
+          >
+            {lang === "tr" ? "Mutfak" : "Kitchen"}
+          </button>
+
+          {/* Evcil Hayvan */}
+          <button
+            type="button"
+            onClick={() => { setPetFriendly(!petFriendly); triggerQuickSearch({ petFriendly: !petFriendly }); }}
+            className={`px-4 py-1.5 border rounded-full text-sm font-semibold cursor-pointer whitespace-nowrap transition-all h-9 ${petFriendly ? "border-black bg-neutral-900 text-white" : "bg-white border-neutral-300 hover:border-black text-neutral-700"}`}
+          >
+            {lang === "tr" ? "Evcil Hayvan Dostu" : "Pet-friendly"}
+          </button>
+
+          {/* Otopark */}
+          <button
+            type="button"
+            onClick={() => { setParking(!parking); triggerQuickSearch({ parking: !parking }); }}
+            className={`px-4 py-1.5 border rounded-full text-sm font-semibold cursor-pointer whitespace-nowrap transition-all h-9 ${parking ? "border-black bg-neutral-900 text-white" : "bg-white border-neutral-300 hover:border-black text-neutral-700"}`}
+          >
+            {lang === "tr" ? "Ücretsiz Otopark" : "Free parking"}
+          </button>
+
+          {/* Wifi */}
+          <button
+            type="button"
+            onClick={() => { setWifi(!wifi); triggerQuickSearch({ wifi: !wifi }); }}
+            className={`px-4 py-1.5 border rounded-full text-sm font-semibold cursor-pointer whitespace-nowrap transition-all h-9 ${wifi ? "border-black bg-neutral-900 text-white" : "bg-white border-neutral-300 hover:border-black text-neutral-700"}`}
+          >
+            {lang === "tr" ? "Kablosuz İnternet" : "Wifi"}
+          </button>
+
+          {/* Klima */}
+          <button
+            type="button"
+            onClick={() => { setAc(!ac); triggerQuickSearch({ ac: !ac }); }}
+            className={`px-4 py-1.5 border rounded-full text-sm font-semibold cursor-pointer whitespace-nowrap transition-all h-9 ${ac ? "border-black bg-neutral-900 text-white" : "bg-white border-neutral-300 hover:border-black text-neutral-700"}`}
+          >
+            {lang === "tr" ? "Klima" : "Air conditioning"}
+          </button>
+        </div>
+      )}
 
       {error && <p className="text-red-600 text-sm mb-4">⚠️ {error}</p>}
 
       {step === "form" && (
-        <>
-          <h2 className="text-xl font-semibold mb-4">{lang === "tr" ? "Müsait Odalar" : "Available Rooms"} — {city === "all" ? (lang === "tr" ? "Tüm Konumlar" : "All Locations") : city}</h2>
-          <div className="grid gap-4 mb-10">
-            {rooms.map((room) => (
-              <label key={room.id} className={`flex items-center justify-between rounded-xl border p-4 cursor-pointer ${selectedRoomId === room.id ? "border-teal-600 bg-teal-50" : ""}`}>
-                <div>
-                  <p className="font-medium">{room.name}</p>
-                  <p className="text-sm text-neutral-500">{room.category.name} · {room.capacity} {lang === "tr" ? "kişi" : "guests"}</p>
-                  {room.availableCount !== undefined && (
-                    <p className="text-xs font-semibold text-teal-600 mt-1">
-                      {lang === "tr" ? `Sadece ${room.availableCount} oda kaldı` : `Only ${room.availableCount} rooms left`}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="font-medium">{room.price.toString()} ₺</span>
-                  <input type="radio" name="room" checked={selectedRoomId === room.id} onChange={() => setSelectedRoomId(room.id)} />
-                </div>
-              </label>
-            ))}
-            {rooms.length === 0 && <p className="text-neutral-500">{lang === "tr" ? "Seçilen şehir/tarihlerde müsait oda bulunamadı." : "No available rooms found for the selected dates."}</p>}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Map Column (Left: 5 cols) */}
+          <div className="lg:col-span-5 order-2 lg:order-1 lg:sticky lg:top-6">
+            <div 
+              id="rooms-map" 
+              style={{ 
+                height: "600px", 
+                width: "100%",
+                borderRadius: "16px", 
+                overflow: "hidden", 
+                border: "1px solid #E5E7EB",
+                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.05)"
+              }} 
+            />
           </div>
 
-          {selectedRoomId && (
-            <form onSubmit={submitReservation} className="grid gap-4 sm:grid-cols-2">
-              {user && user.fullName && user.email && user.phone && user.phone.length >= 7 ? (
-                <div className="sm:col-span-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-2">
-                  <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">{lang === "tr" ? "Hesap Bilgileri" : "Account Info"}</p>
-                  <p className="text-sm font-medium text-neutral-800">
-                    <strong>{user.fullName}</strong> ({user.email}) {lang === "tr" ? "hesabı ile rezervasyon yapıyorsunuz." : "account is being used."}
-                  </p>
-                  <p className="text-xs text-neutral-500 mt-1">{lang === "tr" ? "İletişim:" : "Contact:"} {user.phone}</p>
-                </div>
-              ) : (
-                <>
-                  {user ? (
-                    <div className="sm:col-span-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-1">
-                      <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">{lang === "tr" ? "Hesap Bilgileri" : "Account Info"}</p>
-                      <p className="text-sm font-medium text-neutral-800">
-                        <strong>{user.fullName}</strong> ({user.email}) {lang === "tr" ? "hesabı ile rezervasyon yapıyorsunuz." : "account is being used."}
+          {/* List & Form Column (Right: 7 cols) */}
+          <div className="lg:col-span-7 order-1 lg:order-2">
+            <h2 className="text-xl font-semibold mb-4">
+              {lang === "tr" ? "Müsait Odalar" : "Available Rooms"} — {city === "all" ? (lang === "tr" ? "Tüm Konumlar" : "All Locations") : city}
+            </h2>
+            
+            <div className="grid gap-4 mb-10">
+              {rooms.map((room) => (
+                <label 
+                  key={room.id} 
+                  className={`flex items-center justify-between rounded-xl border p-4 cursor-pointer transition-all ${selectedRoomId === room.id ? "border-teal-600 bg-teal-50" : "hover:border-neutral-400 bg-white"}`}
+                >
+                  <div>
+                    <p className="font-semibold text-neutral-900">{room.name}</p>
+                    <p className="text-sm text-neutral-500">{room.category.name} · {room.capacity} {lang === "tr" ? "kişi" : "guests"}</p>
+                    {room.availableCount !== undefined && (
+                      <p className="text-xs font-semibold text-teal-600 mt-1">
+                        {lang === "tr" ? `Sadece ${room.availableCount} oda kaldı` : `Only ${room.availableCount} rooms left`}
                       </p>
-                      <p className="text-xs text-amber-600 font-semibold mt-2">
-                        {lang === "tr" ? "⚠️ Lütfen işlemlerinizi tamamlamak için geçerli bir telefon numarası girin:" : "⚠️ Please enter a valid phone number to continue:"}
-                      </p>
-                    </div>
-                  ) : (
-                    <>
-                      <input required placeholder={lang === "tr" ? "Ad Soyad" : "Full Name"} value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-lg border px-3 py-2" />
-                      <input required type="email" placeholder={lang === "tr" ? "E-posta" : "Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border px-3 py-2" />
-                    </>
-                  )}
-                  <input required placeholder={lang === "tr" ? "Telefon (En az 7 haneli)" : "Phone Number (Min 7 digits)"} value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-lg border px-3 py-2 sm:col-span-2" />
-                </>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-semibold text-neutral-900">{room.price.toString()} ₺</span>
+                    <input 
+                      type="radio" 
+                      name="room" 
+                      id={`room-${room.id}`}
+                      checked={selectedRoomId === room.id} 
+                      onChange={() => setSelectedRoomId(room.id)} 
+                      className="cursor-pointer"
+                    />
+                  </div>
+                </label>
+              ))}
+              {rooms.length === 0 && (
+                <p className="text-neutral-500">
+                  {lang === "tr" ? "Seçilen filtrelerde/tarihlerde müsait oda bulunamadı." : "No available rooms found for the selected filters/dates."}
+                </p>
               )}
+            </div>
 
-              {/* Promo Code Input */}
-              <div className="sm:col-span-2 p-4 border border-dashed rounded-xl bg-neutral-50">
-                <p className="text-sm font-semibold text-neutral-800 mb-2">{t.promoTitle}</p>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <input
-                    placeholder="Örn: YAZ2026"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
-                    style={{ flex: 1, border: "1px solid #E5E7EB", borderRadius: "8px", padding: "0.5rem 0.75rem", fontSize: "0.88rem" }}
-                  />
-                  <button
-                    type="button"
-                    onClick={handlePromoCodeApply}
-                    className="rounded-lg bg-neutral-800 text-white px-4 py-2 text-xs font-semibold hover:bg-black"
-                  >
-                    {t.promoApply}
-                  </button>
-                </div>
-                {promoSuccess && <p style={{ fontSize: "0.78rem", color: "#16a34a", fontWeight: 600, marginTop: "0.35rem" }}>✅ {promoSuccess}</p>}
-                {promoError && <p style={{ fontSize: "0.78rem", color: "#dc2626", fontWeight: 600, marginTop: "0.35rem" }}>⚠️ {promoError}</p>}
-              </div>
-
-              {/* Pricing breakdown summary */}
-              <div className="sm:col-span-2 p-4 border rounded-xl bg-neutral-50 grid gap-2">
-                <div className="flex justify-between text-sm text-neutral-600">
-                  <span>{lang === "tr" ? "Brüt Tutar" : "Gross Price"}</span>
-                  <span className={discountPercent > 0 ? "line-through" : "font-semibold"}>{totalPrice.toLocaleString("tr-TR")} ₺</span>
-                </div>
-                {discountPercent > 0 && (
+            {selectedRoomId && (
+              <form onSubmit={submitReservation} className="grid gap-4 sm:grid-cols-2 bg-white p-6 border rounded-2xl shadow-sm">
+                {user && user.fullName && user.email && user.phone && user.phone.length >= 7 ? (
+                  <div className="sm:col-span-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-2">
+                    <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">{lang === "tr" ? "Hesap Bilgileri" : "Account Info"}</p>
+                    <p className="text-sm font-medium text-neutral-800">
+                      <strong>{user.fullName}</strong> ({user.email}) {lang === "tr" ? "hesabı ile rezervasyon yapıyorsunuz." : "account is being used."}
+                    </p>
+                    <p className="text-xs text-neutral-500 mt-1">{lang === "tr" ? "İletişim:" : "Contact:"} {user.phone}</p>
+                  </div>
+                ) : (
                   <>
-                    <div className="flex justify-between text-sm text-green-600 font-semibold">
-                      <span>{lang === "tr" ? "İndirim" : "Discount"} (-%{discountPercent})</span>
-                      <span>-{discountAmount.toLocaleString("tr-TR")} ₺</span>
-                    </div>
-                    <div className="flex justify-between text-base font-bold text-neutral-900 border-t pt-2 mt-1">
-                      <span>{t.totalPrice}</span>
-                      <span>{finalPrice.toLocaleString("tr-TR")} ₺</span>
-                    </div>
+                    {user ? (
+                      <div className="sm:col-span-2 bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-1">
+                        <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1">{lang === "tr" ? "Hesap Bilgileri" : "Account Info"}</p>
+                        <p className="text-sm font-medium text-neutral-800">
+                          <strong>{user.fullName}</strong> ({user.email}) {lang === "tr" ? "hesabı ile rezervasyon yapıyorsunuz." : "account is being used."}
+                        </p>
+                        <p className="text-xs text-amber-600 font-semibold mt-2">
+                          {lang === "tr" ? "⚠️ Lütfen işlemlerinizi tamamlamak için geçerli bir telefon numarası girin:" : "⚠️ Please enter a valid phone number to continue:"}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <input required placeholder={lang === "tr" ? "Ad Soyad" : "Full Name"} value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-lg border px-3 py-2 bg-white text-neutral-800" />
+                        <input required type="email" placeholder={lang === "tr" ? "E-posta" : "Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border px-3 py-2 bg-white text-neutral-800" />
+                      </>
+                    )}
+                    <input required placeholder={lang === "tr" ? "Telefon (En az 7 haneli)" : "Phone Number (Min 7 digits)"} value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-lg border px-3 py-2 sm:col-span-2 bg-white text-neutral-800" />
                   </>
                 )}
-              </div>
-              
-              <div className="sm:col-span-2 grid grid-cols-2 gap-4 mt-1">
-                <button type="button" onClick={() => setPaymentMethod("havale")} className={`p-4 border rounded-xl text-sm font-semibold transition-all ${paymentMethod === "havale" ? "border-teal-600 bg-teal-50 text-teal-800" : "bg-white text-neutral-700"}`}>
-                  {lang === "tr" ? "Havale / EFT" : "Bank Transfer"}
-                </button>
-                <button type="button" onClick={() => setPaymentMethod("kapida")} className={`p-4 border rounded-xl text-sm font-semibold transition-all ${paymentMethod === "kapida" ? "border-teal-600 bg-teal-50 text-teal-800" : "bg-white text-neutral-700"}`}>
-                  {lang === "tr" ? "Kapıda Ödeme" : "Pay at Entrance"}
-                </button>
-              </div>
 
-              {/* KVKK Checkbox */}
-              <div className="sm:col-span-2 flex items-start gap-2.5 my-2">
-                <input
-                  type="checkbox"
-                  id="kvkkCheck"
-                  checked={kvkkAccepted}
-                  onChange={(e) => setKvkkAccepted(e.target.checked)}
-                  style={{ marginTop: "3px", cursor: "pointer" }}
-                />
-                <label htmlFor="kvkkCheck" style={{ fontSize: "0.78rem", color: "#4B5563", lineHeight: 1.5, cursor: "pointer" }}>
-                  {lang === "tr" ? (
+                {/* Promo Code Input */}
+                <div className="sm:col-span-2 p-4 border border-dashed rounded-xl bg-neutral-50">
+                  <p className="text-sm font-semibold text-neutral-800 mb-2">{t.promoTitle}</p>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <input
+                      placeholder="Örn: YAZ2026"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value)}
+                      style={{ flex: 1, border: "1px solid #E5E7EB", borderRadius: "8px", padding: "0.5rem 0.75rem", fontSize: "0.88rem", background: "white", color: "#222" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handlePromoCodeApply}
+                      className="rounded-lg bg-neutral-800 text-white px-4 py-2 text-xs font-semibold hover:bg-black cursor-pointer"
+                    >
+                      {t.promoApply}
+                    </button>
+                  </div>
+                  {promoSuccess && <p style={{ fontSize: "0.78rem", color: "#16a34a", fontWeight: 600, marginTop: "0.35rem" }}>✅ {promoSuccess}</p>}
+                  {promoError && <p style={{ fontSize: "0.78rem", color: "#dc2626", fontWeight: 600, marginTop: "0.35rem" }}>⚠️ {promoError}</p>}
+                </div>
+
+                {/* Pricing breakdown summary */}
+                <div className="sm:col-span-2 p-4 border rounded-xl bg-neutral-50 grid gap-2">
+                  <div className="flex justify-between text-sm text-neutral-600">
+                    <span>{lang === "tr" ? "Brüt Tutar" : "Gross Price"}</span>
+                    <span className={discountPercent > 0 ? "line-through" : "font-semibold"}>{totalPrice.toLocaleString("tr-TR")} ₺</span>
+                  </div>
+                  {discountPercent > 0 && (
                     <>
-                      Kuzey Feneri Butik Otel{" "}
-                      <button
-                        type="button"
-                        onClick={() => setShowKvkkModal(true)}
-                        style={{ color: "#A07840", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
-                      >
-                        KVKK Aydınlatma Metnini
-                      </button>{" "}
-                      okudum ve kabul ediyorum.
-                    </>
-                  ) : (
-                    <>
-                      I have read and agree to the{" "}
-                      <button
-                        type="button"
-                        onClick={() => setShowKvkkModal(true)}
-                        style={{ color: "#A07840", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
-                      >
-                        KVKK Disclosure Agreement
-                      </button>.
+                      <div className="flex justify-between text-sm text-green-600 font-semibold">
+                        <span>{lang === "tr" ? "İndirim" : "Discount"} (-%{discountPercent})</span>
+                        <span>-{discountAmount.toLocaleString("tr-TR")} ₺</span>
+                      </div>
+                      <div className="flex justify-between text-base font-bold text-neutral-900 border-t pt-2 mt-1">
+                        <span>{t.totalPrice}</span>
+                        <span>{finalPrice.toLocaleString("tr-TR")} ₺</span>
+                      </div>
                     </>
                   )}
-                </label>
-              </div>
+                </div>
+                
+                <div className="sm:col-span-2 grid grid-cols-2 gap-4 mt-1">
+                  <button type="button" onClick={() => setPaymentMethod("havale")} className={`p-4 border rounded-xl text-sm font-semibold transition-all cursor-pointer ${paymentMethod === "havale" ? "border-teal-600 bg-teal-50 text-teal-800" : "bg-white text-neutral-700 hover:border-neutral-400"}`}>
+                    {lang === "tr" ? "Havale / EFT" : "Bank Transfer"}
+                  </button>
+                  <button type="button" onClick={() => setPaymentMethod("kapida")} className={`p-4 border rounded-xl text-sm font-semibold transition-all cursor-pointer ${paymentMethod === "kapida" ? "border-teal-600 bg-teal-50 text-teal-800" : "bg-white text-neutral-700 hover:border-neutral-400"}`}>
+                    {lang === "tr" ? "Kapıda Ödeme" : "Pay at Entrance"}
+                  </button>
+                </div>
 
-              <button type="submit" disabled={loading} className="sm:col-span-2 rounded-full bg-teal-600 text-white px-8 py-3.5 font-medium hover:bg-teal-700 text-base">
-                {loading ? (lang === "tr" ? "Gönderiliyor..." : "Submitting...") : (lang === "tr" ? "Rezervasyonu Tamamla" : "Complete Reservation")}
-              </button>
-            </form>
-          )}
-        </>
+                {/* KVKK Checkbox */}
+                <div className="sm:col-span-2 flex items-start gap-2.5 my-2">
+                  <input
+                    type="checkbox"
+                    id="kvkkCheck"
+                    checked={kvkkAccepted}
+                    onChange={(e) => setKvkkAccepted(e.target.checked)}
+                    style={{ marginTop: "3px", cursor: "pointer" }}
+                  />
+                  <label htmlFor="kvkkCheck" style={{ fontSize: "0.78rem", color: "#4B5563", lineHeight: 1.5, cursor: "pointer" }}>
+                    {lang === "tr" ? (
+                      <>
+                        Kuzey Feneri Butik Otel{" "}
+                        <button
+                          type="button"
+                          onClick={() => setShowKvkkModal(true)}
+                          style={{ color: "#A07840", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                        >
+                          KVKK Aydınlatma Metnini
+                        </button>{" "}
+                        okudum ve kabul ediyorum.
+                      </>
+                    ) : (
+                      <>
+                        I have read and agree to the{" "}
+                        <button
+                          type="button"
+                          onClick={() => setShowKvkkModal(true)}
+                          style={{ color: "#A07840", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                        >
+                          KVKK Disclosure Agreement
+                        </button>.
+                      </>
+                    )}
+                  </label>
+                </div>
+
+                <button type="submit" disabled={loading} className="sm:col-span-2 rounded-full bg-teal-600 text-white px-8 py-3.5 font-medium hover:bg-teal-700 text-base cursor-pointer">
+                  {loading ? (lang === "tr" ? "Gönderiliyor..." : "Submitting...") : (lang === "tr" ? "Rezervasyonu Tamamla" : "Complete Reservation")}
+                </button>
+              </form>
+            )}
+          </div>
+
+        </div>
       )}
 
       {/* KVKK Modal popup dialog */}
