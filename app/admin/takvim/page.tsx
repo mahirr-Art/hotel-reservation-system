@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import RoomCalendar from "@/components/RoomCalendar";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminTakvimPage() {
   const rooms = await prisma.room.findMany({
     orderBy: { name: "asc" },
