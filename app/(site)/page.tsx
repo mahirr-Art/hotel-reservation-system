@@ -162,13 +162,11 @@ export default async function HomePage() {
         className="homepage-hero"
         style={{
           position: "relative",
-          height: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
           color: "white",
-          overflow: "hidden",
         }}
       >
         {/* Background Zoom Image */}
@@ -536,18 +534,25 @@ export default async function HomePage() {
 
       <style>{`
         .homepage-hero {
-          padding: 130px 1.5rem 0 !important;
+          height: auto;
+          min-height: 100vh;
+          padding: 110px 1.25rem 4rem;
           box-sizing: border-box;
+          overflow: visible;
+          width: 100%;
         }
         .hero-content-box {
-          margin-top: 50px !important;
+          margin-top: 20px;
+          width: 100%;
         }
         @media (min-width: 768px) {
           .homepage-hero {
-            padding: 150px 1.5rem 0 !important;
+            height: 100vh;
+            padding: 140px 1.5rem 0;
+            overflow: hidden;
           }
           .hero-content-box {
-            margin-top: 0 !important;
+            margin-top: 0;
           }
         }
       `}</style>
