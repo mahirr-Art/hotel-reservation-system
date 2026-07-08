@@ -17,7 +17,7 @@ function RezervasyonForm() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoomId, setSelectedRoomId] = useState(searchParams.get("oda") || "");
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState<"tarih" | "form" | "onay">("tarih");
+  const [step, setStep] = useState<"tarih" | "form" | "onay">("form");
   const [error, setError] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -64,6 +64,16 @@ function RezervasyonForm() {
         }
       })
       .catch(() => {});
+
+    // Fetch initial rooms to make map, filters, and list load instantly on page entry
+    setLoading(true);
+    fetch(`/api/odalar?kisiSayisi=${guestCount}&city=${city}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setRooms(data.rooms || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
