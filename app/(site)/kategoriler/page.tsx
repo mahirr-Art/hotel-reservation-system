@@ -68,12 +68,16 @@ export default async function KategorilerPage() {
 
             let catName = cat.name;
             let catDesc = cat.description || "";
-            if (lang === "en") {
-              if (cat.name === "Standart Oda") catName = "Standard Room";
-              else if (cat.name === "Deluxe Oda") catName = "Deluxe Room";
-              else if (cat.name === "Süit Oda") catName = "Suite Room";
+            if (lang === "tr") {
+              if (cat.name === "Standard") catName = "Standart Oda";
+              else if (cat.name === "Deluxe") catName = "Deluxe Oda";
+              else if (cat.name === "Suite") catName = "Süit Oda";
+            } else {
+              if (cat.name === "Standard") catName = "Standard Room";
+              else if (cat.name === "Deluxe") catName = "Deluxe Room";
+              else if (cat.name === "Suite") catName = "Suite Room";
 
-              if (!cat.description || cat.description.includes("Karadeniz'in huzur")) {
+              if (!cat.description || cat.description.includes("Karadeniz'in huzur") || cat.description.includes("Karadeniz manzaralı")) {
                 catDesc = "Our rooms in this category offer the peaceful view of the Black Sea and modern comfort together.";
               }
             }

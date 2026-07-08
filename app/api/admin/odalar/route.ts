@@ -21,6 +21,14 @@ export async function POST(request: NextRequest) {
       categoryId: body.categoryId,
       city: body.city,
       photos: body.photos || [],
+      beds: Number(body.beds || 1),
+      bathrooms: Number(body.bathrooms || 1),
+      petFriendly: Boolean(body.petFriendly),
+      kitchen: Boolean(body.kitchen),
+      parking: Boolean(body.parking),
+      wifi: Boolean(body.wifi),
+      ac: Boolean(body.ac),
+      features: body.features || [],
     },
   });
   return NextResponse.json({ room }, { status: 201 });

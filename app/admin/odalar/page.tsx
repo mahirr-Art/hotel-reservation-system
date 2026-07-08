@@ -6,6 +6,7 @@ type Category = { id: string; name: string };
 type Room = {
   id: string; name: string; description: string | null; price: string;
   capacity: number; quantity: number; categoryId: string; category: Category; photos: string[]; city: string;
+  beds: number; bathrooms: number; petFriendly: boolean; kitchen: boolean; parking: boolean; wifi: boolean; ac: boolean; features: string[];
 };
 
 export default function AdminOdalarPage() {
@@ -19,7 +20,15 @@ export default function AdminOdalarPage() {
     quantity: "1",
     categoryId: "",
     photos: [] as string[],
-    city: "Sinop Merkez"
+    city: "Sinop Merkez",
+    beds: "1",
+    bathrooms: "1",
+    petFriendly: false,
+    kitchen: false,
+    parking: false,
+    wifi: true,
+    ac: true,
+    featuresText: "",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -64,9 +73,20 @@ export default function AdminOdalarPage() {
     e.preventDefault();
     const url = editingId ? `/api/admin/odalar/${editingId}` : "/api/admin/odalar";
     const method = editingId ? "PUT" : "POST";
-    const payload = { ...form, price: Number(form.price), capacity: Number(form.capacity), quantity: Number(form.quantity) };
+    const payload = { 
+      ...form, 
+      price: Number(form.price), 
+      capacity: Number(form.capacity), 
+      quantity: Number(form.quantity),
+      beds: Number(form.beds),
+      bathrooms: Number(form.bathrooms),
+      features: form.featuresText.split(",").map(f => f.trim()).filter(Boolean),
+    };
     await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photos: [], city: "Sinop Merkez" });
+    setForm({ 
+      name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photos: [], city: "Sinop Merkez",
+      beds: "1", bathrooms: "1", petFriendly: false, kitchen: false, parking: false, wifi: true, ac: true, featuresText: ""
+    });
     setEditingId(null);
     loadData();
   }
@@ -82,6 +102,14 @@ export default function AdminOdalarPage() {
       categoryId: room.categoryId,
       photos: room.photos || [],
       city: room.city,
+      beds: (room.beds || 1).toString(),
+      bathrooms: (room.bathrooms || 1).toString(),
+      petFriendly: !!room.petFriendly,
+      kitchen: !!room.kitchen,
+      parking: !!room.parking,
+      wifi: room.wifi !== undefined ? !!room.wifi : true,
+      ac: room.ac !== undefined ? !!room.ac : true,
+      featuresText: room.features ? room.features.join(", ") : "",
     });
   }
 
@@ -178,6 +206,48 @@ export default function AdminOdalarPage() {
             <textarea placeholder="Oda özellikleri ve detayları..." value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} style={{ ...inputStyle, resize: "vertical", height: 80 }} />
           </div>
 
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div>
+              <label style={labelStyle}>Yatak Sayısı *</label>
+              <input required type="number" min={1} value={form.beds} onChange={(e) => setForm({ ...form, beds: e.target.value })} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Banyo Sayısı *</label>
+              <input required type="number" min={1} value={form.bathrooms} onChange={(e) => setForm({ ...form, bathrooms: e.target.value })} style={inputStyle} />
+            </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Olanaklar & Özellikler</label>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", background: "#f9fafb", padding: "0.75rem", borderRadius: "10px", border: "1px solid #E5E7EB" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "#374151", cursor: "pointer" }}>
+                <input type="checkbox" checked={form.wifi} onChange={(e) => setForm({ ...form, wifi: e.target.checked })} />
+                Ücretsiz Wifi
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "#374151", cursor: "pointer" }}>
+                <input type="checkbox" checked={form.ac} onChange={(e) => setForm({ ...form, ac: e.target.checked })} />
+                Klima (AC)
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "#374151", cursor: "pointer" }}>
+                <input type="checkbox" checked={form.petFriendly} onChange={(e) => setForm({ ...form, petFriendly: e.target.checked })} />
+                Evcil Hayvan Dostu
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "#374151", cursor: "pointer" }}>
+                <input type="checkbox" checked={form.kitchen} onChange={(e) => setForm({ ...form, kitchen: e.target.checked })} />
+                Mutfak (Mutfak Tezgahı)
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "#374151", cursor: "pointer" }}>
+                <input type="checkbox" checked={form.parking} onChange={(e) => setForm({ ...form, parking: e.target.checked })} />
+                Ücretsiz Otopark
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Öne Çıkan Ayrıcalıklar (Virgülle ayırın)</label>
+            <input placeholder="Örn: Jakuzi, Şömine, Balkon, Deniz Manzarası" value={form.featuresText} onChange={(e) => setForm({ ...form, featuresText: e.target.value })} style={inputStyle} />
+          </div>
+
           <div>
             <label style={labelStyle}>Oda Fotoğrafları (Çoklu Yükleme & Drag-Drop)</label>
             <div
@@ -260,7 +330,10 @@ export default function AdminOdalarPage() {
                 type="button"
                 onClick={() => {
                   setEditingId(null);
-                  setForm({ name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photos: [], city: "Sinop Merkez" });
+                  setForm({ 
+                    name: "", description: "", price: "", capacity: "", quantity: "1", categoryId: "", photos: [], city: "Sinop Merkez",
+                    beds: "1", bathrooms: "1", petFriendly: false, kitchen: false, parking: false, wifi: true, ac: true, featuresText: "" 
+                  });
                 }}
                 style={{
                   flex: 1, padding: "0.75rem", borderRadius: "10px", border: "1px solid #E5E7EB",

@@ -15,6 +15,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       categoryId: body.categoryId,
       city: body.city,
       photos: body.photos,
+      beds: body.beds ? Number(body.beds) : undefined,
+      bathrooms: body.bathrooms ? Number(body.bathrooms) : undefined,
+      petFriendly: body.petFriendly !== undefined ? Boolean(body.petFriendly) : undefined,
+      kitchen: body.kitchen !== undefined ? Boolean(body.kitchen) : undefined,
+      parking: body.parking !== undefined ? Boolean(body.parking) : undefined,
+      wifi: body.wifi !== undefined ? Boolean(body.wifi) : undefined,
+      ac: body.ac !== undefined ? Boolean(body.ac) : undefined,
+      features: body.features || [],
     },
   });
   return NextResponse.json({ room });
